@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Staff Exam Schedule — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Staff Menu</h3>
+  <a href="{{ url_for('staff_home') }}">Overview</a>
+  <a href="{{ url_for('staff_my_courses') }}">My Courses</a>
+  <a href="{{ url_for('staff_assessments') }}">Assessments</a>
+  <a href="{{ url_for('staff_attendance') }}">Attendance</a>
+  <a href="{{ url_for('staff_exam_schedule') }}">Exam Schedule</a>
+{% endblock %}
+
+{% block content %}
+  <h2 style="margin-top:0;">Exam Duties / Schedule</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+    <thead>
+      <tr style="background:#eee;">
+        <th style="padding:8px;border:1px solid #ccc;">Course</th>
+        <th style="padding:8px;border:1px solid #ccc;">Date</th>
+        <th style="padding:8px;border:1px solid #ccc;">Time</th>
+        <th style="padding:8px;border:1px solid #ccc;">Room</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in exams %}
+      <tr>
+        <td style="padding:8px;border:1px solid #ccc;">{{ e.course }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ e.date }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ e.time }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ e.room }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="4" style="padding:8px;border:1px solid #ccc;text-align:center;">
+          No upcoming exam duties.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

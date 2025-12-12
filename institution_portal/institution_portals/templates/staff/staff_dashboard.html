@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Staff Dashboard — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Staff Menu</h3>
+  <a href="{{ url_for('staff_home') }}">Overview</a>
+  <a href="{{ url_for('staff_my_courses') }}">My Courses</a>
+  <a href="{{ url_for('staff_assessments') }}">Assessments</a>
+  <a href="{{ url_for('staff_attendance') }}">Attendance</a>
+  <a href="{{ url_for('staff_exam_schedule') }}">Exam Schedule</a>
+  
+
+{% endblock %}
+
+{% block content %}
+  <h2 style="margin-top:0;">Welcome, {{ current_user.full_name or current_user.reg_no }}</h2>
+  <p>Use this panel to manage your courses, assessments, attendance, and exam duties.</p>
+
+  <section>
+    <h3>Quick Stats</h3>
+    <ul>
+      <li>Total courses this semester: {{ stats.total_courses }}</li>
+      <li>Upcoming exams you invigilate: {{ stats.upcoming_exams }}</li>
+      <li>Pending assessment submissions: {{ stats.pending_submissions }}</li>
+    </ul>
+  </section>
+{% endblock %}

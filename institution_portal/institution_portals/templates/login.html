@@ -1,0 +1,161 @@
+<!-- templates/login.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Login — Codex Institutions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Professional Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #F7F4EA;
+    }
+
+    /* HEADER */
+    header {
+      background-color: #9593D9;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      font-weight: 600;
+      font-size: 1.35rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    header img {
+      width: 30px;
+      height: 30px;
+      filter: brightness(0) invert(1);
+    }
+
+    /* MAIN LOGIN CARD */
+    .container {
+      max-width: 420px;
+      margin: 70px auto;
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 14px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+    }
+
+    .title {
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 28px;
+      color: #222;
+    }
+
+    label {
+      font-weight: 500;
+      margin-top: 16px;
+      display: block;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    input:focus {
+      border-color: #9593D9;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(149,147,217,0.25);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #9593D9;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      cursor: pointer;
+      margin-top: 24px;
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+
+    .btn:hover {
+      background-color: #7E7BC7;
+    }
+
+    /* FLASH MESSAGE */
+    .flash {
+      padding: 12px;
+      background-color: #ffe2e2;
+      border-left: 4px solid #ff4949;
+      margin-bottom: 18px;
+      border-radius: 6px;
+      color: #b10000;
+      font-size: 0.9rem;
+    }
+
+    .note {
+      color: #555;
+      font-size: 0.85rem;
+      margin-top: 18px;
+      text-align: center;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Logo">
+    Codex Institutions
+  </header>
+
+  <!-- LOGIN CARD -->
+  <div class="container">
+
+    <div class="title">Login Portal</div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="flash">
+            {{ msg }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('login') }}">
+      {{ form.hidden_tag() }}
+
+      <label for="reg_no">Registration No / Email</label>
+      {{ form.reg_no(id="reg_no", placeholder="example: 23uai0001 or student@codex.edu") }}
+
+      <label for="password">Password</label>
+      {{ form.password(id="password", placeholder="Enter your password") }}
+
+      {{ form.submit(class_="btn", value="Login") }}
+    </form>
+
+    <p class="note">
+      Students, Staff, and Admins must use credentials provided by Codex Institutions.
+    </p>
+  </div>
+
+</body>
+</html>

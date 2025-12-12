@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}My Course Materials — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Student Menu</h3>
+  <a href="{{ url_for('student_home') }}">Overview</a>
+  <a href="{{ url_for('student_materials') }}">My Materials</a>
+{% endblock %}
+
+{% block content %}
+  <h2 style="margin-top:0;">My Course Materials</h2>
+
+  {% if not courses %}
+    <p>You are not enrolled in any courses yet.</p>
+  {% else %}
+    {% for c in courses %}
+      <h3>{{ c.code }} — {{ c.name }}</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:0.95rem;margin-bottom:16px;">
+        <thead>
+          <tr style="background:#eee;">
+            <th style="padding:8px;border:1px solid #ccc;">File</th>
+            <th style="padding:8px;border:1px solid #ccc;">Uploaded at</th>
+            <th style="padding:8px;border:1px solid #ccc;">Download</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% set files = files_by_course.get(c.course_id, []) %}
+          {% if files %}
+            {% for f in files %}
+            <tr>
+              <td style="padding:8px;border:1px solid #ccc;">{{ f.original_name }}</td>
+              <td style="padding:8px;border:1px solid #ccc;">{{ f.uploaded_at }}</td>
+              <td style="padding:8px;border:1px solid #ccc;">
+                <a href="{{ url_for('download_material', stored_name=f.stored_name) }}"
+                   style="padding:6px 10px;border-radius:4px;background:#7E7BC7;color:#fff;text-decoration:none;">
+                  Download
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="3" style="padding:8px;border:1px solid #ccc;text-align:center;">
+                No files uploaded yet for this course.
+              </td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    {% endfor %}
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Staff Attendance — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Staff Menu</h3>
+  <a href="{{ url_for('staff_home') }}">Overview</a>
+  <a href="{{ url_for('staff_my_courses') }}">My Courses</a>
+  <a href="{{ url_for('staff_assessments') }}">Assessments</a>
+  <a href="{{ url_for('staff_attendance') }}">Attendance</a>
+  <a href="{{ url_for('staff_exam_schedule') }}">Exam Schedule</a>
+{% endblock %}
+
+{% block content %}
+  <h2 style="margin-top:0;">Today’s Classes / Attendance</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+    <thead>
+      <tr style="background:#eee;">
+        <th style="padding:8px;border:1px solid #ccc;">Course</th>
+        <th style="padding:8px;border:1px solid #ccc;">Time</th>
+        <th style="padding:8px;border:1px solid #ccc;">Room</th>
+        <th style="padding:8px;border:1px solid #ccc;">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in slots %}
+      <tr>
+        <td style="padding:8px;border:1px solid #ccc;">{{ s.course }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ s.time }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ s.room }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">
+          <!-- later this can point to a detailed mark-attendance page -->
+          <button style="padding:6px 10px;border:none;border-radius:4px;background:#9593D9;color:#fff;cursor:pointer;">
+            Mark attendance
+          </button>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="4" style="padding:8px;border:1px solid #ccc;text-align:center;">
+          No classes scheduled for today.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Examiner Dashboard — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3>Examiner Menu</h3>
+  <a href="{{ url_for('examiner_home') }}">Overview</a>
+  <a href="{{ url_for('examiner_hall_allocation') }}">Hall Allocation</a>
+{% endblock %}
+
+{% block content %}
+  <h2>Examiner Dashboard</h2>
+  <p>Welcome, {{ current_user.full_name or current_user.reg_no }}.</p>
+  <p>Upcoming exams, hall allotments, and reports will show here.</p>
+{% endblock %}
+

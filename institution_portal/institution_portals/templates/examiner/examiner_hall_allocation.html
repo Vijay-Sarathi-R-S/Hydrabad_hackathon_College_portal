@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Hall Allocation — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3>Examiner Menu</h3>
+  <a href="{{ url_for('examiner_home') }}">Overview</a>
+  <a href="{{ url_for('examiner_hall_allocation') }}">Hall Allocation</a>
+{% endblock %}
+
+{% block content %}
+  <h2>Exam Seating Allocator</h2>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul>
+      {% for cat, m in messages %}
+        {% if cat == 'danger' %}
+          <li style="color:red">{{ m }}</li>
+        {% else %}
+          <li style="color:green">{{ m }}</li>
+        {% endif %}
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <h3>Step 1: Upload student list</h3>
+  <form method="post" enctype="multipart/form-data" action="{{ url_for('examiner_hall_upload_students') }}">
+    <input type="file" name="students_csv" accept=".csv" required>
+    <button type="submit">Upload student list</button>
+  </form>
+  <p style="font-size:0.9rem;">
+    CSV columns: <code>Class,RegNo</code> (example: <code>CSE3A,21CS001</code>).
+    One row per student.
+  </p>
+
+  <h3>Step 2: Upload class bench limits</h3>
+  <form method="post" enctype="multipart/form-data" action="{{ url_for('examiner_hall_upload_classes') }}">
+    <input type="file" name="classes_config" accept=".csv" required>
+    <button type="submit">Upload class limits</button>
+  </form>
+  <p style="font-size:0.9rem;">
+    CSV columns: <code>Class,Allocated_Benches</code> (example: <code>CSE3A,10</code>).
+    This is the maximum number of benches each class can use.
+  </p>
+
+  <h3>Step 3: Upload hall capacities</h3>
+  <form method="post" enctype="multipart/form-data" action="{{ url_for('examiner_hall_upload_halls') }}">
+    <input type="file" name="hall_config" accept=".csv" required>
+    <button type="submit">Upload hall list</button>
+  </form>
+  <p style="font-size:0.9rem;">
+    CSV columns: <code>Hall_Name,Seats_Per_Bench,Allocated_Benches</code>
+    (example: <code>MainHall,2,30</code>).
+  </p>
+
+  <h3>Current student file (preview)</h3>
+  <pre style="max-height:320px;overflow:auto;background:#f9f9f9;border:1px solid #ddd;padding:8px">{{ preview }}</pre>
+
+  <h3>Step 4: Generate seating</h3>
+  <form method="post" action="{{ url_for('examiner_hall_generate') }}">
+    <p style="font-size:0.9rem;">
+      Uses the uploaded student list, class limits, and hall capacities
+      to create a seating plan and download it as CSV.
+    </p>
+    <button type="submit">Generate Seating Automatically</button>
+  </form>
+
+  <h3>Generated seating files</h3>
+  <ul>
+    {% for f in files %}
+      <li><a href="{{ url_for('examiner_hall_download', filename=f) }}">{{ f }}</a></li>
+    {% else %}
+      <li>No seating files yet</li>
+    {% endfor %}
+  </ul>
+
+  {% if generated_filename %}
+    <h3>Latest generated file</h3>
+    <p>
+      <a href="{{ url_for('examiner_hall_download', filename=generated_filename) }}">
+        Download {{ generated_filename }}
+      </a>
+    </p>
+
+    {% if mapping %}
+      <h4>Bench allocation summary</h4>
+      <ul>
+        {% for cls, s, e in mapping %}
+          <li>{{ cls }}: benches {{ s }} – {{ e }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <h4>Preview (first 200 lines)</h4>
+    <pre style="max-height:400px;overflow:auto;background:#f7f7f7;border:1px solid #ddd;padding:8px">{{ preview_generated }}</pre>
+  {% endif %}
+{% endblock %}

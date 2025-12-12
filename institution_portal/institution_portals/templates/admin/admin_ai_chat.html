@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Admin AI Chat — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Admin Menu</h3>
+  <a href="{{ url_for('admin_home') }}">Overview / Course Assign</a>
+  <a href="{{ url_for('admin_ai_chat') }}">AI Assistant</a>
+{% endblock %}
+
+
+{% block content %}
+  <h2 style="margin-top:0;">AI Assistant (Gemini)</h2>
+  <p>Ask questions or get help planning schedules, exams, or tasks.</p>
+
+  <form method="POST">
+    <textarea name="message" rows="3"
+              style="width:100%;padding:8px;margin-bottom:8px;"
+              placeholder="Type your question for Gemini..."></textarea>
+    <button type="submit"
+            style="padding:8px 14px;border:none;border-radius:6px;background:#9593D9;color:#fff;cursor:pointer;">
+      Send
+    </button>
+  </form>
+
+  {% if messages %}
+    <div style="margin-top:16px;">
+      {% for m in messages %}
+        {% if m.role == 'user' %}
+          <div style="margin-bottom:8px;"><strong>You:</strong> {{ m.text }}</div>
+        {% else %}
+          <div style="margin-bottom:8px;"><strong>AI:</strong> {{ m.text }}</div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}

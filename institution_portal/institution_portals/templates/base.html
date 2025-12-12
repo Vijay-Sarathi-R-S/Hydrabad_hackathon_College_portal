@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{% block title %}Codex Portal{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; font-family:'Inter',sans-serif; background:#F7F4EA; }
+    header { background:#28273f; padding:14px 28px; color:#fff; font-weight:600;
+             display:flex; align-items:center; justify-content:space-between; }
+    .layout { display:flex; min-height:calc(100vh - 60px); }
+    .sidebar { width:220px; background:#c14242; box-shadow:2px 0 8px rgba(0,0,0,0.08); padding:18px; }
+    .sidebar a { display:block; padding:8px 4px; color:#333; text-decoration:none; font-size:0.95rem; }
+    .sidebar a:hover { color:#9593D9; }
+    .content { flex:1; padding:24px; }
+  </style>
+</head>
+<body>
+<header>
+  <div>
+    <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Logo" style="width:30px;height:30px;filter:brightness(0) invert(1);margin-right:8px;">
+    Codex Institutions
+  </div>
+  {% if current_user.is_authenticated %}
+    <div>{{ current_user.full_name or current_user.reg_no }} ({{ current_user.role|upper }}) |
+      <a href="{{ url_for('logout') }}" style="color:#fff;text-decoration:underline;">Logout</a>
+    </div>
+  {% endif %}
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    {% block sidebar %}{% endblock %}
+  </aside>
+
+  <main class="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div style="margin-bottom:12px;padding:10px;border-radius:6px;background:#ffe2e2;border-left:4px solid #ff4949;font-size:0.9rem;">
+            {{ msg }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>

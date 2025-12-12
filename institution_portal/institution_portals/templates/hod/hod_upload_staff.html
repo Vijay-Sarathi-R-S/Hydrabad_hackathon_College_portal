@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Upload Staff — HOD{% endblock %}
+
+{% block sidebar %}
+  <h3>HOD Menu</h3>
+  <a href="{{ url_for('hod_home') }}">Overview / Course Assign</a>
+{% endblock %}
+
+{% block content %}
+  <h2>Upload Staff List</h2>
+  <p>Upload an Excel/CSV file with columns: RegNo, FullName, Email.</p>
+
+    <form method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".xlsx,.xls,.csv" required>
+    <button type="submit">Upload Staff</button>
+    </form>
+
+{% endblock %}

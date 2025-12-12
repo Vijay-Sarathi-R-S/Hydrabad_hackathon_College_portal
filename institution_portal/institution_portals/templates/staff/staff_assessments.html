@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Staff Assessments — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Staff Menu</h3>
+  <a href="{{ url_for('staff_home') }}">Overview</a>
+  <a href="{{ url_for('staff_my_courses') }}">My Courses</a>
+  <a href="{{ url_for('staff_assessments') }}">Assessments</a>
+  <a href="{{ url_for('staff_attendance') }}">Attendance</a>
+  <a href="{{ url_for('staff_exam_schedule') }}">Exam Schedule</a>
+{% endblock %}
+
+{% block content %}
+  <h2 style="margin-top:0;">Assessments</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+    <thead>
+      <tr style="background:#eee;">
+        <th style="padding:8px;border:1px solid #ccc;">Course</th>
+        <th style="padding:8px;border:1px solid #ccc;">Title</th>
+        <th style="padding:8px;border:1px solid #ccc;">Type</th>
+        <th style="padding:8px;border:1px solid #ccc;">Max Marks</th>
+        <th style="padding:8px;border:1px solid #ccc;">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in assessments %}
+      <tr>
+        <td style="padding:8px;border:1px solid #ccc;">{{ a.course }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ a.title }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ a.type }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ a.max_marks }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ a.status }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5" style="padding:8px;border:1px solid #ccc;text-align:center;">
+          No assessments defined.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

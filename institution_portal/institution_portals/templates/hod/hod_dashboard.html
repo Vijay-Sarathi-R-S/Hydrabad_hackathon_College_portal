@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}HOD Dashboard — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3>HOD Menu</h3>
+  <a href="{{ url_for('hod_home') }}">Overview / Course Assign</a>
+  <a href="{{ url_for('hod_upload_staff') }}">Upload Staff (Excel)</a>
+{% endblock %}
+
+{% block content %}
+  <h2>HOD Dashboard</h2>
+  <p>Assign courses to staff in your department.</p>
+
+  <form method="post" action="{{ url_for('hod_assign_courses') }}">
+    <h3>Staff</h3>
+    <select name="staff_id">
+      {% for s in staff %}
+        <option value="{{ s.id }}">{{ s.full_name or s.reg_no }} (ID {{ s.id }})</option>
+      {% else %}
+        <option disabled>No staff in this department</option>
+      {% endfor %}
+    </select>
+
+    <h3>Courses</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+      <thead>
+        <tr style="background:#eee;">
+          <th style="padding:8px;border:1px solid #ccc;">Select</th>
+          <th style="padding:8px;border:1px solid #ccc;">Code</th>
+          <th style="padding:8px;border:1px solid #ccc;">Name</th>
+          <th style="padding:8px;border:1px solid #ccc;">Semester</th>
+          <th style="padding:8px;border:1px solid #ccc;">Section</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in courses %}
+        <tr>
+          <td style="padding:8px;border:1px solid #ccc;">
+            <input type="checkbox" name="course_ids" value="{{ c.id }}">
+          </td>
+          <td style="padding:8px;border:1px solid #ccc;">{{ c.code }}</td>
+          <td style="padding:8px;border:1px solid #ccc;">{{ c.name }}</td>
+          <td style="padding:8px;border:1px solid #ccc;">{{ c.semester }}</td>
+          <td style="padding:8px;border:1px solid #ccc;">{{ c.section }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" style="padding:8px;border:1px solid #ccc;text-align:center;">
+            No courses for this department.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <button type="submit" style="margin-top:12px;">Assign selected courses</button>
+  </form>
+{% endblock %}

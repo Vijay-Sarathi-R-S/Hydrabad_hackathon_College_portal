@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Course Materials — {{ course_id }}{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Staff Menu</h3>
+  <a href="{{ url_for('staff_home') }}">Overview</a>
+  <a href="{{ url_for('staff_my_courses') }}">My Courses</a>
+  <a href="{{ url_for('staff_assessments') }}">Assessments</a>
+  <a href="{{ url_for('staff_attendance') }}">Attendance</a>
+  <a href="{{ url_for('staff_exam_schedule') }}">Exam Schedule</a>
+{% endblock %}
+
+{% block content %}
+  <h2 style="margin-top:0;">Materials for course ID {{ course_id }}</h2>
+
+  <h3>Upload new file</h3>
+  <form method="POST" enctype="multipart/form-data">
+    <input type="file" name="file"
+           accept=".pdf,.ppt,.pptx,.doc,.docx,.txt"
+           style="margin-bottom:10px;">
+    <br>
+    <button type="submit"
+            style="padding:8px 14px;border:none;border-radius:6px;background:#9593D9;color:#fff;cursor:pointer;">
+      Upload
+    </button>
+  </form>
+
+  <h3 style="margin-top:24px;">Existing files</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+    <thead>
+      <tr style="background:#eee;">
+        <th style="padding:8px;border:1px solid #ccc;">File name</th>
+        <th style="padding:8px;border:1px solid #ccc;">Uploaded at</th>
+        <th style="padding:8px;border:1px solid #ccc;">Download</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for f in files %}
+      <tr>
+        <td style="padding:8px;border:1px solid #ccc;">{{ f.original_name }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ f.uploaded_at }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">
+          <a href="{{ url_for('download_material', stored_name=f.stored_name) }}"
+             style="padding:6px 10px;border-radius:4px;background:#7E7BC7;color:#fff;text-decoration:none;">
+            Download
+          </a>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="3" style="padding:8px;border:1px solid #ccc;text-align:center;">
+          No files uploaded yet.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

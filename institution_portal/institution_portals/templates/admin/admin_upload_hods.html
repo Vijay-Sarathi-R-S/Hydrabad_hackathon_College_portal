@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Upload HOD List — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Admin Menu</h3>
+  <a href="{{ url_for('admin_home') }}">Overview / Course Assign</a>
+  <a href="{{ url_for('admin_ai_chat') }}">AI Assistant</a>
+  <a href="{{ url_for('upload_courses') }}">Upload Courses (Excel)</a>
+  <a href="{{ url_for('admin_upload_hods') }}">Upload HODs (Excel)</a>
+{% endblock %}
+
+{% block content %}
+  <h2>Upload HOD List</h2>
+  <p>Upload an Excel/CSV with columns: RegNo, FullName, Email, Department.</p>
+
+  <form method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".xlsx,.xls,.csv" required>
+    <button type="submit">Upload & Save</button>
+  </form>
+{% endblock %}

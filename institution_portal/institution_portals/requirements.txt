@@ -1,0 +1,10 @@
+Flask>=2.2
+Flask-Login
+Flask-WTF
+Flask-SQLAlchemy
+Flask-Talisman
+Flask-Limiter
+PyMySQL
+Werkzeug
+python-dotenv
+openpyxl

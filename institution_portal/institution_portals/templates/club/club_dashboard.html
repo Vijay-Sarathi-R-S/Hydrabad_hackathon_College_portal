@@ -1,0 +1,14 @@
+{# templates/club/club_dashboard.html #}
+{% extends "base.html" %}
+{% block title %}Club Coordinator Dashboard — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3>Club Menu</h3>
+  <a href="{{ url_for('club_home') }}">Overview</a>
+{% endblock %}
+
+{% block content %}
+  <h2>Club Coordinator Dashboard</h2>
+  <p>Welcome, {{ current_user.full_name or current_user.reg_no }}.</p>
+  <p>Club events, member lists, and approvals will appear here.</p>
+{% endblock %}

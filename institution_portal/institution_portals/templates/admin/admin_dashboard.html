@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Admin Menu</h3>
+  <a href="{{ url_for('admin_home') }}">Overview / Course Assign</a>
+  <a href="{{ url_for('admin_ai_chat') }}">AI Assistant</a>
+  <a href="{{ url_for('upload_courses') }}">Upload Courses (Excel)</a>
+  <a href="{{ url_for('admin_upload_staff') }}">Upload Staff (Excel)</a>
+  <a href="{{ url_for('admin_upload_hods') }}">Upload HODs (Excel)</a>
+{% endblock %}
+
+{% block content %}
+  <h2 style="margin-top:0;">Admin Dashboard</h2>
+
+  <div style="display:flex;gap:16px;margin-bottom:20px;font-size:0.9rem;">
+    <div>HODs: <strong>{{ total_hods }}</strong></div>
+    <div>Staff: <strong>{{ total_staff }}</strong></div>
+    <div>Students: <strong>{{ total_students }}</strong></div>
+    <div>Courses: <strong>{{ total_courses }}</strong></div>
+  </div>
+
+  <p>Assign courses to HODs so each department can then assign staff for those subjects.</p>
+
+  <!-- Single form for assigning courses -->
+  <form method="post" action="{{ url_for('admin_assign_courses') }}">
+    <h3>HOD</h3>
+    <select name="hod_id">
+      {% for h in hods %}
+        <option value="{{ h.id }}">{{ h.full_name or h.reg_no }} (HOD, ID {{ h.id }})</option>
+      {% else %}
+        <option disabled>No HOD users found</option>
+      {% endfor %}
+    </select>
+
+    <h3>Assign mode</h3>
+    <label>
+      <input type="radio" name="assign_mode" value="add" checked>
+      Add to existing courses
+    </label>
+    <label style="margin-left:16px;">
+      <input type="radio" name="assign_mode" value="replace">
+      Change entire course list
+    </label>
+
+    <h3>Courses</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+      <thead>
+        <tr style="background:#eee;">
+          <th style="padding:8px;border:1px solid #ccc;">Select</th>
+          <th style="padding:8px;border:1px solid #ccc;">ID</th>
+          <th style="padding:8px;border:1px solid #ccc;">Code</th>
+          <th style="padding:8px;border:1px solid #ccc;">Name</th>
+          <th style="padding:8px;border:1px solid #ccc;">Semester</th>
+          <th style="padding:8px;border:1px solid #ccc;">Section</th>
+          <th style="padding:8px;border:1px solid #ccc;">Department ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in courses %}
+        <tr>
+          <td style="padding:8px;border:1px solid #ccc;">
+            <input type="checkbox" name="course_ids" value="{{ c.id }}">
+          </td>
+          <td style="padding:8px;border:1px solid #ccc;">{{ c.id }}</td>
+          <td style="padding:8px;border:1px solid #ccc;">{{ c.code }}</td>
+          <td style="padding:8px;border:1px solid #ccc;">{{ c.name }}</td>
+          <td style="padding:8px;border:1px solid #ccc;">{{ c.semester }}</td>
+          <td style="padding:8px;border:1px solid #ccc;">{{ c.section }}</td>
+          <td style="padding:8px;border:1px solid #ccc;">{{ c.department_id or "-" }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="7" style="padding:8px;border:1px solid #ccc;text-align:center;">
+            No courses found.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <button type="submit" style="margin-top:12px;">Assign selected courses</button>
+  </form>
+{% endblock %}

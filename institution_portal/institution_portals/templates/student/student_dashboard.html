@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Student Menu</h3>
+  <a href="{{ url_for('student_home') }}">Overview</a>
+  <a href="{{ url_for('student_materials') }}">My Materials</a>
+{% endblock %}
+
+{% block content %}
+  <h2 style="margin-top:0;">Welcome, {{ current_user.full_name or current_user.reg_no }}</h2>
+  <p>Here is a quick view of your courses, assessments, and attendance.</p>
+
+  <h3>My Courses</h3>
+  <ul>
+    {% for c in my_courses %}
+      <li>{{ c.code }} — {{ c.name }}</li>
+    {% else %}
+      <li>No courses assigned.</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Upcoming Assessments</h3>
+  <ul>
+    {% for a in upcoming_assessments %}
+      <li>{{ a.course }}: {{ a.title }} on {{ a.date }}</li>
+    {% else %}
+      <li>No upcoming assessments.</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Attendance Summary</h3>
+  <ul>
+    {% for item in attendance %}
+      <li>{{ item.course }}: {{ item.percent }}%</li>
+    {% else %}
+      <li>No attendance recorded.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+
