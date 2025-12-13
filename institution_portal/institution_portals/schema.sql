@@ -4,7 +4,7 @@ CREATE DATABASE institution_portal
 
 USE institution_portal;
 
--- Users table (already OK)
+-- 1) Users
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   reg_no VARCHAR(120) NOT NULL UNIQUE,
@@ -15,7 +15,7 @@ CREATE TABLE users (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Courses table (example – make sure this matches your model)
+-- 2) Courses
 CREATE TABLE courses (
   id INT AUTO_INCREMENT PRIMARY KEY,
   code VARCHAR(50) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE courses (
   section VARCHAR(20)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Link table: staff (users with role='staff') ↔ courses
+-- 3) Staff–Courses link
 CREATE TABLE staff_courses (
   id INT AUTO_INCREMENT PRIMARY KEY,
   staff_id INT NOT NULL,
@@ -36,3 +36,23 @@ CREATE TABLE staff_courses (
     FOREIGN KEY (course_id) REFERENCES courses(id)
     ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 4) Assessments (your new table)
+CREATE TABLE assessments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  course_id INT NOT NULL,
+  title VARCHAR(200) NOT NULL,
+  description TEXT,
+  max_marks INT NOT NULL DEFAULT 0,
+  start_time DATETIME NULL,
+  end_time   DATETIME NULL,
+  created_by INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_assessments_course
+    FOREIGN KEY (course_id) REFERENCES courses(id)
+    ON DELETE CASCADE,
+  CONSTRAINT fk_assessments_staff
+    FOREIGN KEY (created_by) REFERENCES users(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;

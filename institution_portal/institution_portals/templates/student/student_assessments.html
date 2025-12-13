@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}My Assessments — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Student Menu</h3>
+  <a href="{{ url_for('student_home') }}">Overview</a>
+  <a href="{{ url_for('student_courses') }}">My Courses</a>
+{% endblock %}
+
+{% block content %}
+  <h2 style="margin-top:0;">Assessments for {{ course.code }} - {{ course.name }}</h2>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+    <thead>
+      <tr style="background:#eee;">
+        <th style="padding:8px;border:1px solid #ccc;">Title</th>
+        <th style="padding:8px;border:1px solid #ccc;">Max marks</th>
+        <th style="padding:8px;border:1px solid #ccc;">Date</th>
+        <th style="padding:8px;border:1px solid #ccc;">Start date</th>
+        <th style="padding:8px;border:1px solid #ccc;">End date</th>
+        <th style="padding:8px;border:1px solid #ccc;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in assessments %}
+      <tr>
+        <td style="padding:8px;border:1px solid #ccc;">{{ a.title }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ a.max_marks }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ a.date or '-' }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ a.start_date or '-' }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ a.end_date or '-' }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">
+          {% if a.id in attempted_ids %}
+            <span style="color:#198754;font-weight:bold;">Submitted</span>
+          {% else %}
+            <a href="{{ url_for('student_start_assessment', assessment_id=a.id) }}"
+               style="padding:4px 8px;border-radius:4px;background:#0d6efd;color:#fff;text-decoration:none;">
+              Start test
+            </a>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="6" style="padding:8px;border:1px solid #ccc;text-align:center;">
+          No assessments for this course.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

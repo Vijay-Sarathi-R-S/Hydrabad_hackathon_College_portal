@@ -2,11 +2,12 @@
 import os
 from functools import wraps
 from typing import Dict, List, Tuple, Optional
-
-
+from langchain_google_genai import ChatGoogleGenerativeAI
+from datetime import datetime 
+from sqlalchemy import func, case
 from flask import (
     Flask, render_template, redirect, url_for, request,
-    flash, abort, send_from_directory
+    flash, abort, send_from_directory, jsonify
 )
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -24,8 +25,6 @@ from flask_limiter.util import get_remote_address
 
 from config import Config
 from google import genai
-# ----- Exam seating allocator config -----
-from typing import Dict, List, Tuple  # make sure this import exists
 
 BASE_DIR = os.path.dirname(__file__)
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -33,6 +32,7 @@ STUDENTS_CSV = os.path.join(DATA_DIR, "students.csv")
 CLASSES_CONFIG_CSV = os.path.join(DATA_DIR, "classes_config.csv")
 HALL_CONFIG_CSV = os.path.join(DATA_DIR, "hall_config.csv")
 os.makedirs(DATA_DIR, exist_ok=True)
+
 
 
 def read_students_from_csv(path: str) -> Dict[str, List[str]]:
@@ -161,9 +161,23 @@ def read_halls(path: str) -> List[Tuple[str, int, int]]:
 # -------------------------------------------------------------------
 # Gemini config
 # -------------------------------------------------------------------
-GEMINI_API_KEY = "YOUR_KEY_HERE"  # put your key
+GEMINI_API_KEY = "Your api key"  # put your key
 gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 GEMINI_MODEL = "models/gemini-2.5-flash"
+# -------------------------------------------------------------------
+# LangChain LLM wrapper for Gemini
+# -------------------------------------------------------------------
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash",
+    temperature=0.2,
+    max_output_tokens=256,
+    google_api_key=GEMINI_API_KEY,
+)
+
+# -------------------------------------------------------------------
+# Public assistant chat API
+# -------------------------------------------------------------------
+
 
 # -------------------------------------------------------------------
 # Upload config
@@ -197,6 +211,99 @@ limiter = Limiter(
     app=app,
     default_limits=["200 per day", "50 per hour"],
 )
+
+# -------------------------------------------------------------------
+# Public home
+# -------------------------------------------------------------------
+
+
+# -------------------------------------------------------------------
+# Redirect root to public home
+# -------------------------------------------------------------------
+@app.route("/home")
+def public_home():
+    return render_template("public_home.html")
+
+
+# -------------------------------------------------------------------
+# Public AI assistant chat API
+# -------------------------------------------------------------------
+
+@app.route("/api/assistant/chat", methods=["POST"])
+def assistant_chat():
+    data = request.get_json(silent=True) or {}
+    user_message = (data.get("message") or "").strip()
+    if not user_message:
+        return jsonify({"reply": "Please type a question so I can help."}), 400
+
+    # Load institution data (RAG context)
+    dept_text = load_departments_knowledge()
+
+    base_instruction = (
+        "You are the public website assistant for this institution. "
+        "You must answer ONLY using the information provided below as context. "
+        "If the answer is not in the context, say you do not know, "
+        "and suggest contacting the institution office.\n\n"
+    )
+
+    context_block = "=== Institution Departments ===\n" + dept_text + "\n=== End of context ===\n\n"
+
+    prompt = (
+        base_instruction
+        + context_block
+        + f"Visitor question: {user_message}\n\n"
+        + "Answer in 2–4 sentences, referring only to the context above."
+    )
+
+    try:
+        resp = llm.invoke(prompt)
+        # resp.content is a list of message parts; resp.content[0].text usually has the text
+        if hasattr(resp, "content"):
+            if isinstance(resp.content, list) and resp.content:
+                reply_text = getattr(resp.content[0], "text", "") or ""
+            else:
+                reply_text = str(resp.content)
+        else:
+            reply_text = str(resp)
+        reply_text = reply_text.strip()
+        if not reply_text:
+            reply_text = (
+                "I am not sure how to answer that from the available data. "
+                "Please contact the institution office for details."
+            )
+    except Exception as e:
+        print("assistant_chat ERROR:", e)
+        reply_text = (
+            "There was a problem contacting the assistant. "
+            "Please try again later or contact the institution office."
+        )
+
+
+    return jsonify({"reply": reply_text})
+
+
+# -------------------------------------------------------------------
+# Load departments knowledge from CSV
+# -------------------------------------------------------------------
+import csv
+
+DEPT_KNOWLEDGE_CSV = os.path.join(DATA_DIR, "knowledge", "departments.csv")
+
+def load_departments_knowledge() -> str:
+    """Return a short text summary of departments from departments.csv."""
+    if not os.path.exists(DEPT_KNOWLEDGE_CSV):
+        return ""
+    lines = []
+    with open(DEPT_KNOWLEDGE_CSV, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            dept = (row.get("Department") or "").strip()
+            desc = (row.get("Description") or "").strip()
+            email = (row.get("ContactEmail") or "").strip()
+            if dept:
+                line = f"Department: {dept}. Description: {desc}. Contact: {email}."
+                lines.append(line)
+    return "\n".join(lines)
 
 # -------------------------------------------------------------------
 # Models
@@ -235,11 +342,74 @@ class Course(db.Model):
     department_id = db.Column(db.Integer, db.ForeignKey("departments.id"))
 
 
+class Question(db.Model):
+    __tablename__ = "questions"
+    id = db.Column(db.Integer, primary_key=True)
+    assessment_id = db.Column(db.Integer, db.ForeignKey("assessments.id"), nullable=False)
+    text = db.Column(db.Text, nullable=False)
+    option_a = db.Column(db.String(255), nullable=False)
+    option_b = db.Column(db.String(255), nullable=False)
+    option_c = db.Column(db.String(255), nullable=False)
+    option_d = db.Column(db.String(255), nullable=False)
+    correct_option = db.Column(db.String(1), nullable=False)  # "A", "B", "C", or "D"
+    marks = db.Column(db.Integer, nullable=False, default=1)
+
+    assessment = db.relationship("Assessment", backref="questions")
+
+
+class StudentAnswer(db.Model):
+    __tablename__ = "student_answers"
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    assessment_id = db.Column(db.Integer, db.ForeignKey("assessments.id"), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey("questions.id"), nullable=False)
+    chosen_option = db.Column(db.String(1), nullable=False)  # "A","B","C","D"
+    is_correct = db.Column(db.Boolean, nullable=False)
+
+    student = db.relationship("User")
+    assessment = db.relationship("Assessment")
+    question = db.relationship("Question")
+
+
 class StaffCourse(db.Model):
     __tablename__ = "staff_courses"
     id = db.Column(db.Integer, primary_key=True)
     staff_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     course_id = db.Column(db.Integer, db.ForeignKey("courses.id"), nullable=False)
+
+ # already imported somewhere near top
+
+# already imported somewhere near top
+
+class Assessment(db.Model):
+    __tablename__ = "assessments"
+
+    id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.Integer, db.ForeignKey("courses.id"), nullable=False)
+    title = db.Column(db.String(200), nullable=False)
+    max_marks = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.Date)              # existing
+    start_date = db.Column(db.Date)        # new
+    end_date = db.Column(db.Date)          # new
+    start_time = db.Column(db.DateTime)    # keep but you can ignore it
+    end_time = db.Column(db.DateTime)
+    created_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+
+
+
+
+
+class AssessmentMark(db.Model):
+    __tablename__ = "assessment_marks"
+    id = db.Column(db.Integer, primary_key=True)
+    assessment_id = db.Column(db.Integer, db.ForeignKey("assessments.id"), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    marks_obtained = db.Column(db.Float, nullable=False)
+
+    assessment = db.relationship("Assessment", backref="marks")
+    student = db.relationship("User")
+
 
 
 # -------------------------------------------------------------------
@@ -290,9 +460,11 @@ def index():
             return redirect(url_for("examiner_home"))
         if current_user.role == "club":
             return redirect(url_for("club_home"))
-    return redirect(url_for("login"))
+    return redirect(url_for("public_home"))
 
-
+# -------------------------------------------------------------------
+# Login and logout
+# -------------------------------------------------------------------
 @app.route("/login", methods=["GET", "POST"])
 @limiter.limit("5 per minute", override_defaults=False)
 def login():
@@ -320,6 +492,113 @@ def logout():
     logout_user()
     flash("Logged out", "info")
     return redirect(url_for("login"))
+
+# -------------------------------------------------------------------
+# Student: take assessment (online test)
+# -------------------------------------------------------------------
+
+
+
+
+
+#-------------------------------------------------------------------
+# Utility: check if student has attempted assessment
+#-------------------------------------------------------------------
+
+def has_attempted_assessment(student_id, assessment_id):
+    return (
+        StudentAnswer.query
+        .filter_by(student_id=student_id, assessment_id=assessment_id)
+        .first()
+        is not None
+    )
+
+
+# -------------------------------------------------------------------
+# Student: my courses
+# -------------------------------------------------------------------
+
+@app.route("/student/courses")
+@login_required
+@role_required("student")
+def student_courses():
+    courses = Course.query.all()  # or filter by this student's courses
+    return render_template("student/student_courses.html", courses=courses)
+
+# -------------------------------------------------------------------
+# Student: assessments list for a course
+# -------------------------------------------------------------------
+
+
+@app.route("/student/courses/<int:course_id>/assessments")
+@login_required
+@role_required("student")
+def student_assessments(course_id):
+    course = Course.query.get_or_404(course_id)
+
+    assessments = (
+        Assessment.query
+        .filter_by(course_id=course.id)
+        .order_by(Assessment.date.desc())
+        .all()
+    )
+
+    attempted_ids = {
+        row.assessment_id
+        for row in (
+            StudentAnswer.query
+            .with_entities(StudentAnswer.assessment_id)
+            .filter_by(student_id=current_user.id)
+            .distinct()
+            .all()
+        )
+    }
+
+    return render_template(
+        "student/student_assessments.html",
+        course=course,
+        assessments=assessments,
+        attempted_ids=attempted_ids,
+    )
+
+
+# -------------------------------------------------------------------
+# Student: view all marks
+# -------------------------------------------------------------------
+
+@app.route("/student/marks")
+@login_required
+@role_required("student")
+def student_marks():
+    rows = (
+        db.session.query(
+            Assessment.id,
+            Assessment.title,
+            Assessment.max_marks,
+            Course.code,
+            Course.name,
+            func.sum(
+                case(
+                    (StudentAnswer.is_correct == True, Question.marks),
+                    else_=0
+                )
+            ).label("score")
+        )
+        .join(StudentAnswer, StudentAnswer.assessment_id == Assessment.id)
+        .join(Question, StudentAnswer.question_id == Question.id)
+        .join(Course, Assessment.course_id == Course.id)
+        .filter(StudentAnswer.student_id == current_user.id)
+        .group_by(
+            Assessment.id,
+            Assessment.title,
+            Assessment.max_marks,
+            Course.code,
+            Course.name,
+        )
+        .all()
+    )
+
+    return render_template("student/student_marks.html", rows=rows)
 
 
 # -------------------------------------------------------------------
@@ -418,6 +697,354 @@ def staff_dashboard():
     return render_template("staff/staff_dashboard.html", courses=courses)
 
 #-------------------------------------------------------------------
+# Staff: upload assessment marks
+#-------------------------------------------------------------------
+
+@app.route("/staff/assessments/<int:assessment_id>/upload-marks", methods=["GET", "POST"])
+@login_required
+@role_required("staff")
+def staff_upload_marks(assessment_id):
+    assessment = Assessment.query.get_or_404(assessment_id)
+    # security: confirm this staff teaches this course
+    link = StaffCourse.query.filter_by(staff_id=current_user.id, course_id=assessment.course_id).first()
+    if not link:
+        abort(403)
+
+    if request.method == "POST":
+        file = request.files.get("file")
+        if not file or not file.filename:
+            flash("No file selected.", "danger")
+            return redirect(request.url)
+
+        import csv, io
+        text = file.read().decode("utf-8")
+        reader = csv.DictReader(io.StringIO(text))
+        # expected header: RegNo, Marks
+        count = 0
+        from sqlalchemy import and_
+
+        for row in reader:
+            regno = (row.get("RegNo") or "").strip()
+            marks_raw = (row.get("Marks") or "").strip()
+            if not regno or not marks_raw:
+                continue
+            try:
+                marks = float(marks_raw)
+            except Exception:
+                continue
+            student = User.query.filter_by(reg_no=regno, role="student").first()
+            if not student:
+                continue
+            # upsert
+            rec = AssessmentMark.query.filter(
+                and_(
+                    AssessmentMark.assessment_id == assessment.id,
+                    AssessmentMark.student_id == student.id,
+                )
+            ).first()
+            if rec:
+                rec.marks_obtained = marks
+            else:
+                rec = AssessmentMark(
+                    assessment_id=assessment.id,
+                    student_id=student.id,
+                    marks_obtained=marks,
+                )
+                db.session.add(rec)
+            count += 1
+
+        db.session.commit()
+        flash(f"Uploaded/updated marks for {count} students.", "success")
+        return redirect(url_for("staff_assessments", course_id=assessment.course_id))
+
+    return render_template("staff/staff_upload_marks.html", assessment=assessment)
+
+
+def get_scores_for_assessment(assessment_id):
+    rows = (
+        db.session.query(
+            StudentAnswer.student_id,
+            func.sum(
+                case(
+                    (StudentAnswer.is_correct == True, Question.marks),
+                    else_=0
+                )
+            ).label("score")
+        )
+        .join(Question, StudentAnswer.question_id == Question.id)
+        .filter(StudentAnswer.assessment_id == assessment_id)
+        .group_by(StudentAnswer.student_id)
+        .all()
+    )
+    return rows
+
+
+
+
+#-------------------------------------------------------------------
+# Student: take assessment (placeholder)
+#-------------------------------------------------------------------
+
+
+
+
+#-------------------------------------------------------------------
+# Student: start assessment (check time window)
+#-------------------------------------------------------------------
+
+
+
+@app.route("/student/assessments/<int:assessment_id>/start", methods=["GET", "POST"])
+@login_required
+@role_required("student")
+def student_start_assessment(assessment_id):
+    assessment = Assessment.query.get_or_404(assessment_id)
+
+    # date window check
+    today = date.today()
+    if assessment.start_date and today < assessment.start_date:
+        flash("You are not yet eligible to take this test (start date not reached).", "warning")
+        return redirect(url_for("student_assessments", course_id=assessment.course_id))
+
+    if assessment.end_date and today > assessment.end_date:
+        flash("You are not eligible to take this test (end date is over).", "warning")
+        return redirect(url_for("student_assessments", course_id=assessment.course_id))
+
+    # already attempted?
+    if has_attempted_assessment(current_user.id, assessment.id):
+        flash("You have already submitted this test.", "warning")
+        return redirect(url_for("student_assessments", course_id=assessment.course_id))
+
+    # load questions
+    questions = Question.query.filter_by(assessment_id=assessment.id).all()
+
+    if request.method == "POST":
+        total = 0
+        for q in questions:
+            chosen = request.form.get(f"q_{q.id}")
+            if not chosen:
+                continue
+            is_correct = (chosen == q.correct_option)
+            if is_correct:
+                total += q.marks
+            ans = StudentAnswer(
+                student_id=current_user.id,
+                assessment_id=assessment.id,
+                question_id=q.id,
+                chosen_option=chosen,
+                is_correct=is_correct,
+            )
+            db.session.add(ans)
+
+        db.session.commit()
+        flash(f"Test submitted. Your score: {total} / {assessment.max_marks}", "success")
+        return redirect(url_for("student_assessments", course_id=assessment.course_id))
+
+    return render_template(
+        "student/student_take_assessment.html",
+        assessment=assessment,
+        questions=questions,
+    )
+
+
+#-------------------------------------------------------------------
+# Student: view all assessments
+#-------------------------------------------------------------------
+@app.route("/student/assessments")
+@login_required
+@role_required("student")
+def student_assessments_list():
+    # all assessments for courses this student is enrolled in
+    rows = db.session.execute(
+        db.text(
+            """
+            SELECT a.id, a.title, a.max_marks, a.date,
+                   a.start_time, a.end_time,
+                   c.code AS course_code, c.name AS course_name
+            FROM assessments a
+            JOIN courses c ON a.course_id = c.id
+            JOIN enrollments e ON e.course_id = c.id
+            WHERE e.student_id = :sid
+            ORDER BY a.date DESC
+            """
+        ),
+        {"sid": current_user.id},
+    ).mappings().all()
+
+    return render_template("student/student_assessments.html", rows=rows)
+
+
+#-------------------------------------------------------------------
+# Staff: view submissions for an assessment
+#-------------------------------------------------------------------
+
+@app.route("/staff/assessments/<int:assessment_id>/submissions")
+@login_required
+@role_required("staff")
+def staff_view_submissions(assessment_id):
+    assessment = Assessment.query.get_or_404(assessment_id)
+
+    # ensure this staff owns the course
+    link = StaffCourse.query.filter_by(
+        staff_id=current_user.id,
+        course_id=assessment.course_id,
+    ).first()
+    if not link:
+        abort(403)
+
+    scores = get_scores_for_assessment(assessment.id)
+    # map student_id -> score
+    score_map = {sid: sc for sid, sc in scores}
+
+    # fetch student objects for display
+    student_ids = list(score_map.keys())
+    students = User.query.filter(User.id.in_(student_ids)).all()
+
+    return render_template(
+        "staff/staff_assessment_submissions.html",
+        assessment=assessment,
+        students=students,
+        score_map=score_map,
+    )
+
+
+#-------------------------------------------------------------------
+# Staff: manage questions for an assessment
+#-------------------------------------------------------------------
+
+
+@app.route("/staff/assessments/<int:assessment_id>/questions", methods=["GET", "POST"])
+@login_required
+@role_required("staff")
+def staff_manage_questions(assessment_id):
+    assessment = Assessment.query.get_or_404(assessment_id)
+    # optional: check staff owns this course via StaffCourse
+    link = StaffCourse.query.filter_by(
+        staff_id=current_user.id,
+        course_id=assessment.course_id
+    ).first()
+    if not link:
+        abort(403)
+
+    if request.method == "POST":
+        text = request.form.get("text", "").strip()
+        option_a = request.form.get("option_a", "").strip()
+        option_b = request.form.get("option_b", "").strip()
+        option_c = request.form.get("option_c", "").strip()
+        option_d = request.form.get("option_d", "").strip()
+        correct_option = request.form.get("correct_option", "").strip().upper()
+        marks = request.form.get("marks", "").strip()
+
+        if not text or not option_a or not option_b or not option_c or not option_d:
+            flash("All question and option fields are required.", "danger")
+        elif correct_option not in {"A", "B", "C", "D"}:
+            flash("Correct option must be A, B, C, or D.", "danger")
+        else:
+            try:
+                m = int(marks or 1)
+            except ValueError:
+                flash("Marks must be a number.", "danger")
+            else:
+                q = Question(
+                    assessment_id=assessment.id,
+                    text=text,
+                    option_a=option_a,
+                    option_b=option_b,
+                    option_c=option_c,
+                    option_d=option_d,
+                    correct_option=correct_option,
+                    marks=m,
+                )
+                db.session.add(q)
+                db.session.commit()
+                flash("Question added.", "success")
+
+        return redirect(url_for("staff_manage_questions", assessment_id=assessment.id))
+
+    questions = Question.query.filter_by(assessment_id=assessment.id).all()
+    return render_template(
+        "staff/staff_manage_questions.html",
+        assessment=assessment,
+        questions=questions,
+    )
+
+
+#-------------------------------------------------------------------
+# Staff: assessments list + create
+#-------------------------------------------------------------------
+from datetime import datetime, date
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_required, current_user
+
+# make sure Assessment and Course are already imported / defined above
+
+from datetime import datetime, date
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_required, current_user
+
+# Staff assessments: list + create
+from datetime import datetime, date
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_required, current_user
+
+# Staff assessments: list + create
+from datetime import datetime, date
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_required, current_user
+
+@app.route("/staff/courses/<int:course_id>/assessments", methods=["GET", "POST"])
+@login_required
+def staff_assessments(course_id):
+    # only staff can access
+    if current_user.role != "staff":
+        flash("Access denied.", "danger")
+        return redirect(url_for("index"))
+
+    course = Course.query.get_or_404(course_id)
+
+    if request.method == "POST":
+        title = request.form.get("title", "").strip()
+        max_marks = request.form.get("max_marks", "").strip()
+        date_str = request.form.get("date", "").strip()
+        start_date_str = request.form.get("start_date", "").strip()
+        end_date_str = request.form.get("end_date", "").strip()
+
+        if not title or not max_marks:
+            flash("Title and max marks are required.", "danger")
+        else:
+            try:
+                max_m = int(max_marks)
+            except ValueError:
+                flash("Max marks must be a number.", "danger")
+            else:
+                main_date = datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else None
+                start_date_val = datetime.strptime(start_date_str, "%Y-%m-%d").date() if start_date_str else None
+                end_date_val = datetime.strptime(end_date_str, "%Y-%m-%d").date() if end_date_str else None
+
+                new_assessment = Assessment(
+                    course_id=course.id,
+                    title=title,
+                    max_marks=max_m,
+                    date=main_date,
+                    start_date=start_date_val,
+                    end_date=end_date_val,
+                    start_time=None,
+                    end_time=None,
+                    created_by=current_user.id,
+                )
+                db.session.add(new_assessment)
+                db.session.commit()
+                flash("Assessment created.", "success")
+
+        return redirect(url_for("staff_assessments", course_id=course.id))
+
+    # GET: list all assessments for this course
+    assessments = Assessment.query.filter_by(course_id=course.id).order_by(Assessment.id.desc()).all()
+    return render_template("staff/staff_assessments.html", course=course, assessments=assessments)
+
+
+
+#-------------------------------------------------------------------
 # Staff: my courses + upload materials
 #-------------------------------------------------------------------
 
@@ -490,18 +1117,9 @@ def staff_course_materials(course_id):
         course_id=course_id,
         files=files,
     )
-
-
-@app.route("/staff/assessments")
-@login_required
-@role_required("staff")
-def staff_assessments():
-    assessments = [
-        {"course": "CSE201", "title": "Unit Test 1", "type": "Internal", "max_marks": 25, "status": "Draft"},
-        {"course": "CSE305", "title": "Lab Internal", "type": "Practical", "max_marks": 40, "status": "Published"},
-    ]
-    return render_template("staff/staff_assessments.html", assessments=assessments)
-
+#-------------------------------------------------------------------
+# Staff: attendance and exam schedule
+#-------------------------------------------------------------------
 
 @app.route("/staff/attendance")
 @login_required
@@ -512,7 +1130,9 @@ def staff_attendance():
         {"course": "CSE305", "time": "11:00–12:00", "room": "Lab-3"},
     ]
     return render_template("staff/staff_attendance.html", slots=slots)
-
+#-------------------------------------------------------------------
+# Staff: exam schedule
+#-------------------------------------------------------------------
 
 @app.route("/staff/exams")
 @login_required
@@ -523,6 +1143,7 @@ def staff_exam_schedule():
         {"course": "CSE305", "date": "2025-12-22", "time": "14:00–16:00", "room": "Block C – 101"},
     ]
     return render_template("staff/staff_exam_schedule.html", exams=exams)
+
 
 
 # -------------------------------------------------------------------
@@ -1239,6 +1860,16 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(host="0.0.0.0", port=5000, debug=True)
+
+# -------------------------------------------------------------------
+# API: Assistant chat endpoint
+# -------------------------------------------------------------------
+
+ # ensure this import exists
+
+
+
+
 
 
 

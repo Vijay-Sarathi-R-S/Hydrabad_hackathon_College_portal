@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}My Marks — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Student Menu</h3>
+  <a href="{{ url_for('student_home') }}">Overview</a>
+  <a href="{{ url_for('student_courses') }}">My Courses</a>
+  <a href="{{ url_for('student_marks') }}">My Marks</a>
+{% endblock %}
+
+{% block content %}
+  <h2 style="margin-top:0;">My Marks</h2>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+    <thead>
+      <tr style="background:#eee;">
+        <th style="padding:8px;border:1px solid #ccc;">Course</th>
+        <th style="padding:8px;border:1px solid #ccc;">Assessment</th>
+        <th style="padding:8px;border:1px solid #ccc;">Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a_id, title, max_marks, code, name, score in rows %}
+      <tr>
+        <td style="padding:8px;border:1px solid #ccc;">{{ code }} — {{ name }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ title }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ score }} / {{ max_marks }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="3" style="padding:8px;border:1px solid #ccc;text-align:center;">
+          No marks available yet.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

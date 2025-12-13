@@ -6,36 +6,89 @@
   <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Staff Menu</h3>
   <a href="{{ url_for('staff_home') }}">Overview</a>
   <a href="{{ url_for('staff_my_courses') }}">My Courses</a>
-  <a href="{{ url_for('staff_assessments') }}">Assessments</a>
   <a href="{{ url_for('staff_attendance') }}">Attendance</a>
   <a href="{{ url_for('staff_exam_schedule') }}">Exam Schedule</a>
 {% endblock %}
 
 {% block content %}
-  <h2 style="margin-top:0;">Assessments</h2>
+  <h2 style="margin-top:0;">Assessments for {{ course.code }} - {{ course.name }}</h2>
+
+  <!-- Create new assessment -->
+  <form method="post" style="margin-bottom:20px;">
+    <div style="margin-bottom:8px;">
+      <label>Title:
+        <input type="text" name="title" required
+               style="padding:4px 6px;width:260px;">
+      </label>
+    </div>
+    <div style="margin-bottom:8px;">
+      <label>Max marks:
+        <input type="number" name="max_marks" min="1" required
+               style="padding:4px 6px;width:120px;">
+      </label>
+    </div>
+    <div style="margin-bottom:8px;">
+      <label>Main date (optional):
+        <input type="date" name="date" style="padding:4px 6px;">
+      </label>
+    </div>
+    <div style="margin-bottom:8px;">
+      <label>Start date:
+        <input type="date" name="start_date" style="padding:4px 6px;">
+      </label>
+    </div>
+    <div style="margin-bottom:8px;">
+      <label>End date:
+        <input type="date" name="end_date" style="padding:4px 6px;">
+      </label>
+    </div>
+    <button type="submit"
+            style="padding:6px 12px;border:none;border-radius:4px;background:#198754;color:#fff;cursor:pointer;">
+      Add assessment
+    </button>
+  </form>
+
+  <!-- Existing assessments -->
   <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
     <thead>
       <tr style="background:#eee;">
-        <th style="padding:8px;border:1px solid #ccc;">Course</th>
         <th style="padding:8px;border:1px solid #ccc;">Title</th>
-        <th style="padding:8px;border:1px solid #ccc;">Type</th>
-        <th style="padding:8px;border:1px solid #ccc;">Max Marks</th>
-        <th style="padding:8px;border:1px solid #ccc;">Status</th>
+        <th style="padding:8px;border:1px solid #ccc;">Max marks</th>
+        <th style="padding:8px;border:1px solid #ccc;">Main date</th>
+        <th style="padding:8px;border:1px solid #ccc;">Start date</th>
+        <th style="padding:8px;border:1px solid #ccc;">End date</th>
+        <th style="padding:8px;border:1px solid #ccc;">Actions</th>
       </tr>
     </thead>
     <tbody>
       {% for a in assessments %}
       <tr>
-        <td style="padding:8px;border:1px solid #ccc;">{{ a.course }}</td>
         <td style="padding:8px;border:1px solid #ccc;">{{ a.title }}</td>
-        <td style="padding:8px;border:1px solid #ccc;">{{ a.type }}</td>
         <td style="padding:8px;border:1px solid #ccc;">{{ a.max_marks }}</td>
-        <td style="padding:8px;border:1px solid #ccc;">{{ a.status }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">
+          {{ a.date or '-' }}
+        </td>
+        <td style="padding:8px;border:1px solid #ccc;">
+          {{ a.start_date or '-' }}
+        </td>
+        <td style="padding:8px;border:1px solid #ccc;">
+          {{ a.end_date or '-' }}
+        </td>
+        <td style="padding:8px;border:1px solid #ccc;">
+          <a href="{{ url_for('staff_manage_questions', assessment_id=a.id) }}"
+             style="padding:4px 8px;border:none;border-radius:4px;background:#0d6efd;color:#fff;text-decoration:none;">
+            Questions
+          </a>
+          <a href="{{ url_for('staff_view_submissions', assessment_id=a.id) }}"
+             style="padding:4px 8px;margin-left:6px;border:none;border-radius:4px;background:#6c757d;color:#fff;text-decoration:none;">
+            Submissions
+          </a>
+        </td>
       </tr>
       {% else %}
       <tr>
-        <td colspan="5" style="padding:8px;border:1px solid #ccc;text-align:center;">
-          No assessments defined.
+        <td colspan="6" style="padding:8px;border:1px solid #ccc;text-align:center;">
+          No assessments defined yet. Use the form above to add one.
         </td>
       </tr>
       {% endfor %}

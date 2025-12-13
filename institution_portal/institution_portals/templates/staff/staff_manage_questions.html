@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Questions — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Staff Menu</h3>
+  <a href="{{ url_for('staff_home') }}">Overview</a>
+  <a href="{{ url_for('staff_my_courses') }}">My Courses</a>
+  <a href="{{ url_for('staff_attendance') }}">Attendance</a>
+  <a href="{{ url_for('staff_exam_schedule') }}">Exam Schedule</a>
+{% endblock %}
+
+{% block content %}
+  <h2 style="margin-top:0;">Questions for {{ assessment.title }}</h2>
+
+  <form method="post" style="margin-bottom:20px;">
+    <div style="margin-bottom:8px;">
+      <label>Question:<br>
+        <textarea name="text" rows="3" style="width:100%;"></textarea>
+      </label>
+    </div>
+    <div style="margin-bottom:8px;">
+      <label>A:
+        <input type="text" name="option_a" style="width:60%;">
+      </label>
+    </div>
+    <div style="margin-bottom:8px;">
+      <label>B:
+        <input type="text" name="option_b" style="width:60%;">
+      </label>
+    </div>
+    <div style="margin-bottom:8px;">
+      <label>C:
+        <input type="text" name="option_c" style="width:60%;">
+      </label>
+    </div>
+    <div style="margin-bottom:8px;">
+      <label>D:
+        <input type="text" name="option_d" style="width:60%;">
+      </label>
+    </div>
+    <div style="margin-bottom:8px;">
+      <label>Correct option:
+        <select name="correct_option">
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+        </select>
+      </label>
+      <label style="margin-left:16px;">Marks:
+        <input type="number" name="marks" min="1" value="1" style="width:80px;">
+      </label>
+    </div>
+    <button type="submit"
+            style="padding:6px 12px;border:none;border-radius:4px;background:#198754;color:#fff;cursor:pointer;">
+      Add question
+    </button>
+  </form>
+
+  <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+    <thead>
+      <tr style="background:#eee;">
+        <th style="padding:8px;border:1px solid #ccc;">Question</th>
+        <th style="padding:8px;border:1px solid #ccc;">Options</th>
+        <th style="padding:8px;border:1px solid #ccc;">Correct</th>
+        <th style="padding:8px;border:1px solid #ccc;">Marks</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for q in questions %}
+      <tr>
+        <td style="padding:8px;border:1px solid #ccc;">{{ q.text }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">
+          A. {{ q.option_a }}<br>
+          B. {{ q.option_b }}<br>
+          C. {{ q.option_c }}<br>
+          D. {{ q.option_d }}
+        </td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ q.correct_option }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ q.marks }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="4" style="padding:8px;border:1px solid #ccc;text-align:center;">
+          No questions added yet. Use the form above.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -5,8 +5,11 @@
 {% block sidebar %}
   <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Student Menu</h3>
   <a href="{{ url_for('student_home') }}">Overview</a>
-  <a href="{{ url_for('student_materials') }}">My Materials</a>
+  <a href="{{ url_for('student_courses') }}">My Courses</a>
+  <a href="{{ url_for('student_marks') }}">My Marks</a>
 {% endblock %}
+
+
 
 {% block content %}
   <h2 style="margin-top:0;">Welcome, {{ current_user.full_name or current_user.reg_no }}</h2>

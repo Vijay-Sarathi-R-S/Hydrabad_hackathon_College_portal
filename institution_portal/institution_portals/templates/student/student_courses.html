@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}My Courses — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Student Menu</h3>
+  <a href="{{ url_for('student_home') }}">Overview</a>
+  <a href="{{ url_for('student_courses') }}">My Courses</a>
+{% endblock %}
+
+{% block content %}
+  <h2 style="margin-top:0;">My Courses</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+    <thead>
+      <tr style="background:#eee;">
+        <th style="padding:8px;border:1px solid #ccc;">Code</th>
+        <th style="padding:8px;border:1px solid #ccc;">Name</th>
+        <th style="padding:8px;border:1px solid #ccc;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for course in courses %}
+      <tr>
+        <td style="padding:8px;border:1px solid #ccc;">{{ course.code }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">{{ course.name }}</td>
+        <td style="padding:8px;border:1px solid #ccc;">
+          <a href="{{ url_for('student_assessments', course_id=course.id) }}">
+            Assessments
+          </a>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="3" style="padding:8px;border:1px solid #ccc;text-align:center;">
+          No courses found.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

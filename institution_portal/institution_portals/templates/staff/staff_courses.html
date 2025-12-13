@@ -6,10 +6,8 @@
   <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Staff Menu</h3>
   <a href="{{ url_for('staff_home') }}">Overview</a>
   <a href="{{ url_for('staff_my_courses') }}">My Courses</a>
-  <a href="{{ url_for('staff_assessments') }}">Assessments</a>
   <a href="{{ url_for('staff_attendance') }}">Attendance</a>
   <a href="{{ url_for('staff_exam_schedule') }}">Exam Schedule</a>
-  
 {% endblock %}
 
 {% block content %}
@@ -36,6 +34,10 @@
              style="padding:6px 10px;border-radius:4px;background:#9593D9;color:#fff;text-decoration:none;">
             Materials
           </a>
+          <a href="{{ url_for('staff_assessments', course_id=c.id) }}"
+             style="padding:6px 10px;margin-left:6px;border-radius:4px;background:#198754;color:#fff;text-decoration:none;">
+            Assessments
+          </a>
         </td>
       </tr>
       {% else %}
@@ -48,6 +50,3 @@
     </tbody>
   </table>
 {% endblock %}
-
-
-

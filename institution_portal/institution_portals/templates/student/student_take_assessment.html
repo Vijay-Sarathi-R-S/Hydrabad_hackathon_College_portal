@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Take Assessment — Codex{% endblock %}
+
+{% block sidebar %}
+  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Student Menu</h3>
+  <a href="{{ url_for('student_home') }}">Overview</a>
+  <a href="{{ url_for('student_courses') }}">My Courses</a>
+{% endblock %}
+
+{% block content %}
+  <h2 style="margin-top:0;">{{ assessment.title }}</h2>
+  <p>Max marks: {{ assessment.max_marks }}</p>
+
+  <form method="post">
+    {% for q in questions %}
+      <div style="margin-bottom:16px;padding:10px;border:1px solid #ccc;border-radius:4px;">
+        <p><strong>Q{{ loop.index }}.</strong> {{ q.text }}</p>
+        <label><input type="radio" name="q_{{ q.id }}" value="A"> {{ q.option_a }}</label><br>
+        <label><input type="radio" name="q_{{ q.id }}" value="B"> {{ q.option_b }}</label><br>
+        <label><input type="radio" name="q_{{ q.id }}" value="C"> {{ q.option_c }}</label><br>
+        <label><input type="radio" name="q_{{ q.id }}" value="D"> {{ q.option_d }}</label>
+      </div>
+    {% else %}
+      <p>No questions defined for this assessment yet.</p>
+    {% endfor %}
+
+    {% if questions %}
+      <button type="submit"
+              style="padding:8px 14px;border:none;border-radius:4px;background:#198754;color:#fff;cursor:pointer;">
+        Submit test
+      </button>
+    {% endif %}
+  </form>
+{% endblock %}
