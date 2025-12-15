@@ -4,7 +4,16 @@ Flask-WTF
 Flask-SQLAlchemy
 Flask-Talisman
 Flask-Limiter
-PyMySQL
+
+SQLAlchemy
+WTForms
 Werkzeug
 python-dotenv
+
+PyMySQL
+pandas
 openpyxl
+
+langchain
+langchain-google-genai
+google-generativeai
