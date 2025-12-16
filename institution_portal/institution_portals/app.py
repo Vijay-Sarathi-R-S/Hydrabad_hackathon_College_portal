@@ -163,7 +163,7 @@ def read_halls(path: str) -> List[Tuple[str, int, int]]:
 # -------------------------------------------------------------------
 # Gemini config
 # -------------------------------------------------------------------
-GEMINI_API_KEY = "AIzaSyAqlzREGFt7UEzvuS3YbF2rWvUshFBlhB8"  # put your key
+GEMINI_API_KEY = " put your key"  # put your key
 gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 GEMINI_MODEL = "models/gemini-2.5-flash"
 # -------------------------------------------------------------------
@@ -2224,6 +2224,7 @@ if __name__ == "__main__":
 # -------------------------------------------------------------------
 
  # ensure this import exists
+
 
 
 
