@@ -3,11 +3,13 @@
 {% block title %}Student Dashboard — Codex{% endblock %}
 
 {% block sidebar %}
-  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Student Menu</h3>
-  <a href="{{ url_for('student_home') }}">Overview</a>
-  <a href="{{ url_for('student_courses') }}">My Courses</a>
-  <a href="{{ url_for('student_marks') }}">My Marks</a>
+<h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Student Menu</h3>
+<a href="{{ url_for('student_home') }}">Overview</a>
+<a href="{{ url_for('student_courses') }}">My Courses</a>
+<a href="{{ url_for('student_marks') }}">My Marks</a>
+<a href="{{ url_for('student_materials') }}">My Materials</a>
 {% endblock %}
+
 
 
 

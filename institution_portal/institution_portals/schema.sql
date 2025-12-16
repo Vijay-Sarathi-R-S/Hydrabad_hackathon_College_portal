@@ -56,3 +56,20 @@ CREATE TABLE assessments (
     ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
+
+
+-- 5) Club Events
+CREATE TABLE club_events (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(200) NOT NULL,
+  description TEXT NOT NULL,
+  date DATE NULL,
+  venue VARCHAR(200),
+  created_by INT NOT NULL,
+  status VARCHAR(20) NOT NULL DEFAULT 'pending',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_clubevents_user
+    FOREIGN KEY (created_by) REFERENCES users(id)
+    ON DELETE CASCADE
+);
+

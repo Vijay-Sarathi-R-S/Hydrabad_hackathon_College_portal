@@ -29,27 +29,40 @@
 <div style="height: 70px;"></div>
 
 <div class="container mt-4">
-  <div class="row">
-    <div class="col-lg-8">
-      <h1 class="mb-3">Welcome to the Institution Portal</h1>
-      <p class="lead">
-        This portal helps students, staff, HODs, examiners, and club coordinators
-        manage academics, exams, and campus activities in one place.
-      </p>
-      <hr>
-      <h3>What you can do</h3>
-      <ul>
-        <li>Students can view courses, materials, exams, and attendance.</li>
-        <li>Staff can upload materials, manage assessments, and track classes.</li>
-        <li>Admins and HODs can manage departments, staff, and course assignments.</li>
-        <li>Examiners can generate hall seating plans and upload exam data.</li>
-      </ul>
-      <p class="mt-3">
-        To access your dashboard, click <strong>Sign in</strong> at the top‑right and
-        log in with your registered account.
-      </p>
+
+  <hr class="my-4">
+  <h2 class="mb-3 text-center">Upcoming Club Events</h2>
+
+  {% if events %}
+    {% for e in events %}
+    <div class="row mb-4">
+      <div class="col-lg-10 col-xl-8 mx-auto">
+        <div class="card shadow-sm">
+          {% if e.image_name %}
+          <img
+            src="{{ url_for('event_image', filename=e.image_name) }}"
+            class="card-img-top"
+            style="width:100%; height:auto;"
+          >
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title mb-1">{{ e.title }}</h5>
+            <p class="card-subtitle text-muted mb-2">
+              {% if e.date %}{{ e.date }}{% endif %}
+              {% if e.venue %} · {{ e.venue }}{% endif %}
+            </p>
+            {% if e.description %}
+            <p class="card-text" style="font-size:0.9rem;">{{ e.description }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-center">No upcoming events.</p>
+  {% endif %}
+
 </div>
 
 <!-- Floating chat button -->

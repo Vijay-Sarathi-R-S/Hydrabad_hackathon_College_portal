@@ -3,50 +3,50 @@
 {% block title %}Staff Courses — Codex{% endblock %}
 
 {% block sidebar %}
-  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Staff Menu</h3>
-  <a href="{{ url_for('staff_home') }}">Overview</a>
-  <a href="{{ url_for('staff_my_courses') }}">My Courses</a>
-  <a href="{{ url_for('staff_attendance') }}">Attendance</a>
-  <a href="{{ url_for('staff_exam_schedule') }}">Exam Schedule</a>
+<h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Staff Menu</h3>
+<a href="{{ url_for('staff_home') }}">Overview</a>
+<a href="{{ url_for('staff_my_courses') }}">My Courses</a>
+<a href="{{ url_for('staff_attendance') }}">Attendance</a>
+<a href="{{ url_for('staff_exam_schedule') }}">Exam Schedule</a>
 {% endblock %}
 
 {% block content %}
-  <h2 style="margin-top:0;">My Courses</h2>
-  <table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
-    <thead>
-      <tr style="background:#eee;">
-        <th style="padding:8px;border:1px solid #ccc;">Code</th>
-        <th style="padding:8px;border:1px solid #ccc;">Name</th>
-        <th style="padding:8px;border:1px solid #ccc;">Semester</th>
-        <th style="padding:8px;border:1px solid #ccc;">Section</th>
-        <th style="padding:8px;border:1px solid #ccc;">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for c in courses %}
-      <tr>
-        <td style="padding:8px;border:1px solid #ccc;">{{ c.code }}</td>
-        <td style="padding:8px;border:1px solid #ccc;">{{ c.name }}</td>
-        <td style="padding:8px;border:1px solid #ccc;">{{ c.semester }}</td>
-        <td style="padding:8px;border:1px solid #ccc;">{{ c.section }}</td>
-        <td style="padding:8px;border:1px solid #ccc;">
-          <a href="{{ url_for('staff_course_materials', course_id=c.id) }}"
-             style="padding:6px 10px;border-radius:4px;background:#9593D9;color:#fff;text-decoration:none;">
-            Materials
-          </a>
-          <a href="{{ url_for('staff_assessments', course_id=c.id) }}"
-             style="padding:6px 10px;margin-left:6px;border-radius:4px;background:#198754;color:#fff;text-decoration:none;">
-            Assessments
-          </a>
-        </td>
-      </tr>
-      {% else %}
-      <tr>
-        <td colspan="5" style="padding:8px;border:1px solid #ccc;text-align:center;">
-          No courses assigned.
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<h2 style="margin-top:0;">My Courses</h2>
+<table style="width:100%;border-collapse:collapse;font-size:0.95rem;">
+  <thead>
+    <tr style="background:#eee;">
+      <th style="padding:8px;border:1px solid #ccc;">Code</th>
+      <th style="padding:8px;border:1px solid #ccc;">Name</th>
+      <th style="padding:8px;border:1px solid #ccc;">Semester</th>
+      <th style="padding:8px;border:1px solid #ccc;">Section</th>
+      <th style="padding:8px;border:1px solid #ccc;">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in courses %}
+    <tr>
+      <td style="padding:8px;border:1px solid #ccc;">{{ c.code }}</td>
+      <td style="padding:8px;border:1px solid #ccc;">{{ c.name }}</td>
+      <td style="padding:8px;border:1px solid #ccc;">{{ c.semester }}</td>
+      <td style="padding:8px;border:1px solid #ccc;">{{ c.section }}</td>
+      <td style="padding:8px;border:1px solid #ccc;">
+        <a href="{{ url_for('staff_course_materials', course_id=c.id) }}"
+           style="padding:6px 10px;border-radius:4px;background:#9593D9;color:#fff;text-decoration:none;">
+          Materials
+        </a>
+        <a href="{{ url_for('staff_assessments', course_id=c.id) }}"
+           style="padding:6px 10px;margin-left:6px;border-radius:4px;background:#198754;color:#fff;text-decoration:none;">
+          Assessments
+        </a>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="5" style="padding:8px;border:1px solid #ccc;text-align:center;">
+        No courses assigned.
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

@@ -9,9 +9,15 @@
   <a href="{{ url_for('upload_courses') }}">Upload Courses (Excel)</a>
   <a href="{{ url_for('admin_upload_staff') }}">Upload Staff (Excel)</a>
   <a href="{{ url_for('admin_upload_hods') }}">Upload HODs (Excel)</a>
+  <a href="{{ url_for('admin_events') }}">Club Events</a>
 {% endblock %}
 
+
+
 {% block content %}
+
+
+
   <h2 style="margin-top:0;">Admin Dashboard</h2>
 
   <div style="display:flex;gap:16px;margin-bottom:20px;font-size:0.9rem;">
@@ -19,6 +25,8 @@
     <div>Staff: <strong>{{ total_staff }}</strong></div>
     <div>Students: <strong>{{ total_students }}</strong></div>
     <div>Courses: <strong>{{ total_courses }}</strong></div>
+
+    
   </div>
 
   <p>Assign courses to HODs so each department can then assign staff for those subjects.</p>

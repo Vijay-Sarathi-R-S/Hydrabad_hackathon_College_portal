@@ -22,6 +22,11 @@
     <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Logo" style="width:30px;height:30px;filter:brightness(0) invert(1);margin-right:8px;">
     Codex Institutions
   </div>
+   Codex Institution<a href="{{ url_for('go_home') }}"
+   style="display:inline-block;margin-top:8px;padding:6px 12px;
+          border-radius:4px;background:#0d6efd;color:#fff;text-decoration:none;">
+  Go to Home
+</a>
   {% if current_user.is_authenticated %}
     <div>{{ current_user.full_name or current_user.reg_no }} ({{ current_user.role|upper }}) |
       <a href="{{ url_for('logout') }}" style="color:#fff;text-decoration:underline;">Logout</a>

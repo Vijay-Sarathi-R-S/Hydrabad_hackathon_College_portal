@@ -4,6 +4,8 @@ from functools import wraps
 from typing import Dict, List, Tuple, Optional
 from langchain_google_genai import ChatGoogleGenerativeAI
 from datetime import datetime 
+import openpyxl
+import pandas as pd
 from sqlalchemy import func, case
 from flask import (
     Flask, render_template, redirect, url_for, request,
@@ -161,7 +163,7 @@ def read_halls(path: str) -> List[Tuple[str, int, int]]:
 # -------------------------------------------------------------------
 # Gemini config
 # -------------------------------------------------------------------
-GEMINI_API_KEY = "Your api key"  # put your key
+GEMINI_API_KEY = "AIzaSyAqlzREGFt7UEzvuS3YbF2rWvUshFBlhB8"  # put your key
 gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 GEMINI_MODEL = "models/gemini-2.5-flash"
 # -------------------------------------------------------------------
@@ -177,12 +179,13 @@ llm = ChatGoogleGenerativeAI(
 # -------------------------------------------------------------------
 # Public assistant chat API
 # -------------------------------------------------------------------
-
-
 # -------------------------------------------------------------------
 # Upload config
 # -------------------------------------------------------------------
 ALLOWED_EXTENSIONS = {"pdf", "ppt", "pptx", "doc", "docx", "txt"}
+EVENT_IMAGE_EXTS = {"png", "jpg", "jpeg", "gif"}
+
+
 
 
 def allowed_file(filename: str) -> bool:
@@ -197,6 +200,8 @@ app.config.from_object(Config)
 
 app.config["UPLOAD_FOLDER"] = os.path.join(os.path.dirname(__file__), "uploads")
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+EVENT_UPLOAD_FOLDER = os.path.join(app.config["UPLOAD_FOLDER"], "events")
+os.makedirs(EVENT_UPLOAD_FOLDER, exist_ok=True)
 
 Talisman(app, content_security_policy=None)
 
@@ -222,7 +227,14 @@ limiter = Limiter(
 # -------------------------------------------------------------------
 @app.route("/home")
 def public_home():
-    return render_template("public_home.html")
+    events = ClubEvent.query.filter_by(status="approved").order_by(ClubEvent.date).all()
+    return render_template("public_home.html", events=events)
+
+    
+
+@app.route("/go-home")
+def go_home():
+    return redirect(url_for("public_home"))
 
 
 # -------------------------------------------------------------------
@@ -312,6 +324,23 @@ class Department(db.Model):
     __tablename__ = "departments"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
+
+
+
+class ClubEvent(db.Model):
+    __tablename__ = "club_events"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    date = db.Column(db.Date, nullable=True)
+    venue = db.Column(db.String(200), nullable=True)
+    image_name = db.Column(db.String(255))          # new: stored file name
+    created_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    status = db.Column(db.String(20), nullable=False, default="pending")
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    creator = db.relationship("User")
+
 
 
 class User(UserMixin, db.Model):
@@ -1054,6 +1083,7 @@ def staff_assessments(course_id):
 @role_required("staff")
 def staff_my_courses():
     staff_id = current_user.id
+    print("DEBUG staff_my_courses current_user:", staff_id, current_user.reg_no)
     courses = (
         db.session.query(Course)
         .join(StaffCourse, StaffCourse.course_id == Course.id)
@@ -1061,6 +1091,7 @@ def staff_my_courses():
         .all()
     )
     return render_template("staff/staff_courses.html", courses=courses)
+
 
 #-------------------------------------------------------------------
 # Staff: course materials upload + list
@@ -1117,6 +1148,17 @@ def staff_course_materials(course_id):
         course_id=course_id,
         files=files,
     )
+
+
+@app.route("/materials/<path:stored_name>")
+@login_required
+def download_material(stored_name):
+    return send_from_directory(
+        app.config["UPLOAD_FOLDER"],
+        stored_name,
+        as_attachment=True,
+    )
+
 #-------------------------------------------------------------------
 # Staff: attendance and exam schedule
 #-------------------------------------------------------------------
@@ -1176,6 +1218,29 @@ def admin_home():
     )
 
 # -------------------------------------------------------------------
+# Admin: manage club events
+# -------------------------------------------------------------------   
+
+@app.route("/admin/events", methods=["GET", "POST"])
+@login_required
+@role_required("admin")
+def admin_events():
+    if request.method == "POST":
+        event_id = int(request.form.get("event_id", 0))
+        action = request.form.get("action")
+        ev = ClubEvent.query.get_or_404(event_id)
+        if action == "approve":
+            ev.status = "approved"
+        elif action == "reject":
+            ev.status = "rejected"
+        db.session.commit()
+        flash("Event status updated.", "success")
+        return redirect(url_for("admin_events"))
+
+    events = ClubEvent.query.order_by(ClubEvent.created_at.desc()).all()
+    return render_template("admin/admin_events.html", events=events)
+
+# -------------------------------------------------------------------
 # Admin assign courses to HOD / department
 # -------------------------------------------------------------------
 
@@ -1231,10 +1296,10 @@ def upload_courses():
             flash("No file selected", "danger")
             return redirect(request.url)
 
-        import pandas as pd
+        
 
         if file.filename.lower().endswith((".xls", ".xlsx")):
-            import openpyxl
+            
             df = pd.read_excel(file)
         else:
             df = pd.read_csv(file)
@@ -1791,11 +1856,7 @@ def club_home():
 
 # -------------------------------------------------------------------
 # Download materials
-# -------------------------------------------------------------------
-@app.route("/materials/<path:stored_name>")
-@login_required
-def download_material(stored_name):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], stored_name, as_attachment=True)
+# -----------------------------------------------------------------
 
 
 # -------------------------------------------------------------------
@@ -1851,6 +1912,66 @@ def create_user():
     db.session.add(u)
     db.session.commit()
     print("User created successfully.")
+
+
+#-----------------------------------------------------------------------------
+#club events
+#-----------------------------------------------------------------------------
+@app.route("/club/events", methods=["GET", "POST"])
+@login_required
+@role_required("club")
+def club_events():
+    if request.method == "POST":
+        title = (request.form.get("title") or "").strip()
+        desc = (request.form.get("description") or "").strip()
+        date_str = (request.form.get("date") or "").strip()
+        venue = (request.form.get("venue") or "").strip()
+        img_file = request.files.get("image")
+
+        if not title or not desc:
+            flash("Title and description are required.", "danger")
+            return redirect(url_for("club_events"))
+
+        ev_date = None
+        if date_str:
+            try:
+                ev_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+            except ValueError:
+                flash("Invalid date format (use YYYY-MM-DD).", "warning")
+
+        image_name = None
+        if img_file and img_file.filename:
+            ext = img_file.filename.rsplit(".", 1)[-1].lower()
+            if ext in EVENT_IMAGE_EXTS:
+                safe = secure_filename(img_file.filename)
+                image_name = f"{current_user.id}_{int(datetime.utcnow().timestamp())}_{safe}"
+                img_file.save(os.path.join(EVENT_UPLOAD_FOLDER, image_name))
+            else:
+                flash("Image must be PNG/JPG/GIF.", "danger")
+
+        ev = ClubEvent(
+            title=title,
+            description=desc,
+            date=ev_date,
+            venue=venue,
+            image_name=image_name,
+            created_by=current_user.id,
+            status="pending",
+        )
+        db.session.add(ev)
+        db.session.commit()
+        flash("Event request sent to admin.", "success")
+        return redirect(url_for("club_events"))
+
+    events = ClubEvent.query.filter_by(created_by=current_user.id).order_by(ClubEvent.created_at.desc()).all()
+    return render_template("club/club_events.html", events=events)
+
+
+@app.route("/event-images/<path:filename>")
+def event_image(filename):
+    return send_from_directory(EVENT_UPLOAD_FOLDER, filename)
+
+
 
 
 # -------------------------------------------------------------------

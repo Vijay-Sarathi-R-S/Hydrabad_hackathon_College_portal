@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Club Events — Admin{% endblock %}
+
+{% block sidebar %}
+<h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Admin Menu</h3>
+<a href="{{ url_for('admin_home') }}">Overview / Course Assign</a>
+<a href="{{ url_for('admin_ai_chat') }}">AI Assistant</a>
+<a href="{{ url_for('upload_courses') }}">Upload Courses (Excel)</a>
+<a href="{{ url_for('admin_upload_staff') }}">Upload Staff (Excel)</a>
+<a href="{{ url_for('admin_upload_hods') }}">Upload HODs (Excel)</a>
+<a href="{{ url_for('admin_events') }}">Club Events</a>
+{% endblock %}
+
+{% block content %}
+<h2>Club Event Requests</h2>
+
+<div style="display:flex;flex-wrap:wrap;gap:24px;">
+  {% for e in events %}
+  <div style="
+      border:1px solid #ccc;
+      border-radius:4px;
+      width:48%;           /* ~half of content width */
+      min-width:360px;
+      overflow:hidden;
+      box-shadow:0 2px 4px rgba(0,0,0,0.1);
+  ">
+    {% if e.image_name %}
+      <img src="{{ url_for('event_image', filename=e.image_name) }}"
+           style="width:100%;height:auto;display:block;">
+    {% endif %}
+    <div style="padding:12px;">
+      <strong>{{ e.title }}</strong><br>
+      <small>
+        {{ e.creator.full_name }}
+        {% if e.date %} · {{ e.date }}{% endif %}
+        {% if e.venue %} · {{ e.venue }}{% endif %}
+      </small><br>
+      <p style="font-size:0.9rem;margin-top:8px;">{{ e.description }}</p>
+      <p>Status: <strong>{{ e.status }}</strong></p>
+      <form method="post">
+        <input type="hidden" name="event_id" value="{{ e.id }}">
+        <button name="action" value="approve">Approve</button>
+        <button name="action" value="reject" style="margin-left:6px;">Reject</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
+    

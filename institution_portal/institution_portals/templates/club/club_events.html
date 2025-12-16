@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Club Events{% endblock %}
+
+{% block sidebar %}
+<h3>Club Menu</h3>
+<a href="{{ url_for('club_home') }}">Dashboard</a>
+<a href="{{ url_for('club_events') }}">Events</a>
+{% endblock %}
+
+{% block content %}
+<h2>Propose New Event</h2>
+<form method="post" enctype="multipart/form-data">
+  <p><input type="text" name="title" placeholder="Event title" required></p>
+  <p><input type="date" name="date"></p>
+  <p><input type="text" name="venue" placeholder="Venue"></p>
+  <p><textarea name="description" rows="4" placeholder="Description" required></textarea></p>
+  <p>Poster / Pamphlet image (PNG/JPG/GIF): <input type="file" name="image" accept="image/*"></p>
+  <button type="submit">Send to Admin</button>
+</form>
+
+<h3>Your Event Requests</h3>
+<div style="display:flex;flex-wrap:wrap;gap:24px;">
+  {% for e in events %}
+  <div style="
+      border:1px solid #ccc;
+      border-radius:4px;
+      padding:8px;
+      width:48%;           /* ~half of content width */
+      min-width:360px;
+      box-shadow:0 2px 4px rgba(0,0,0,0.1);
+  ">
+    <strong>{{ e.title }}</strong><br>
+    <small>{{ e.status }}{% if e.date %} · {{ e.date }}{% endif %}</small><br>
+    {% if e.image_name %}
+      <img src="{{ url_for('event_image', filename=e.image_name) }}"
+           style="width:100%;height:auto;margin-top:6px;display:block;">
+    {% endif %}
+  </div>
+  {% else %}
+  <p>No events submitted yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

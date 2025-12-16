@@ -7,9 +7,10 @@
   <a href="{{ url_for('admin_home') }}">Overview / Course Assign</a>
   <a href="{{ url_for('admin_ai_chat') }}">AI Assistant</a>
   <a href="{{ url_for('upload_courses') }}">Upload Courses (Excel)</a>
+  <a href="{{ url_for('admin_upload_staff') }}">Upload Staff (Excel)</a>
   <a href="{{ url_for('admin_upload_hods') }}">Upload HODs (Excel)</a>
+  <a href="{{ url_for('admin_events') }}">Club Events</a>
 {% endblock %}
-
 {% block content %}
   <h2>Upload HOD List</h2>
   <p>Upload an Excel/CSV with columns: RegNo, FullName, Email, Department.</p>
