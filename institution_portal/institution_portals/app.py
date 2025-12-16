@@ -425,6 +425,54 @@ class Assessment(db.Model):
     created_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
 
+class AttClass(db.Model):
+    """
+    Attendance class, same as friend's `classes` table.
+    Kept separate from your `courses`.
+    """
+    __tablename__ = "att_classes"
+
+    id = db.Column("class_id", db.Integer, primary_key=True)
+    class_name = db.Column(db.String(100), nullable=False)
+    department = db.Column(db.String(100))
+
+
+class AttStudent(db.Model):
+    """
+    Students used for attendance only.
+    Friend's `students` table but stored in MySQL and linked if needed.
+    """
+    __tablename__ = "att_students"
+
+    reg_no = db.Column(db.String(50), primary_key=True)
+    student_name = db.Column(db.String(150), nullable=False)
+    class_id = db.Column(db.Integer, db.ForeignKey("att_classes.class_id"), nullable=False)
+
+
+class AttPeriod(db.Model):
+    """
+    Each class hour.
+    """
+    __tablename__ = "att_periods"
+
+    id = db.Column("period_id", db.Integer, primary_key=True, autoincrement=True)
+    class_id = db.Column(db.Integer, db.ForeignKey("att_classes.class_id"))
+    subject_name = db.Column(db.String(150))
+    period_date = db.Column(db.String(20))    # keep as text like friend's code
+    period_number = db.Column(db.Integer)
+
+
+class AttRecord(db.Model):
+    """
+    One row per student per period.
+    """
+    __tablename__ = "att_records"
+
+    period_id = db.Column(db.Integer, db.ForeignKey("att_periods.period_id"), primary_key=True)
+    reg_no = db.Column(db.String(50), db.ForeignKey("att_students.reg_no"), primary_key=True)
+    is_present = db.Column(db.Integer, nullable=False)  # 1 or 0
+
+
 
 
 
@@ -1163,15 +1211,7 @@ def download_material(stored_name):
 # Staff: attendance and exam schedule
 #-------------------------------------------------------------------
 
-@app.route("/staff/attendance")
-@login_required
-@role_required("staff")
-def staff_attendance():
-    slots = [
-        {"course": "CSE201", "time": "09:00–10:00", "room": "A-203"},
-        {"course": "CSE305", "time": "11:00–12:00", "room": "Lab-3"},
-    ]
-    return render_template("staff/staff_attendance.html", slots=slots)
+
 #-------------------------------------------------------------------
 # Staff: exam schedule
 #-------------------------------------------------------------------
@@ -1187,6 +1227,89 @@ def staff_exam_schedule():
     return render_template("staff/staff_exam_schedule.html", exams=exams)
 
 
+
+
+# ---------- Staff: mark attendance ----------
+
+@app.route("/staff/attendance", methods=["GET"])
+@login_required
+@role_required("staff")
+def staff_attendance():
+    return render_template("attendance/staff.html")
+
+
+@app.route("/api/att/periods", methods=["POST"])
+@login_required
+@role_required("staff")
+def api_att_create_period():
+    data = request.json or {}
+    p = AttPeriod(
+        class_id=data["class_id"],
+        subject_name=data["subject_name"],
+        period_date=data["period_date"],
+        period_number=data["period_number"],
+    )
+    db.session.add(p)
+    db.session.commit()
+    return jsonify({"message": "Period created", "period_id": p.id}), 201
+
+
+@app.route("/api/att/attendance", methods=["POST"])
+@login_required
+@role_required("staff")
+def api_att_mark():
+    data = request.json or {}
+    period_id = data["period_id"]
+    items = data["attendance"]
+
+    for rec in items:
+        row = AttRecord(
+            period_id=period_id,
+            reg_no=rec["reg_no"],
+            is_present=int(rec["is_present"]),
+        )
+        # INSERT OR REPLACE: emulate with merge semantics
+        existing = AttRecord.query.filter_by(period_id=period_id, reg_no=row.reg_no).first()
+        if existing:
+            existing.is_present = row.is_present
+        else:
+            db.session.add(row)
+    db.session.commit()
+    return jsonify({"message": "Attendance saved"}), 200
+
+
+@app.route("/api/att/attendance/<reg_no>", methods=["GET"])
+@login_required
+def api_att_overall(reg_no):
+    # any logged-in user can query; add role checks if needed
+    from sqlalchemy import func, case
+
+    q = (
+        db.session.query(
+            AttStudent.reg_no,
+            AttStudent.student_name,
+            func.count(AttRecord.period_id),
+            func.sum(case((AttRecord.is_present == 1, 1), else_=0)),
+        )
+        .outerjoin(AttRecord, AttStudent.reg_no == AttRecord.reg_no)
+        .filter(AttStudent.reg_no == reg_no)
+        .group_by(AttStudent.reg_no, AttStudent.student_name)
+    )
+    row = q.first()
+    if not row:
+        return jsonify({"error": "Student not found"}), 404
+
+    total = row[2] or 0
+    attended = row[3] or 0
+    pct = round(attended * 100.0 / total, 2) if total else 0.0
+
+    return jsonify({
+        "reg_no": row[0],
+        "student_name": row[1],
+        "total_classes": total,
+        "attended_classes": attended,
+        "attendance_percentage": pct,
+    })
 
 # -------------------------------------------------------------------
 # Admin home + course upload (principal level)
@@ -1216,6 +1339,120 @@ def admin_home():
         total_students=total_students,
         total_courses=total_courses,
     )
+
+
+# ---------- Admin: attendance management ----------
+
+@app.route("/admin/attendance")
+@login_required
+@role_required("admin")
+def admin_attendance_home():
+    return render_template("attendance/admin.html")
+
+
+# API: classes
+@app.route("/api/att/classes", methods=["POST"])
+@login_required
+@role_required("admin")
+def api_att_add_class():
+    data = request.json or {}
+    cls = AttClass(
+        id=data["class_id"],
+        class_name=data["class_name"],
+        department=data.get("department", ""),
+    )
+    db.session.add(cls)
+    try:
+        db.session.commit()
+        return jsonify({"message": "Class added"}), 201
+    except Exception:
+        db.session.rollback()
+        return jsonify({"error": "Class ID already exists"}), 400
+
+
+@app.route("/api/att/classes", methods=["GET"])
+@login_required
+@role_required("admin")
+def api_att_get_classes():
+    rows = AttClass.query.all()
+    return jsonify([
+        {"class_id": r.id, "class_name": r.class_name, "department": r.department}
+        for r in rows
+    ])
+
+
+# API: students (single add)
+@app.route("/api/att/students", methods=["POST"])
+@login_required
+@role_required("admin")
+def api_att_add_student():
+    data = request.json or {}
+    stu = AttStudent(
+        reg_no=data["reg_no"],
+        student_name=data["student_name"],
+        class_id=data["class_id"],
+    )
+    db.session.add(stu)
+    try:
+        db.session.commit()
+        return jsonify({"message": "Student added"}), 201
+    except Exception:
+        db.session.rollback()
+        return jsonify({"error": "Reg no already exists"}), 400
+
+
+@app.route("/api/att/students", methods=["GET"])
+@login_required
+@role_required("admin")
+def api_att_get_students():
+    class_id = request.args.get("class_id")
+    q = AttStudent.query
+    if class_id:
+        q = q.filter_by(class_id=class_id)
+    rows = q.all()
+    return jsonify([
+        {"reg_no": r.reg_no, "student_name": r.student_name, "class_id": r.class_id}
+        for r in rows
+    ])
+
+
+# API: bulk CSV upload (admin)
+@app.route("/api/att/students/bulk", methods=["POST"])
+@login_required
+@role_required("admin")
+def api_att_bulk_students():
+    import csv, io
+    if "file" not in request.files:
+        return jsonify({"error": "No file provided"}), 400
+    file = request.files["file"]
+    if file.filename == "":
+        return jsonify({"error": "No file selected"}), 400
+
+    stream = io.StringIO(file.stream.read().decode("utf-8"), newline=None)
+    reader = csv.reader(stream)
+    next(reader, None)  # skip header
+
+    added = 0
+    skipped = 0
+    for row in reader:
+        if len(row) < 3:
+            continue
+        try:
+            stu = AttStudent(
+                reg_no=row[0].strip(),
+                student_name=row[1].strip(),
+                class_id=int(row[2].strip()),
+            )
+            db.session.add(stu)
+            db.session.flush()
+            added += 1
+        except Exception:
+            db.session.rollback()
+            skipped += 1
+    db.session.commit()
+    return jsonify({
+        "message": f"{added} students added, {skipped} skipped"
+    }), 201
 
 # -------------------------------------------------------------------
 # Admin: manage club events

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Sections — HOD{% endblock %}
+
+{% block sidebar %}
+<h3>HOD Menu</h3>
+<a href="{{ url_for('hod_home') }}">Dashboard</a>
+<a href="{{ url_for('hod_sections') }}">Sections & Attendance</a>
+
+{% endblock %}
+
+{% block content %}
+<h2>Create Section</h2>
+<form method="post">
+  <input name="name" placeholder="e.g., CSE2025-A">
+  <button type="submit">Add Section</button>
+</form>
+
+<h2 class="mt-4">Assign Staff to Section</h2>
+<form method="post" action="{{ url_for('hod_assign_staff_section') }}">
+  <select name="section_id">
+    {% for s in sections %}
+    <option value="{{ s.id }}">{{ s.name }}</option>
+    {% endfor %}
+  </select>
+  <select name="staff_id">
+    {% for st in staff_list %}
+    <option value="{{ st.id }}">{{ st.full_name or st.reg_no }}</option>
+    {% endfor %}
+  </select>
+  <input name="subject_name" placeholder="Subject name">
+  <button type="submit">Assign</button>
+</form>
+
+<h3 class="mt-4">Existing Assignments</h3>
+<ul>
+  {% for a in assignments %}
+  <li>{{ a.class_section.name }} – {{ a.subject_name }} – {{ a.staff.full_name }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

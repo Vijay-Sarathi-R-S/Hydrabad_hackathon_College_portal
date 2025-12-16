@@ -1,0 +1,360 @@
+{% extends "base.html" %}
+{% block title %}Attendance — Admin{% endblock %}
+
+{% block sidebar %}
+<h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Admin Menu</h3>
+<a href="{{ url_for('admin_home') }}">Overview / Course Assign</a>
+<a href="{{ url_for('admin_ai_chat') }}">AI Assistant</a>
+<a href="{{ url_for('upload_courses') }}">Upload Courses (Excel)</a>
+<a href="{{ url_for('admin_upload_staff') }}">Upload Staff (Excel)</a>
+<a href="{{ url_for('admin_upload_hods') }}">Upload HODs (Excel)</a>
+<a href="{{ url_for('admin_events') }}">Club Events</a>
+<a href="{{ url_for('admin_attendance_home') }}">Attendance Admin</a>
+{% endblock %}
+
+{% block content %}
+<div style="
+  background:white;
+  padding:24px;
+  border-radius:12px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.08);
+">
+  <h1 style="color:#667eea;margin-bottom:8px;font-size:28px;">
+    🎓 Admin – Attendance Student Management
+  </h1>
+  <p style="color:#666;margin-bottom:24px;font-size:14px;">
+    Manage attendance classes, students, and bulk imports.
+  </p>
+
+  <div style="
+    display:flex;
+    gap:10px;
+    margin-bottom:24px;
+    border-bottom:2px solid #e0e0e0;
+    flex-wrap:wrap;
+  ">
+    <button class="tab active" onclick="switchTab('classes', event)">📚 Manage Classes</button>
+    <button class="tab" onclick="switchTab('students', event)">👨‍🎓 Add Students</button>
+    <button class="tab" onclick="switchTab('bulk', event)">📤 Bulk Upload</button>
+    <button class="tab" onclick="switchTab('view', event)">📋 View Students</button>
+  </div>
+
+  <!-- Tab 1: Manage Classes -->
+  <div id="classes" class="tab-content active">
+    <div class="section">
+      <h2>Add New Class</h2>
+      <div class="form-group">
+        <label>Class ID:</label>
+        <input type="number" id="class_id" placeholder="e.g., 1, 2, 3...">
+      </div>
+      <div class="form-group">
+        <label>Class Name:</label>
+        <input type="text" id="class_name" placeholder="e.g., BSc CS A, MSc IT B">
+      </div>
+      <div class="form-group">
+        <label>Department:</label>
+        <input type="text" id="department" placeholder="e.g., Computer Science">
+      </div>
+      <button onclick="addClass()">➕ Add Class</button>
+      <div id="class_result"></div>
+    </div>
+
+    <div class="section">
+      <h2>Existing Classes</h2>
+      <button onclick="loadClasses()" class="btn-secondary">🔄 Refresh List</button>
+      <div id="classes_list"></div>
+    </div>
+  </div>
+
+  <!-- Tab 2: Add Individual Students -->
+  <div id="students" class="tab-content">
+    <div class="section">
+      <h2>Add Individual Student</h2>
+      <div class="form-group">
+        <label>Registration Number:</label>
+        <input type="text" id="reg_no" placeholder="e.g., 21CS001">
+      </div>
+      <div class="form-group">
+        <label>Student Name:</label>
+        <input type="text" id="student_name" placeholder="e.g., John Doe">
+      </div>
+      <div class="form-group">
+        <label>Select Class:</label>
+        <select id="student_class_id">
+          <option value="">-- Select Class --</option>
+        </select>
+      </div>
+      <button onclick="addStudent()">➕ Add Student</button>
+      <div id="student_result"></div>
+    </div>
+  </div>
+
+  <!-- Tab 3: Bulk Upload -->
+  <div id="bulk" class="tab-content">
+    <div class="section">
+      <h2>Bulk Upload Students (CSV)</h2>
+      <div class="bulk-upload-area">
+        <h3>📁 Upload CSV File</h3>
+        <p style="color: #666; margin: 15px 0;">CSV format: reg_no, student_name, class_id</p>
+        <input type="file" id="csv_file" class="file-input" accept=".csv" onchange="handleFileSelect()">
+        <label for="csv_file" class="upload-btn">Choose File</label>
+        <p id="file_name" style="margin-top: 15px; color: #667eea; font-weight: 600;"></p>
+      </div>
+      <button onclick="uploadCSV()" style="width: 100%;">⬆️ Upload and Import Students</button>
+      <div id="bulk_result"></div>
+
+      <div style="margin-top: 30px; padding: 20px; background: #fff3cd; border-radius: 8px;">
+        <h3>📝 CSV Format Instructions:</h3>
+        <p style="margin: 10px 0;">Your CSV file should have these columns:</p>
+        <pre style="background: white; padding: 15px; border-radius: 4px; overflow-x: auto;">reg_no,student_name,class_id
+21CS001,Aarav Kumar,1
+21CS002,Ananya Sharma,1
+21CS003,Rohan Patel,1</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 4: View All Students -->
+  <div id="view" class="tab-content">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="total_students">0</div>
+        <div class="stat-label">Total Students</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="total_classes">0</div>
+        <div class="stat-label">Total Classes</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>All Students</h2>
+      <div class="form-group">
+        <label>Filter by Class:</label>
+        <select id="filter_class_id" onchange="loadStudents()">
+          <option value="">-- All Classes --</option>
+        </select>
+      </div>
+      <button onclick="loadStudents()" class="btn-secondary">🔄 Refresh</button>
+      <div id="students_table"></div>
+    </div>
+  </div>
+
+  <!-- Link to staff attendance page using your Flask route -->
+
+</div>
+
+<style>
+  /* copied styles kept inside content so they don't break base.html */
+  .tab { padding:12px 24px; background:none; border:none; cursor:pointer;
+         font-size:16px; color:#666; border-bottom:3px solid transparent;
+         transition:all 0.3s; }
+  .tab.active { color:#667eea; border-bottom-color:#667eea; font-weight:600; }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
+  .section { background:#f8f9fa; padding:20px; border-radius:8px; margin-bottom:20px; }
+  .form-group { margin-bottom:16px; }
+  .form-group label { display:block; margin-bottom:6px; font-weight:600; color:#333; }
+  .form-group input, .form-group select, .form-group textarea {
+    width:100%; padding:10px; border:2px solid #e0e0e0; border-radius:6px; font-size:14px;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline:none; border-color:#667eea;
+  }
+  button { background:#667eea; color:#fff; border:none; padding:10px 24px;
+           border-radius:6px; cursor:pointer; font-size:15px; font-weight:600; }
+  button:hover { background:#5568d3; }
+  .btn-secondary { background:#6c757d; }
+  .btn-secondary:hover { background:#5a6268; }
+  .result { margin-top:12px; padding:10px; border-radius:6px; font-weight:500; }
+  .success { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
+  .error { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
+  .students-table { width:100%; border-collapse:collapse; margin-top:16px;
+                    background:white; border-radius:8px; overflow:hidden; }
+  .students-table th { background:#667eea; color:white; padding:12px; text-align:left; }
+  .students-table td { padding:10px 12px; border-bottom:1px solid #e0e0e0; }
+  .students-table tr:hover { background:#f8f9fa; }
+  .bulk-upload-area { border:3px dashed #667eea; border-radius:8px;
+                      padding:24px; text-align:center; background:#f8f9ff; margin-bottom:16px; }
+  .file-input { display:none; }
+  .upload-btn { display:inline-block; padding:10px 24px; background:#667eea; color:white;
+                border-radius:6px; cursor:pointer; font-weight:600; }
+  .upload-btn:hover { background:#5568d3; }
+  .nav-link { display:inline-block; margin-top:20px; color:#667eea;
+              text-decoration:none; font-weight:600; font-size:15px; }
+  .nav-link:hover { text-decoration:underline; }
+  .stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+                gap:16px; margin-bottom:20px; }
+  .stat-card { background:white; padding:16px; border-radius:8px; border-left:4px solid #667eea; }
+  .stat-number { font-size:28px; font-weight:700; color:#667eea; }
+  .stat-label { color:#666; font-size:14px; margin-top:4px; }
+</style>
+
+<script>
+  const API_URL = '/api/att';  // your Flask API prefix
+
+  function switchTab(tabName, event) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(tabName).classList.add('active');
+
+    if (tabName === 'view') {
+      loadStudents();
+      loadStats();
+    }
+    if (tabName === 'students' || tabName === 'view') {
+      loadClassesDropdown();
+    }
+    if (tabName === 'classes') {
+      loadClasses();
+    }
+  }
+
+  async function addClass() {
+    const data = {
+      class_id: parseInt(document.getElementById('class_id').value),
+      class_name: document.getElementById('class_name').value,
+      department: document.getElementById('department').value
+    };
+    try {
+      const response = await fetch(`${API_URL}/classes`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+      document.getElementById('class_result').innerHTML =
+        `<div class="result success">✅ ${result.message}</div>`;
+      loadClasses();
+    } catch (error) {
+      document.getElementById('class_result').innerHTML =
+        `<div class="result error">❌ Error: ${error.message}</div>`;
+    }
+  }
+
+  async function loadClasses() {
+    try {
+      const response = await fetch(`${API_URL}/classes`);
+      const classes = await response.json();
+      let html = '<table class="students-table"><thead><tr><th>Class ID</th><th>Class Name</th><th>Department</th></tr></thead><tbody>';
+      classes.forEach(c => {
+        html += `<tr><td>${c.class_id}</td><td>${c.class_name}</td><td>${c.department}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      document.getElementById('classes_list').innerHTML = html;
+    } catch (error) {
+      console.error('Error loading classes:', error);
+    }
+  }
+
+  async function loadClassesDropdown() {
+    try {
+      const response = await fetch(`${API_URL}/classes`);
+      const classes = await response.json();
+      const selects = ['student_class_id', 'filter_class_id'];
+      selects.forEach(selectId => {
+        const select = document.getElementById(selectId);
+        const currentValue = select.value;
+        select.innerHTML = '<option value="">-- Select Class --</option>';
+        classes.forEach(c => {
+          select.innerHTML += `<option value="${c.class_id}">${c.class_name} (${c.department})</option>`;
+        });
+        select.value = currentValue;
+      });
+    } catch (error) {
+      console.error('Error loading classes:', error);
+    }
+  }
+
+  async function addStudent() {
+    const data = {
+      reg_no: document.getElementById('reg_no').value,
+      student_name: document.getElementById('student_name').value,
+      class_id: parseInt(document.getElementById('student_class_id').value)
+    };
+    try {
+      const response = await fetch(`${API_URL}/students`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+      document.getElementById('student_result').innerHTML =
+        `<div class="result success">✅ ${result.message}</div>`;
+      document.getElementById('reg_no').value = '';
+      document.getElementById('student_name').value = '';
+    } catch (error) {
+      document.getElementById('student_result').innerHTML =
+        `<div class="result error">❌ Error: ${error.message}</div>`;
+    }
+  }
+
+  function handleFileSelect() {
+    const file = document.getElementById('csv_file').files[0];
+    if (file) {
+      document.getElementById('file_name').textContent = `Selected: ${file.name}`;
+    }
+  }
+
+  async function uploadCSV() {
+    const fileInput = document.getElementById('csv_file');
+    const file = fileInput.files[0];
+    if (!file) {
+      alert('Please select a CSV file first!');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      const response = await fetch(`${API_URL}/students/bulk`, {
+        method: 'POST',
+        body: formData
+      });
+      const result = await response.json();
+      document.getElementById('bulk_result').innerHTML =
+        `<div class="result success">✅ ${result.message}</div>`;
+    } catch (error) {
+      document.getElementById('bulk_result').innerHTML =
+        `<div class="result error">❌ Error: ${error.message}</div>`;
+    }
+  }
+
+  async function loadStudents() {
+    const classId = document.getElementById('filter_class_id').value;
+    const url = classId ? `${API_URL}/students?class_id=${classId}` : `${API_URL}/students`;
+    try {
+      const response = await fetch(url);
+      const students = await response.json();
+      let html = `<table class="students-table">
+        <thead><tr><th>Reg No</th><th>Name</th><th>Class ID</th></tr></thead><tbody>`;
+      students.forEach(s => {
+        html += `<tr><td>${s.reg_no}</td><td>${s.student_name}</td><td>${s.class_id}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      document.getElementById('students_table').innerHTML = html;
+    } catch (error) {
+      console.error('Error loading students:', error);
+    }
+  }
+
+  async function loadStats() {
+    try {
+      const [studentsRes, classesRes] = await Promise.all([
+        fetch(`${API_URL}/students`),
+        fetch(`${API_URL}/classes`)
+      ]);
+      const students = await studentsRes.json();
+      const classes = await classesRes.json();
+      document.getElementById('total_students').textContent = students.length;
+      document.getElementById('total_classes').textContent = classes.length;
+    } catch (error) {
+      console.error('Error loading stats:', error);
+    }
+  }
+
+  // initial load
+  loadClasses();
+  loadClassesDropdown();
+</script>
+{% endblock %}
