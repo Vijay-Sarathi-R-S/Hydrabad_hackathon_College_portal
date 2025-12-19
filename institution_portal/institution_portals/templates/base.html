@@ -262,11 +262,14 @@
     }
 
     /* ==================== SIDEBAR ==================== */
+    /* === UPDATED SIDEBAR STYLES === */
     .sidebar {
-      width: 280px;
+      width: 260px;                /* a bit narrower so text fits */
       background: var(--sidebar-bg);
       position: relative;
-      overflow: hidden;
+      overflow-y: auto;            /* allow scrolling if many items */
+      overflow-x: hidden;          /* prevent text from going off-screen */
+      flex-shrink: 0;              /* do not shrink when content grows */
     }
 
     .sidebar::before {
@@ -296,21 +299,23 @@
       font-size: 0.85rem;
       font-weight: 700;
       text-transform: uppercase;
-      padding: 0 25px 15px;
+      padding: 0 18px 15px;
       letter-spacing: 2px;
+      white-space: nowrap;        /* keep label on one line */
     }
 
     .sidebar a {
       display: flex;
       align-items: center;
-      gap: 15px;
-      padding: 18px 25px;
+      gap: 12px;
+      padding: 14px 18px;         /* reduced padding so text doesn't overflow */
       color: rgba(255,255,255,0.7);
       text-decoration: none;
       font-weight: 500;
       transition: all 0.3s;
       position: relative;
       border-left: 4px solid transparent;
+      white-space: nowrap;        /* keep each item in a single line */
     }
 
     .sidebar a::before {
@@ -328,7 +333,7 @@
       color: white;
       background: rgba(16, 185, 129, 0.1);
       border-left-color: var(--sidebar-active);
-      padding-left: 35px;
+      padding-left: 30px;         /* small shift on hover, still in view */
     }
 
     .sidebar a:hover::before {
@@ -345,6 +350,7 @@
     .sidebar a .icon {
       font-size: 1.4rem;
       transition: transform 0.3s;
+      flex-shrink: 0;             /* icon stays visible */
     }
 
     .sidebar a:hover .icon {
@@ -388,7 +394,7 @@
 
       .sidebar {
         position: fixed;
-        left: -280px;
+        left: -260px;
         top: 0;
         height: 100vh;
         z-index: 9999;
@@ -537,7 +543,7 @@ gsap.from('.logo-circle', { scale: 0, rotation: 360, duration: 1, delay: 0.3, ea
 gsap.from('.brand-name', { opacity: 0, x: -30, duration: 0.8, delay: 0.5 });
 gsap.from('.header-right', { opacity: 0, x: 30, duration: 0.8, delay: 0.6 });
 gsap.from('#sidebar', { x: -280, opacity: 0, duration: 1, delay: 0.4, ease: 'power3.out' });
-gsap.from('.sidebar a', { opacity: 0, x: -50, stagger: 0.1, delay: 0.7 });
+gsap.from('.sidebar a', { opacity: 1, x: -50, stagger: 0.1, delay: 0.7 });
 gsap.from('#contentArea', { opacity: 0, y: 50, duration: 1, delay: 0.5 });
 
 // Sidebar interactions
