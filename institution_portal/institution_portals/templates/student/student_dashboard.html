@@ -1,48 +1,565 @@
 {% extends "base.html" %}
 
-{% block title %}Student Dashboard — Codex{% endblock %}
+{% block extra_styles %}
+<style>
+  /* ==================== DASHBOARD SPECIFIC STYLES ==================== */
+  .welcome-hero {
+    background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+    border-radius: 30px;
+    padding: 50px;
+    margin-bottom: 40px;
+    box-shadow: 
+      0 30px 90px rgba(16, 185, 129, 0.2),
+      0 0 0 1px rgba(16, 185, 129, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .welcome-hero::before {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.1), transparent);
+    top: -250px;
+    right: -250px;
+    border-radius: 50%;
+  }
+
+  .welcome-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #10b981, #059669);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+    position: relative;
+  }
+
+  .welcome-hero p {
+    font-size: 1.2rem;
+    color: #6b7280;
+    margin-bottom: 0;
+  }
+
+  .emoji-wave {
+    display: inline-block;
+    animation: wave 1.5s ease-in-out infinite;
+  }
+
+  @keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(20deg); }
+    75% { transform: rotate(-10deg); }
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+
+  .stat-card {
+    background: linear-gradient(135deg, #ffffff, #f9fafb);
+    border-radius: 25px;
+    padding: 35px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(16, 185, 129, 0.1);
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #10b981, #34d399, #6ee7b7);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s ease;
+  }
+
+  .stat-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .stat-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 30px 80px rgba(16, 185, 129, 0.25);
+  }
+
+  .stat-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+    animation: iconFloat 3s ease-in-out infinite;
+  }
+
+  @keyframes iconFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    color: #9ca3af;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #10b981, #059669);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Info Sections */
+  .info-section {
+    background: white;
+    border-radius: 25px;
+    padding: 40px;
+    margin-bottom: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(16, 185, 129, 0.1);
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #064e3b;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .section-title .icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #10b981, #34d399);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+
+  .info-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .info-item {
+    padding: 20px;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg, #f0fdf4, #ffffff);
+    border-radius: 15px;
+    border-left: 5px solid #10b981;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .info-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(16, 185, 129, 0.1), transparent);
+    transition: width 0.4s;
+  }
+
+  .info-item:hover::before {
+    width: 100%;
+  }
+
+  .info-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+  }
+
+  .info-item strong {
+    color: #064e3b;
+    font-weight: 700;
+  }
+
+  /* Attendance Progress */
+  .attendance-card {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 25px;
+    padding: 40px;
+    color: white;
+    box-shadow: 0 25px 70px rgba(16, 185, 129, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .attendance-card::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
+    top: -150px;
+    right: -150px;
+    border-radius: 50%;
+  }
+
+  .attendance-percentage {
+    font-size: 5rem;
+    font-weight: 900;
+    margin: 20px 0;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+
+  .attendance-bar {
+    width: 100%;
+    height: 15px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+
+  .attendance-fill {
+    height: 100%;
+    background: white;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .attendance-fill::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.5), transparent);
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Grid Layout */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+
+  @media (max-width: 1024px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .welcome-hero h1 {
+      font-size: 2.5rem;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Alert Styles */
+  .alert {
+    padding: 20px 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    animation: slideIn 0.5s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .alert-danger {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    border-left: 5px solid #ef4444;
+    color: #991b1b;
+  }
+
+  .alert-success {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    border-left: 5px solid #10b981;
+    color: #064e3b;
+  }
+</style>
+{% endblock %}
 
 {% block sidebar %}
-<h3 style="margin-top:0;margin-bottom:12px;font-size:1.05rem;">Student Menu</h3>
-<a href="{{ url_for('student_home') }}">Overview</a>
-<a href="{{ url_for('student_courses') }}">My Assesments</a>
-<a href="{{ url_for('student_marks') }}">My Marks</a>
-<a href="{{ url_for('student_materials') }}">My Materials</a>
+<a href="{{ url_for('student_home') }}" class="active">
+  <span class="icon">🏠</span>
+  <span>Overview</span>
+</a>
+<a href="{{ url_for('student_courses') }}">
+  <span class="icon">📝</span>
+  <span>My Assessments</span>
+</a>
+<a href="{{ url_for('student_marks') }}">
+  <span class="icon">🏆</span>
+  <span>My Marks</span>
+</a>
+<a href="{{ url_for('student_materials') }}">
+  <span class="icon">📚</span>
+  <span>My Materials</span>
+</a>
 {% endblock %}
-
-
-
 
 {% block content %}
-  <h2 style="margin-top:0;">Welcome, {{ current_user.full_name or current_user.reg_no }}</h2>
-  <p>Here is a quick view of your courses, assessments, and attendance.</p>
+<!-- Welcome Hero -->
+<div class="welcome-hero" id="welcomeHero">
+  <h1>Welcome, {{ current_user.full_name or current_user.reg_no }}! <span class="emoji-wave">👋</span></h1>
+  <p>Here's a quick view of your courses, assessments, and attendance</p>
+</div>
 
-  <h3>My Courses</h3>
-  <ul>
-    {% for c in my_courses %}
-      <li>{{ c.code }} — {{ c.name }}</li>
-    {% else %}
-      <li>No courses assigned.</li>
-    {% endfor %}
-  </ul>
+<!-- Stats Grid -->
+<div class="stats-grid">
+  <div class="stat-card" data-stat="courses">
+    <div class="stat-icon">📚</div>
+    <div class="stat-label">My Courses</div>
+    <div class="stat-value">{{ my_courses|length if my_courses else 0 }}</div>
+  </div>
 
-  <h3>Upcoming Assessments</h3>
-  <ul>
-    {% for a in upcoming_assessments %}
-      <li>{{ a.course }}: {{ a.title }} on {{ a.date }}</li>
-    {% else %}
-      <li>No upcoming assessments.</li>
-    {% endfor %}
-  </ul>
+  <div class="stat-card" data-stat="assessments">
+    <div class="stat-icon">📝</div>
+    <div class="stat-label">Upcoming Assessments</div>
+    <div class="stat-value">{{ upcoming_assessments|length if upcoming_assessments else 0 }}</div>
+  </div>
 
-  <h3>Attendance Summary</h3>
-  <ul>
-    {% for item in attendance %}
-      <li>{{ item.course }}: {{ item.percent }}%</li>
-    {% else %}
-      <li>No attendance recorded.</li>
-    {% endfor %}
-  </ul>
+  <div class="stat-card" data-stat="attendance">
+    <div class="stat-icon">✓</div>
+    <div class="stat-label">Attendance Records</div>
+    <div class="stat-value">{{ attendance|length if attendance else 0 }}</div>
+  </div>
+
+  <div class="stat-card" data-stat="rank">
+    <div class="stat-icon">🎯</div>
+    <div class="stat-label">Active Status</div>
+    <div class="stat-value">✓</div>
+  </div>
+</div>
+
+<!-- Main Content Grid -->
+<div class="dashboard-grid">
+  <!-- Left Column -->
+  <div>
+    <!-- My Courses -->
+    <div class="info-section" id="coursesSection">
+      <h2 class="section-title">
+        <span class="icon">📚</span>
+        My Courses
+      </h2>
+      <ul class="info-list">
+        {% if my_courses %}
+          {% for c in my_courses %}
+          <li class="info-item course-item">
+            <strong>{{ c.code }}</strong> — {{ c.name }}
+          </li>
+          {% endfor %}
+        {% else %}
+          <li class="info-item">No courses assigned.</li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <!-- Upcoming Assessments -->
+    <div class="info-section" id="assessmentsSection">
+      <h2 class="section-title">
+        <span class="icon">📝</span>
+        Upcoming Assessments
+      </h2>
+      <ul class="info-list">
+        {% if upcoming_assessments %}
+          {% for a in upcoming_assessments %}
+          <li class="info-item assessment-item">
+            <strong>{{ a.course }}</strong>: {{ a.title }} on {{ a.date }}
+          </li>
+          {% endfor %}
+        {% else %}
+          <li class="info-item">No upcoming assessments.</li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Right Column - Attendance -->
+  <div>
+    <div class="attendance-card" id="attendanceCard">
+      <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">Attendance Summary</h2>
+      
+      {% if attendance %}
+        {% set total_percent = 0 %}
+        {% for item in attendance %}
+          {% set total_percent = total_percent + item.percent %}
+        {% endfor %}
+        {% set avg_percent = (total_percent / attendance|length)|round|int %}
+        
+        <div class="attendance-percentage">{{ avg_percent }}%</div>
+        <div class="attendance-bar">
+          <div class="attendance-fill" style="width: {{ avg_percent }}%"></div>
+        </div>
+        <p style="margin-top: 20px; opacity: 0.9;">Average attendance across all courses</p>
+        
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.3);">
+          {% for item in attendance %}
+          <div style="margin-bottom: 15px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+              <span style="font-size: 0.9rem; opacity: 0.9;">{{ item.course }}</span>
+              <span style="font-weight: 700;">{{ item.percent }}%</span>
+            </div>
+            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.3); border-radius: 5px; overflow: hidden;">
+              <div style="height: 100%; background: white; width: {{ item.percent }}%; border-radius: 5px;"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="attendance-percentage">--</div>
+        <p style="margin-top: 20px; opacity: 0.9;">No attendance recorded yet</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== DASHBOARD ANIMATIONS ====================
+gsap.from('.welcome-hero', {
+  opacity: 0,
+  y: 50,
+  duration: 1,
+  delay: 0.8,
+  ease: 'power3.out'
+});
+
+gsap.from('.stat-card', {
+  opacity: 0,
+  y: 80,
+  scale: 0.9,
+  duration: 0.8,
+  stagger: 0.15,
+  delay: 1,
+  ease: 'back.out(1.4)'
+});
+
+gsap.from('.info-section', {
+  opacity: 0,
+  y: 60,
+  duration: 0.8,
+  stagger: 0.2,
+  delay: 1.5,
+  scrollTrigger: {
+    trigger: '.dashboard-grid',
+    start: 'top 80%'
+  }
+});
+
+gsap.from('.attendance-card', {
+  opacity: 0,
+  scale: 0.9,
+  rotation: -5,
+  duration: 1,
+  delay: 1.7,
+  ease: 'elastic.out(1, 0.5)'
+});
+
+// List items stagger
+gsap.from('.info-item', {
+  opacity: 0,
+  x: -30,
+  duration: 0.6,
+  stagger: 0.1,
+  delay: 2,
+  scrollTrigger: {
+    trigger: '.info-list',
+    start: 'top 85%'
+  }
+});
+
+// Stat card hover effects
+document.querySelectorAll('.stat-card').forEach(card => {
+  card.addEventListener('mouseenter', function() {
+    gsap.to(this.querySelector('.stat-icon'), {
+      rotation: 360,
+      scale: 1.2,
+      duration: 0.6,
+      ease: 'power2.out'
+    });
+  });
+
+  card.addEventListener('mouseleave', function() {
+    gsap.to(this.querySelector('.stat-icon'), {
+      rotation: 0,
+      scale: 1,
+      duration: 0.6,
+      ease: 'power2.out'
+    });
+  });
+});
+
+// Counter animation for stats
+document.querySelectorAll('.stat-value').forEach(stat => {
+  const text = stat.textContent.trim();
+  const value = parseInt(text);
+  
+  if (!isNaN(value)) {
+    gsap.fromTo(stat,
+      { textContent: 0 },
+      {
+        textContent: value,
+        duration: 2,
+        delay: 1.5,
+        snap: { textContent: 1 },
+        ease: 'power1.out'
+      }
+    );
+  }
+});
+
+// Attendance bar animations
+document.querySelectorAll('.attendance-fill').forEach((bar, index) => {
+  const targetWidth = bar.style.width;
+  bar.style.width = '0%';
+  
+  gsap.to(bar, {
+    width: targetWidth,
+    duration: 1.5,
+    delay: 2 + index * 0.1,
+    ease: 'power2.out'
+  });
+});
+
+console.log('✨ Dashboard Animations Loaded');
+</script>
 {% endblock %}
-
-
