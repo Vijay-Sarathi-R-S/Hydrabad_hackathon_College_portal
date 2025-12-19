@@ -9,12 +9,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   
   <style>
-    /* ==================== ROOT VARIABLES ==================== */
+    /* ==================== ROOT VARIABLES - LIGHT GREEN THEME ==================== */
     :root {
-      --primary-green: #2d5f3f;
-      --light-green: #5a9367;
-      --accent-green: #7fb88d;
+      --primary-green: #4a9d5f;
+      --light-green: #66b57a;
+      --accent-green: #8fd19e;
       --pale-green: #e8f5e9;
+      --dark-green: #3a7d4f;
       --soft-white: #fafafa;
       --text-dark: #1a1a1a;
       --text-gray: #4a4a4a;
@@ -39,6 +40,26 @@
       line-height: 1.6;
     }
 
+    /* ==================== ANIMATED CURSOR ==================== */
+    .custom-cursor {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--primary-green);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: all 0.15s ease;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+
+    .custom-cursor.active {
+      width: 40px;
+      height: 40px;
+      background: rgba(74, 157, 95, 0.1);
+    }
+
     /* ==================== SVG LOGO INTRO OVERLAY ==================== */
     .logo-intro-overlay {
       position: fixed;
@@ -55,29 +76,31 @@
     }
 
     .logo-intro-overlay svg {
-      width: 280px;
-      height: 280px;
+      width: 300px;
+      height: 300px;
     }
 
     .logo-svg-path {
       stroke: white;
-      stroke-width: 2.5;
+      stroke-width: 3;
       fill: none;
       stroke-dasharray: 1200;
       stroke-dashoffset: 1200;
     }
 
-    /* ==================== NAVBAR - GREEN BACKGROUND ==================== */
+    /* ==================== NAVBAR - LIGHT GREEN ==================== */
     .navbar {
       background: linear-gradient(135deg, var(--primary-green), var(--light-green)) !important;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      padding: 0.8rem 0;
+      box-shadow: 0 4px 12px rgba(74, 157, 95, 0.2);
+      padding: 1rem 0;
+      backdrop-filter: blur(10px);
     }
 
     .navbar-brand {
-      font-size: 1.4rem;
-      font-weight: 700;
+      font-size: 1.5rem;
+      font-weight: 800;
       color: white !important;
+      letter-spacing: 0.5px;
     }
 
     /* ==================== HERO SECTION ==================== */
@@ -87,38 +110,59 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, rgba(45, 95, 63, 0.92), rgba(90, 147, 103, 0.85)), 
+      background: linear-gradient(135deg, rgba(74, 157, 95, 0.92), rgba(102, 181, 122, 0.85)), 
                   url('https://images.unsplash.com/photo-1562774053-701939374585?w=1920&q=80') center/cover;
       color: white;
       text-align: center;
       padding: 0 20px;
       margin-top: -70px;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+      opacity: 0.3;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
     }
 
     .hero-content {
       max-width: 1000px;
       opacity: 0;
       transform: translateY(30px);
+      position: relative;
+      z-index: 2;
     }
 
     .hero-title {
-      font-size: 4rem;
-      font-weight: 800;
+      font-size: 4.5rem;
+      font-weight: 900;
       margin-bottom: 15px;
       line-height: 1.15;
       letter-spacing: -0.02em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
 
     .hero-subtitle {
       font-size: 2.5rem;
       font-weight: 600;
-      color: var(--accent-green);
+      color: #e8f5e9;
       margin-bottom: 25px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
     }
 
     .hero-description {
-      font-size: 1.35rem;
-      line-height: 1.75;
+      font-size: 1.4rem;
+      line-height: 1.8;
       margin-bottom: 40px;
       max-width: 900px;
       margin-left: auto;
@@ -134,90 +178,167 @@
 
     .btn-hero-primary,
     .btn-hero-secondary {
-      padding: 16px 44px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      border-radius: 8px;
+      padding: 18px 48px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-radius: 50px;
       text-decoration: none;
-      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       display: inline-block;
       position: relative;
+      overflow: hidden;
     }
 
     .btn-hero-primary {
       background: white;
       color: var(--primary-green);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    .btn-hero-primary::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: var(--pale-green);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-hero-primary:hover::before {
+      width: 300px;
+      height: 300px;
     }
 
     .btn-hero-primary:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
       color: var(--primary-green);
     }
 
     .btn-hero-secondary {
       background: transparent;
-      border: 2.5px solid white;
+      border: 3px solid white;
       color: white;
     }
 
     .btn-hero-secondary:hover {
       background: white;
       color: var(--primary-green);
+      transform: translateY(-5px);
     }
 
-    /* ==================== STATISTICS SECTION ==================== */
+    /* ==================== STATISTICS SECTION - REDUCED PADDING ==================== */
     .stats-section {
-      padding: 90px 0;
+      padding: 70px 0;
       background: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stats-section::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(74, 157, 95, 0.05), transparent);
+      border-radius: 50%;
+      top: -100px;
+      right: -100px;
     }
 
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 50px;
+      gap: 40px;
       max-width: 1200px;
       margin: 0 auto;
+      position: relative;
+      z-index: 2;
     }
 
     .stat-card {
       text-align: center;
       opacity: 0;
       transform: translateY(40px);
+      padding: 30px 20px;
+      border-radius: 16px;
+      transition: all 0.4s;
+      background: linear-gradient(135deg, var(--pale-green), white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+      transition: left 0.6s;
+    }
+
+    .stat-card:hover::before {
+      left: 100%;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 10px 30px rgba(74, 157, 95, 0.2);
     }
 
     .stat-number {
       font-size: 4rem;
-      font-weight: 800;
+      font-weight: 900;
       color: var(--primary-green);
       margin-bottom: 10px;
       line-height: 1;
+      text-shadow: 2px 2px 4px rgba(74, 157, 95, 0.1);
     }
 
     .stat-label {
       font-size: 1.15rem;
       color: var(--text-gray);
-      font-weight: 500;
+      font-weight: 600;
     }
 
-    /* ==================== ABOUT INSTITUTION SECTION ==================== */
+    /* ==================== ABOUT SECTION - REDUCED PADDING ==================== */
     .about-section {
-      padding: 110px 0;
+      padding: 70px 0;
       background: var(--pale-green);
+      position: relative;
     }
 
     .section-header {
       text-align: center;
-      margin-bottom: 60px;
+      margin-bottom: 50px;
     }
 
     .section-title {
-      font-size: 3.2rem;
-      font-weight: 800;
+      font-size: 3.5rem;
+      font-weight: 900;
       color: var(--primary-green);
       margin-bottom: 18px;
       letter-spacing: -0.02em;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-green), var(--accent-green));
+      border-radius: 2px;
     }
 
     .section-subtitle {
@@ -237,63 +358,96 @@
       font-size: 1.15rem;
       line-height: 1.9;
       color: var(--text-dark);
-      margin-bottom: 28px;
+      margin-bottom: 25px;
       text-align: justify;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
-    /* ==================== ACADEMIC SERVICES SECTION ==================== */
+    /* ==================== SERVICES SECTION - REDUCED PADDING ==================== */
     .services-section {
-      padding: 110px 0;
+      padding: 70px 0;
       background: white;
     }
 
     .services-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 35px;
+      gap: 30px;
       max-width: 1200px;
-      margin: 60px auto 0;
+      margin: 50px auto 0;
     }
 
     .service-card {
-      background: var(--soft-white);
-      padding: 45px 35px;
-      border-radius: 14px;
+      background: linear-gradient(135deg, var(--pale-green), white);
+      padding: 40px 30px;
+      border-radius: 16px;
       border: 2px solid var(--border-light);
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       opacity: 0;
       transform: translateY(50px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, rgba(74, 157, 95, 0.1), transparent);
+      animation: rotate 4s linear infinite;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    @keyframes rotate {
+      100% { transform: rotate(360deg); }
+    }
+
+    .service-card:hover::before {
+      opacity: 1;
     }
 
     .service-card:hover {
       border-color: var(--primary-green);
-      box-shadow: 0 12px 35px rgba(45, 95, 63, 0.12);
-      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(74, 157, 95, 0.2);
+      transform: translateY(-15px) rotateX(5deg);
     }
 
     .service-icon {
-      font-size: 3.5rem;
+      font-size: 4rem;
       margin-bottom: 22px;
       display: block;
+      position: relative;
+      z-index: 2;
     }
 
     .service-title {
       font-size: 1.6rem;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--primary-green);
       margin-bottom: 16px;
+      position: relative;
+      z-index: 2;
     }
 
     .service-description {
       font-size: 1.05rem;
       color: var(--text-gray);
       line-height: 1.75;
+      position: relative;
+      z-index: 2;
     }
 
-    /* ==================== HORIZONTAL SCROLL SECTION ==================== */
+    /* ==================== HORIZONTAL SCROLL - REDUCED PADDING ==================== */
     .horizontal-wrapper {
       overflow: hidden;
-      padding: 110px 0;
+      padding: 70px 0;
       background: linear-gradient(to bottom, white, var(--pale-green));
     }
 
@@ -304,19 +458,29 @@
 
     .horizontal-panel {
       width: 85vw;
-      height: 540px;
+      height: 520px;
       flex-shrink: 0;
       margin-right: 45px;
-      border-radius: 18px;
+      border-radius: 20px;
       overflow: hidden;
       position: relative;
-      box-shadow: 0 12px 45px rgba(0,0,0,0.12);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+      transition: transform 0.3s;
+    }
+
+    .horizontal-panel:hover {
+      transform: scale(1.02);
     }
 
     .horizontal-panel img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.6s;
+    }
+
+    .horizontal-panel:hover img {
+      transform: scale(1.1);
     }
 
     .panel-content {
@@ -324,14 +488,14 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(to top, rgba(45, 95, 63, 0.96), transparent);
+      background: linear-gradient(to top, rgba(74, 157, 95, 0.96), transparent);
       color: white;
-      padding: 50px 45px;
+      padding: 45px 40px;
     }
 
     .panel-title {
-      font-size: 2.4rem;
-      font-weight: 700;
+      font-size: 2.5rem;
+      font-weight: 800;
       margin-bottom: 14px;
     }
 
@@ -340,38 +504,45 @@
       line-height: 1.7;
     }
 
-    /* ==================== CAMPUS MAP SECTION ==================== */
+    /* ==================== CAMPUS MAP - REDUCED PADDING ==================== */
     .campus-map-section {
-      padding: 110px 0;
+      padding: 70px 0;
       background: white;
     }
 
     .map-placeholder {
       width: 100%;
-      height: 650px;
-      background: var(--pale-green);
-      border-radius: 18px;
-      border: 3px solid var(--border-light);
+      height: 600px;
+      background: linear-gradient(135deg, var(--pale-green), white);
+      border-radius: 20px;
+      border: 3px solid var(--primary-green);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin-top: 50px;
+      margin-top: 40px;
       position: relative;
       overflow: hidden;
     }
 
     .map-icon {
-      width: 220px;
-      height: 220px;
-      opacity: 0.25;
+      width: 200px;
+      height: 200px;
+      opacity: 0.3;
       margin-bottom: 25px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
     }
 
     .map-placeholder h3 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       color: var(--primary-green);
       margin-bottom: 12px;
+      font-weight: 800;
     }
 
     .map-placeholder p {
@@ -379,51 +550,68 @@
       color: var(--text-gray);
     }
 
-    .map-placeholder .map-note {
-      font-size: 0.95rem;
-      color: #999;
-      margin-top: 8px;
-    }
-
-    /* ==================== PROGRAMMES SECTION ==================== */
+    /* ==================== PROGRAMMES - REDUCED PADDING ==================== */
     .programmes-section {
-      padding: 110px 0;
+      padding: 70px 0;
       background: var(--pale-green);
     }
 
     .programmes-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 45px;
+      gap: 40px;
       max-width: 1200px;
-      margin: 60px auto 0;
+      margin: 50px auto 0;
     }
 
     .programme-card {
       background: white;
-      border-radius: 14px;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.09);
-      transition: transform 0.35s;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: all 0.4s;
+      position: relative;
+    }
+
+    .programme-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-green), var(--accent-green));
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+
+    .programme-card:hover::before {
+      transform: scaleX(1);
     }
 
     .programme-card:hover {
-      transform: translateY(-10px);
+      transform: translateY(-12px);
+      box-shadow: 0 15px 40px rgba(74, 157, 95, 0.2);
     }
 
     .programme-image {
       width: 100%;
       height: 280px;
       object-fit: cover;
+      transition: transform 0.6s;
+    }
+
+    .programme-card:hover .programme-image {
+      transform: scale(1.1);
     }
 
     .programme-body {
-      padding: 38px 35px;
+      padding: 35px 32px;
     }
 
     .programme-title {
       font-size: 2rem;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--primary-green);
       margin-bottom: 18px;
     }
@@ -437,54 +625,86 @@
 
     .programme-link {
       color: var(--primary-green);
-      font-weight: 600;
+      font-weight: 700;
       font-size: 1.05rem;
       text-decoration: none;
-      transition: color 0.3s;
+      transition: all 0.3s;
+      position: relative;
     }
 
-    .programme-link:hover {
-      color: var(--light-green);
+    .programme-link::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary-green);
+      transition: width 0.3s;
     }
 
-    /* ==================== NEWS & EVENTS SECTION ==================== */
+    .programme-link:hover::after {
+      width: 100%;
+    }
+
+    /* ==================== NEWS SECTION - REDUCED PADDING ==================== */
     .news-section {
-      padding: 110px 0;
+      padding: 70px 0;
       background: white;
     }
 
     .news-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
+      gap: 35px;
       max-width: 1200px;
-      margin: 60px auto 0;
+      margin: 50px auto 0;
     }
 
     .news-card {
-      background: var(--soft-white);
-      padding: 35px 32px;
-      border-radius: 14px;
+      background: linear-gradient(135deg, var(--pale-green), white);
+      padding: 32px 28px;
+      border-radius: 16px;
       border-left: 5px solid var(--primary-green);
-      transition: box-shadow 0.3s;
+      transition: all 0.4s;
+      position: relative;
+    }
+
+    .news-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50px;
+      height: 50px;
+      background: var(--accent-green);
+      opacity: 0.1;
+      border-radius: 0 16px 0 50px;
+      transition: all 0.4s;
+    }
+
+    .news-card:hover::before {
+      width: 100px;
+      height: 100px;
     }
 
     .news-card:hover {
-      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 30px rgba(74, 157, 95, 0.15);
+      transform: translateX(10px);
     }
 
     .news-date {
       font-size: 0.95rem;
-      color: var(--light-green);
-      font-weight: 700;
+      color: var(--primary-green);
+      font-weight: 800;
       margin-bottom: 16px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
     }
 
     .news-title {
       font-size: 1.5rem;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--primary-green);
       margin-bottom: 16px;
       line-height: 1.4;
@@ -499,42 +719,48 @@
 
     .news-link {
       color: var(--primary-green);
-      font-weight: 600;
+      font-weight: 700;
       text-decoration: none;
     }
 
-    /* ==================== CLUB EVENTS SECTION ==================== */
+    /* ==================== CLUB EVENTS - REDUCED PADDING ==================== */
     .club-events-section {
-      padding: 110px 0;
+      padding: 70px 0;
       background: var(--pale-green);
     }
 
     .event-card {
       background: white;
-      border-radius: 14px;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.09);
-      margin-bottom: 35px;
-      transition: transform 0.35s;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      transition: all 0.4s;
     }
 
     .event-card:hover {
-      transform: translateY(-8px);
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(74, 157, 95, 0.2);
     }
 
     .event-image {
       width: 100%;
-      height: 320px;
+      height: 300px;
       object-fit: cover;
+      transition: transform 0.6s;
+    }
+
+    .event-card:hover .event-image {
+      transform: scale(1.1);
     }
 
     .event-body {
-      padding: 38px 35px;
+      padding: 35px 32px;
     }
 
     .event-title {
       font-size: 2rem;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--primary-green);
       margin-bottom: 12px;
     }
@@ -543,7 +769,7 @@
       font-size: 1rem;
       color: var(--text-gray);
       margin-bottom: 18px;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .event-description {
@@ -552,42 +778,65 @@
       line-height: 1.75;
     }
 
-    /* ==================== CTA SECTION ==================== */
+    /* ==================== CTA SECTION - REDUCED PADDING ==================== */
     .cta-section {
-      padding: 130px 0;
+      padding: 100px 0;
       background: linear-gradient(135deg, var(--primary-green), var(--light-green));
       color: white;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      top: -200px;
+      left: -200px;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
     }
 
     .cta-title {
-      font-size: 3.5rem;
-      font-weight: 800;
+      font-size: 3.8rem;
+      font-weight: 900;
       margin-bottom: 22px;
       letter-spacing: -0.02em;
+      position: relative;
+      z-index: 2;
     }
 
     .cta-text {
-      font-size: 1.35rem;
-      line-height: 1.75;
+      font-size: 1.4rem;
+      line-height: 1.8;
       margin-bottom: 45px;
       max-width: 850px;
       margin-left: auto;
       margin-right: auto;
+      position: relative;
+      z-index: 2;
     }
 
-    /* ==================== FOOTER ==================== */
+    /* ==================== FOOTER - REDUCED PADDING ==================== */
     .footer {
       background: var(--text-dark);
       color: white;
-      padding: 90px 0 35px;
+      padding: 70px 0 30px;
     }
 
     .footer-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 50px;
-      margin-bottom: 60px;
+      gap: 45px;
+      margin-bottom: 50px;
       max-width: 1200px;
       margin-left: auto;
       margin-right: auto;
@@ -597,7 +846,7 @@
       color: var(--accent-green);
       margin-bottom: 24px;
       font-size: 1.4rem;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .footer-text {
@@ -620,28 +869,44 @@
       color: #ccc;
       text-decoration: none;
       font-size: 1rem;
-      transition: color 0.3s;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .footer-links a::before {
+      content: '→';
+      position: absolute;
+      left: -20px;
+      opacity: 0;
+      transition: all 0.3s;
     }
 
     .footer-links a:hover {
       color: var(--accent-green);
+      padding-left: 20px;
+    }
+
+    .footer-links a:hover::before {
+      opacity: 1;
+      left: 0;
     }
 
     .social-icons {
       display: flex;
       gap: 18px;
       margin-top: 25px;
-      font-size: 1.7rem;
+      font-size: 1.8rem;
     }
 
     .social-icons a {
       color: white;
-      transition: transform 0.3s;
+      transition: all 0.3s;
       text-decoration: none;
     }
 
     .social-icons a:hover {
-      transform: scale(1.25);
+      transform: scale(1.3) rotate(15deg);
+      color: var(--accent-green);
     }
 
     .footer-bottom {
@@ -652,84 +917,95 @@
       font-size: 0.95rem;
     }
 
-    /* ==================== RECRUITERS SECTION ==================== */
+    /* ==================== RECRUITERS - REDUCED PADDING ==================== */
     .recruiters-section {
-      padding: 90px 0;
+      padding: 70px 0;
       background: var(--soft-white);
     }
 
     .recruiters-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 35px;
+      gap: 30px;
       max-width: 1200px;
-      margin: 50px auto 0;
+      margin: 40px auto 0;
     }
 
     .recruiter-card {
       background: white;
-      padding: 35px 25px;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      padding: 30px 20px;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.3s;
+      transition: all 0.3s;
+      border: 2px solid transparent;
     }
 
     .recruiter-card:hover {
-      transform: translateY(-6px);
+      transform: translateY(-8px) rotate(2deg);
+      border-color: var(--primary-green);
+      box-shadow: 0 10px 30px rgba(74, 157, 95, 0.2);
     }
 
     .recruiter-card img {
       max-width: 100%;
       height: auto;
+      filter: grayscale(100%);
+      transition: filter 0.3s;
     }
 
-    /* ==================== FLOATING BUTTONS - REPOSITIONED ==================== */
+    .recruiter-card:hover img {
+      filter: grayscale(0%);
+    }
+
+    /* ==================== FLOATING BUTTONS ==================== */
     #att-toggle {
       position: fixed;
       bottom: 20px;
       left: 20px;
-      padding: 12px 20px;
-      border-radius: 30px;
+      padding: 14px 24px;
+      border-radius: 50px;
       background: linear-gradient(135deg, var(--primary-green), var(--light-green));
       color: #fff;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(45, 95, 63, 0.3);
+      box-shadow: 0 8px 25px rgba(74, 157, 95, 0.4);
       z-index: 1050;
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
       transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     #att-toggle:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(45, 95, 63, 0.4);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(74, 157, 95, 0.5);
     }
 
     #att-panel {
       position: fixed;
-      bottom: 85px;
+      bottom: 90px;
       left: 20px;
-      width: 340px;
-      max-height: 280px;
-      background: #fff;
-      border: 2px solid var(--primary-green);
-      border-radius: 12px;
+      width: 360px;
+      background: white;
+      border: 3px solid var(--primary-green);
+      border-radius: 16px;
       display: none;
       flex-direction: column;
-      box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.2);
       z-index: 1050;
-      padding: 18px;
+      padding: 22px;
     }
 
     #chat-toggle {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      width: 65px;
-      height: 65px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
       background: linear-gradient(135deg, #0d6efd, #0056d2);
       color: #fff;
@@ -737,30 +1013,30 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(13, 110, 253, 0.3);
+      box-shadow: 0 8px 25px rgba(13, 110, 253, 0.4);
       z-index: 1050;
-      font-size: 1.4rem;
-      font-weight: 700;
+      font-size: 1.6rem;
+      font-weight: 800;
       transition: all 0.3s;
     }
 
     #chat-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 8px 25px rgba(13, 110, 253, 0.4);
+      transform: scale(1.15) rotate(10deg);
+      box-shadow: 0 12px 35px rgba(13, 110, 253, 0.5);
     }
 
     #chat-window {
       position: fixed;
-      bottom: 95px;
+      bottom: 100px;
       right: 20px;
-      width: 360px;
-      max-height: 480px;
-      background: #fff;
-      border: 2px solid #0d6efd;
-      border-radius: 12px;
+      width: 380px;
+      max-height: 520px;
+      background: white;
+      border: 3px solid #0d6efd;
+      border-radius: 16px;
       display: none;
       flex-direction: column;
-      box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.2);
       z-index: 1050;
     }
 
@@ -776,7 +1052,7 @@
 
       .stats-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 40px;
+        gap: 30px;
       }
 
       .services-grid {
@@ -832,7 +1108,7 @@
       #att-toggle {
         left: 10px;
         font-size: 13px;
-        padding: 10px 16px;
+        padding: 12px 18px;
       }
 
       #att-panel {
@@ -844,10 +1120,18 @@
         right: 10px;
         width: calc(100% - 20px);
       }
+
+      #chat-toggle {
+        width: 60px;
+        height: 60px;
+      }
     }
   </style>
 </head>
 <body>
+
+  <!-- Custom Cursor -->
+  <div class="custom-cursor" id="customCursor"></div>
 
   <!-- ==================== SVG LOGO INTRO ==================== -->
   <div class="logo-intro-overlay">
@@ -859,7 +1143,7 @@
     </svg>
   </div>
 
-  <!-- ==================== NAVBAR - GREEN BACKGROUND ==================== -->
+  <!-- ==================== NAVBAR ==================== -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold" href="#">CODE-X Institution Portal</a>
@@ -869,7 +1153,6 @@
     </div>
   </nav>
 
-  <!-- Spacer for fixed navbar -->
   <div style="height: 70px;"></div>
 
   <!-- ==================== HERO SECTION ==================== -->
@@ -889,7 +1172,7 @@
     </div>
   </section>
 
-  <!-- ==================== STATISTICS SECTION ==================== -->
+  <!-- ==================== STATISTICS ==================== -->
   <section class="stats-section">
     <div class="container">
       <div class="stats-grid">
@@ -930,10 +1213,7 @@
           Established with the vision of providing transformative education that transcends traditional boundaries, 
           our institution has consistently maintained its reputation for academic rigor, innovative pedagogy, and 
           comprehensive student development. We believe that true education extends beyond classroom instruction, 
-          encompassing character building, critical thinking, creative problem-solving, and ethical leadership. 
-          Our holistic approach ensures that every student receives personalized attention, access to world-class 
-          resources, and opportunities to excel in their chosen fields while developing the skills necessary to 
-          navigate an increasingly complex and interconnected world.
+          encompassing character building, critical thinking, creative problem-solving, and ethical leadership.
         </p>
         
         <p class="about-paragraph">
@@ -941,50 +1221,27 @@
           the highest standards of quality in all aspects of institutional operations. Our sprawling campus features 
           state-of-the-art infrastructure including modern laboratories equipped with cutting-edge technology, a 
           comprehensive digital library with access to over 50,000 e-books and international research databases, 
-          smart classrooms with interactive learning systems, collaborative learning spaces designed to foster 
-          teamwork and innovation, advanced research facilities, sports complexes, cultural centers, and residential 
-          facilities that create a conducive environment for academic pursuit and personal growth. Our distinguished 
-          faculty comprises experienced educators, accomplished researchers, and industry professionals who bring 
-          real-world expertise into the classroom, ensuring that theoretical knowledge is seamlessly integrated with 
-          practical application and industry-relevant skills.
+          smart classrooms with interactive learning systems, and advanced research facilities.
         </p>
         
         <p class="about-paragraph">
           Beyond academic excellence, CODE-X places significant emphasis on extracurricular activities, community 
           engagement, leadership development, and social responsibility. Our campus hosts numerous student clubs, 
           cultural societies, technical forums, entrepreneurship cells, and social service organizations that provide 
-          platforms for students to explore diverse interests, develop leadership capabilities, enhance communication 
-          skills, and build lasting professional networks. Throughout the year, we organize national conferences, 
-          technical symposiums, cultural festivals, hackathons, innovation challenges, guest lectures by industry 
-          leaders, and international exchange programs that expose students to global perspectives and emerging trends. 
-          We maintain strong partnerships with leading corporations, research institutions, government organizations, 
-          and international universities, facilitating internships, collaborative research projects, industrial visits, 
-          and global learning opportunities that bridge the gap between academic theory and professional practice.
-        </p>
-        
-        <p class="about-paragraph">
-          The institution is deeply committed to fostering a culture of research and innovation, with dedicated 
-          research centers focusing on emerging technologies, sustainable development, interdisciplinary studies, 
-          and societal challenges. We actively encourage students to participate in research activities from their 
-          early years, providing mentorship, funding support, and platforms to present their work at national and 
-          international forums. Our dedicated placement cell works year-round to ensure graduates are well-prepared 
-          for professional success, consistently achieving placement rates exceeding 92% across all departments with 
-          students securing positions in multinational corporations, government organizations, research institutions, 
-          and successful entrepreneurial ventures. Our global alumni network, spanning across continents and industries, 
-          serves as a testament to our commitment to excellence, with graduates holding leadership positions worldwide 
-          and contributing meaningfully to society through their professional achievements and social initiatives.
+          platforms for students to explore diverse interests, develop leadership capabilities, and build lasting 
+          professional networks.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- ==================== ACADEMIC & DIGITAL SERVICES ==================== -->
+  <!-- ==================== ACADEMIC SERVICES ==================== -->
   <section class="services-section">
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Academic & Digital Services</h2>
         <p class="section-subtitle">
-          Comprehensive support systems designed to enhance your educational journey and career success
+          Comprehensive support systems designed to enhance your educational journey
         </p>
       </div>
       
@@ -993,100 +1250,100 @@
           <span class="service-icon">📚</span>
           <h3 class="service-title">Digital Library</h3>
           <p class="service-description">
-            Access over 50,000 e-books, international research journals, academic databases, multimedia resources, 
-            and digital archives 24/7 through our advanced library portal with AI-powered search and recommendation systems.
+            Access over 50,000 e-books, research journals, academic databases, and multimedia resources 24/7 
+            through our advanced library portal with AI-powered search systems.
           </p>
         </div>
         
         <div class="service-card">
           <span class="service-icon">💻</span>
-          <h3 class="service-title">Learning Management System</h3>
+          <h3 class="service-title">Learning Management</h3>
           <p class="service-description">
             Comprehensive online platform featuring lecture recordings, interactive assignments, discussion forums, 
-            real-time collaboration tools, and progress tracking for enhanced remote and hybrid learning experiences.
+            and real-time collaboration tools for enhanced learning.
           </p>
         </div>
         
         <div class="service-card">
           <span class="service-icon">🎓</span>
-          <h3 class="service-title">Career Development Center</h3>
+          <h3 class="service-title">Career Development</h3>
           <p class="service-description">
-            Personalized career counseling, professional skill development workshops, resume building sessions, 
-            mock interviews, aptitude training, and direct connections with industry recruiters and placement partners.
+            Personalized career counseling, skill development workshops, resume building, mock interviews, 
+            and direct connections with industry recruiters.
           </p>
         </div>
         
         <div class="service-card">
           <span class="service-icon">🔬</span>
-          <h3 class="service-title">Research Support Services</h3>
+          <h3 class="service-title">Research Support</h3>
           <p class="service-description">
-            Dedicated research mentorship programs, access to advanced laboratories, funding assistance for innovative 
-            projects, publication support, and opportunities to present at national and international conferences.
+            Dedicated research mentorship, access to advanced laboratories, funding assistance, and opportunities 
+            to present at national and international conferences.
           </p>
         </div>
         
         <div class="service-card">
           <span class="service-icon">🌐</span>
-          <h3 class="service-title">Integrated Student Portal</h3>
+          <h3 class="service-title">Student Portal</h3>
           <p class="service-description">
-            Unified dashboard for attendance tracking, grade monitoring, fee payments, course registration, exam schedules, 
-            library access, and direct communication with faculty and administrative staff.
+            Unified dashboard for attendance tracking, grade monitoring, fee payments, course registration, 
+            and direct communication with faculty and staff.
           </p>
         </div>
         
         <div class="service-card">
           <span class="service-icon">🏆</span>
-          <h3 class="service-title">Innovation & Incubation Lab</h3>
+          <h3 class="service-title">Innovation Lab</h3>
           <p class="service-description">
-            State-of-the-art makerspace equipped with 3D printers, IoT development kits, robotics tools, AI platforms, 
-            and mentorship programs to transform innovative ideas into working prototypes and startups.
+            State-of-the-art makerspace with 3D printers, IoT kits, robotics tools, AI platforms, and mentorship 
+            to transform ideas into working prototypes.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== HORIZONTAL SCROLL CLUBS/FACILITIES ==================== -->
+  <!-- ==================== HORIZONTAL SCROLL ==================== -->
   <section class="horizontal-wrapper">
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Clubs, Activities & Facilities</h2>
         <p class="section-subtitle">
-          Explore our vibrant campus life through diverse student organizations and world-class facilities
+          Explore our vibrant campus life through diverse student organizations
         </p>
       </div>
     </div>
     
     <div class="horizontal-container" id="horizontalScroll">
       <div class="horizontal-panel">
-        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1400&q=80" alt="Robotics & AI Club">
+        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1400&q=80" alt="Robotics Club">
         <div class="panel-content">
           <h3 class="panel-title">Robotics & AI Club</h3>
           <p class="panel-description">
-            Design and build autonomous robots, participate in national competitions, work on cutting-edge AI projects, 
-            and collaborate with industry mentors on real-world automation challenges.
+            Design autonomous robots, participate in competitions, and work on cutting-edge AI projects 
+            with industry mentors.
           </p>
         </div>
       </div>
       
       <div class="horizontal-panel">
-        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1400&q=80" alt="Coding & Development Society">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1400&q=80" alt="Coding Society">
         <div class="panel-content">
-          <h3 class="panel-title">Coding & Development Society</h3>
+          <h3 class="panel-title">Coding & Development</h3>
           <p class="panel-description">
-            Master programming languages, participate in hackathons, contribute to open-source projects, collaborate 
-            on web and mobile applications, and prepare for technical interviews.
+            Master programming languages, participate in hackathons, contribute to open-source projects, 
+            and build real-world applications.
           </p>
         </div>
       </div>
       
       <div class="horizontal-panel">
-        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1400&q=80" alt="Cultural & Arts Society">
+        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1400&q=80" alt="Cultural Society">
         <div class="panel-content">
-          <h3 class="panel-title">Cultural & Arts Society</h3>
+          <h3 class="panel-title">Cultural & Arts</h3>
           <p class="panel-description">
-            Express your creativity through music, dance, theater, fine arts, photography, and literary events. 
-            Organize and participate in annual cultural festivals and intercollegiate competitions.
+            Express creativity through music, dance, theater, fine arts, and participate in annual 
+            cultural festivals and competitions.
           </p>
         </div>
       </div>
@@ -1094,45 +1351,45 @@
       <div class="horizontal-panel">
         <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1400&q=80" alt="Sports Complex">
         <div class="panel-content">
-          <h3 class="panel-title">Sports & Wellness Complex</h3>
+          <h3 class="panel-title">Sports Complex</h3>
           <p class="panel-description">
-            World-class facilities including cricket ground, basketball courts, indoor badminton, table tennis, 
-            swimming pool, fully-equipped gymnasium, and yoga centers for physical and mental wellness.
+            World-class facilities including cricket ground, basketball courts, badminton, swimming pool, 
+            and fully-equipped gymnasium.
           </p>
         </div>
       </div>
       
       <div class="horizontal-panel">
-        <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1400&q=80" alt="Entrepreneurship Cell">
+        <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1400&q=80" alt="Entrepreneurship">
         <div class="panel-content">
           <h3 class="panel-title">Entrepreneurship Cell</h3>
           <p class="panel-description">
-            Transform your business ideas into reality with expert mentorship, seed funding opportunities, 
-            incubation support, networking with successful entrepreneurs, and startup ecosystem access.
+            Transform business ideas into reality with mentorship, seed funding, incubation support, 
+            and startup ecosystem access.
           </p>
         </div>
       </div>
       
       <div class="horizontal-panel">
-        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1400&q=80" alt="Central Library">
+        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1400&q=80" alt="Library">
         <div class="panel-content">
-          <h3 class="panel-title">Central Library & Learning Hub</h3>
+          <h3 class="panel-title">Central Library</h3>
           <p class="panel-description">
-            Modern learning facility with 100,000+ books, digital resources, quiet study zones, collaborative 
-            learning spaces, research carrels, and 24/7 access to online databases and e-journals.
+            Modern facility with 100,000+ books, digital resources, study zones, and 24/7 access 
+            to online databases.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== CAMPUS MAP SECTION ==================== -->
+  <!-- ==================== CAMPUS MAP ==================== -->
   <section class="campus-map-section">
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Campus Map</h2>
         <p class="section-subtitle">
-          Navigate our expansive campus with ease and discover all academic buildings, facilities, and amenities
+          Navigate our expansive campus with ease and discover all facilities
         </p>
       </div>
       
@@ -1141,19 +1398,19 @@
           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
         </svg>
         <h3>Interactive Campus Navigation</h3>
-        <p>Detailed campus map with building locations and facility information will be displayed here</p>
-        <p class="map-note">(Backend integration and API connectivity pending)</p>
+        <p>Detailed campus map with building locations will be displayed here</p>
+        <p style="font-size: 0.9rem; color: #999; margin-top: 8px;">(Backend integration pending)</p>
       </div>
     </div>
   </section>
 
-  <!-- ==================== POPULAR PROGRAMMES ==================== -->
+  <!-- ==================== PROGRAMMES ==================== -->
   <section class="programmes-section">
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Popular Programmes</h2>
         <p class="section-subtitle">
-          Discover our flagship academic programs designed to prepare you for success in your chosen career path
+          Discover our flagship academic programs designed for your success
         </p>
       </div>
       
@@ -1163,48 +1420,44 @@
           <div class="programme-body">
             <h3 class="programme-title">Computer Studies</h3>
             <p class="programme-text">
-              Cutting-edge curriculum in computer science, artificial intelligence, data science, machine learning, 
-              cybersecurity, and cloud computing with state-of-the-art labs, industry partnerships, internship 
-              opportunities, and excellent placement assistance in top IT firms and tech startups.
+              Cutting-edge curriculum in computer science, AI, data science, machine learning, and cybersecurity 
+              with state-of-the-art labs and industry partnerships.
             </p>
             <a href="#" class="programme-link">Learn More →</a>
           </div>
         </div>
 
         <div class="programme-card">
-          <img class="programme-image" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=900&q=80" alt="Business Administration">
+          <img class="programme-image" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=900&q=80" alt="Business">
           <div class="programme-body">
             <h3 class="programme-title">Business Administration</h3>
             <p class="programme-text">
-              Comprehensive MBA and undergraduate programs focusing on strategic management, leadership development, 
-              digital marketing, financial analysis, entrepreneurship, and global business strategies with case study 
-              methodology, industry immersion, and corporate mentorship programs.
+              Comprehensive MBA and undergraduate programs focusing on leadership, digital marketing, 
+              entrepreneurship, and global business strategies.
             </p>
             <a href="#" class="programme-link">Learn More →</a>
           </div>
         </div>
 
         <div class="programme-card">
-          <img class="programme-image" src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=900&q=80" alt="Applied Sciences">
+          <img class="programme-image" src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=900&q=80" alt="Sciences">
           <div class="programme-body">
             <h3 class="programme-title">Applied Sciences</h3>
             <p class="programme-text">
-              Comprehensive programs in physics, chemistry, biology, biotechnology, environmental sciences, and 
-              nanotechnology with hands-on research opportunities, modern laboratories, expert faculty mentorship, 
-              and pathways to academic research and industrial R&D careers.
+              Comprehensive programs in physics, chemistry, biology, biotechnology, and environmental sciences 
+              with hands-on research opportunities.
             </p>
             <a href="#" class="programme-link">Learn More →</a>
           </div>
         </div>
 
         <div class="programme-card">
-          <img class="programme-image" src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=900&q=80" alt="Arts & Humanities">
+          <img class="programme-image" src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=900&q=80" alt="Arts">
           <div class="programme-body">
             <h3 class="programme-title">Arts & Humanities</h3>
             <p class="programme-text">
-              Rich programs in literature, history, philosophy, psychology, sociology, and fine arts that foster 
-              critical thinking, creative expression, cultural awareness, and ethical reasoning in an inclusive 
-              learning environment with diverse perspectives and global connections.
+              Rich programs in literature, history, philosophy, psychology, and fine arts fostering critical 
+              thinking and creative expression.
             </p>
             <a href="#" class="programme-link">Learn More →</a>
           </div>
@@ -1213,46 +1466,43 @@
     </div>
   </section>
 
-  <!-- ==================== NEWS & EVENTS ==================== -->
+  <!-- ==================== NEWS ==================== -->
   <section class="news-section">
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">News & Events</h2>
         <p class="section-subtitle">
-          Stay informed about the latest developments, achievements, and upcoming events across campus
+          Stay informed about the latest developments across campus
         </p>
       </div>
       
       <div class="news-grid">
         <article class="news-card">
           <div class="news-date">December 15, 2024</div>
-          <h3 class="news-title">Annual Tech Fest 2024 Concluded Successfully</h3>
+          <h3 class="news-title">Annual Tech Fest 2024</h3>
           <p class="news-text">
-            Our flagship technology festival showcased innovative projects from over 500 students, featuring robotics 
-            competitions, AI hackathons, coding challenges, and inspiring guest lectures from industry leaders 
-            representing Google, Microsoft, Amazon, and leading startups.
+            Our flagship technology festival showcased innovative projects from over 500 students, featuring 
+            robotics competitions, AI hackathons, and guest lectures from industry leaders.
           </p>
           <a href="#" class="news-link">Read More →</a>
         </article>
 
         <article class="news-card">
           <div class="news-date">December 10, 2024</div>
-          <h3 class="news-title">New Research Center for AI & Machine Learning Inaugurated</h3>
+          <h3 class="news-title">New AI Research Center</h3>
           <p class="news-text">
             The college inaugurated a state-of-the-art research facility dedicated to artificial intelligence 
-            and machine learning, featuring advanced computing infrastructure, GPU clusters, collaborative research 
-            spaces, and partnerships with leading tech companies for cutting-edge research.
+            with advanced computing infrastructure and industry partnerships.
           </p>
           <a href="#" class="news-link">Read More →</a>
         </article>
 
         <article class="news-card">
           <div class="news-date">December 5, 2024</div>
-          <h3 class="news-title">Students Win National Innovation Challenge</h3>
+          <h3 class="news-title">National Innovation Win</h3>
           <p class="news-text">
-            A team of final-year engineering students secured first place in the prestigious National Innovation 
-            Challenge with their sustainable energy solution, winning a ₹5 lakh grant for further development and 
-            mentorship from industry experts and investors.
+            Final-year students secured first place in the National Innovation Challenge with their sustainable 
+            energy solution, winning ₹5 lakh grant.
           </p>
           <a href="#" class="news-link">Read More →</a>
         </article>
@@ -1260,13 +1510,13 @@
     </div>
   </section>
 
-  <!-- ==================== CLUB EVENTS SECTION (FROM BACKEND) ==================== -->
+  <!-- ==================== CLUB EVENTS ==================== -->
   <section class="club-events-section">
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Upcoming Club Events</h2>
         <p class="section-subtitle">
-          Participate in exciting club activities, workshops, competitions, and cultural events throughout the year
+          Participate in exciting club activities and campus events
         </p>
       </div>
       
@@ -1291,9 +1541,9 @@
             </div>
             {% endfor %}
           {% else %}
-            <div class="text-center" style="padding: 60px 20px;">
-              <h4 style="color: var(--text-gray); font-size: 1.3rem;">No upcoming events scheduled at this time.</h4>
-              <p style="color: var(--text-gray); margin-top: 10px;">Check back soon for exciting club activities and campus events!</p>
+            <div class="text-center" style="padding: 60px 20px; background: white; border-radius: 16px;">
+              <h4 style="color: var(--primary-green); font-size: 1.5rem; font-weight: 700;">No upcoming events scheduled</h4>
+              <p style="color: var(--text-gray); margin-top: 10px; font-size: 1.1rem;">Check back soon for exciting club activities!</p>
             </div>
           {% endif %}
         </div>
@@ -1301,47 +1551,46 @@
     </div>
   </section>
 
-  <!-- ==================== RECRUITERS SECTION ==================== -->
+  <!-- ==================== RECRUITERS ==================== -->
   <section class="recruiters-section">
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Our Recruitment Partners</h2>
         <p class="section-subtitle">
-          Leading companies and organizations that have partnered with CODE-X for campus recruitment
+          Leading companies partnered with CODE-X for campus recruitment
         </p>
       </div>
 
       <div class="recruiters-grid">
         <div class="recruiter-card">
-          <img src="recruiter1.png" alt="Recruitment Partner 1" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+1'">
+          <img src="recruiter1.png" alt="Partner 1" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+1'">
         </div>
         <div class="recruiter-card">
-          <img src="recruiter2.png" alt="Recruitment Partner 2" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+2'">
+          <img src="recruiter2.png" alt="Partner 2" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+2'">
         </div>
         <div class="recruiter-card">
-          <img src="recruiter3.png" alt="Recruitment Partner 3" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+3'">
+          <img src="recruiter3.png" alt="Partner 3" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+3'">
         </div>
         <div class="recruiter-card">
-          <img src="recruiter4.png" alt="Recruitment Partner 4" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+4'">
+          <img src="recruiter4.png" alt="Partner 4" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+4'">
         </div>
         <div class="recruiter-card">
-          <img src="recruiter5.png" alt="Recruitment Partner 5" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+5'">
+          <img src="recruiter5.png" alt="Partner 5" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+5'">
         </div>
         <div class="recruiter-card">
-          <img src="recruiter6.png" alt="Recruitment Partner 6" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+6'">
+          <img src="recruiter6.png" alt="Partner 6" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+6'">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== CTA SECTION ==================== -->
+  <!-- ==================== CTA ==================== -->
   <section class="cta-section">
     <div class="container">
       <h2 class="cta-title">Ready to Begin Your Journey?</h2>
       <p class="cta-text">
         Join thousands of successful students who chose CODE-X as their pathway to excellence. Applications are now 
-        open for the upcoming academic year. Take the first step towards a brighter future and transformative 
-        educational experience that will shape your career and life.
+        open for the upcoming academic year.
       </p>
       <div class="hero-cta-group">
         <a href="#" class="btn-hero-primary magnetic-btn">Apply Now</a>
@@ -1356,7 +1605,7 @@
       <div class="footer-grid">
         <div class="footer-section">
           <h3>Contact Us</h3>
-          <p class="footer-text">📍 Dr SNS Rajalakshmi College of Arts & Science</p>
+          <p class="footer-text">📍 Dr SNS Rajalakshmi College</p>
           <p class="footer-text">Coimbatore, Tamil Nadu - 641049</p>
           <p class="footer-text">📞 Phone: +91-XXX-XXX-XXXX</p>
           <p class="footer-text">✉️ Email: info@codex.edu.in</p>
@@ -1407,60 +1656,83 @@
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2024 CODE-X - Dr SNS Rajalakshmi College of Arts & Science. All rights reserved.</p>
+        <p>&copy; 2024 CODE-X - Dr SNS Rajalakshmi College. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
-  <!-- ==================== FLOATING ATTENDANCE BUTTON (LEFT SIDE) ==================== -->
+  <!-- ==================== FLOATING BUTTONS ==================== -->
   <div id="att-toggle">
-    📊 Check Attendance
+    <span>📊</span> Attendance
   </div>
 
-  <!-- ==================== ATTENDANCE PANEL ==================== -->
   <div id="att-panel">
-    <h6 style="margin-bottom:12px; color: var(--primary-green); font-weight: 700;">📊 Check Attendance</h6>
-    <div class="mb-2">
-      <label class="form-label mb-1" style="font-weight: 600;">Registration Number</label>
-      <input type="text" id="att_reg_no" class="form-control form-control-sm" placeholder="e.g., 21CS001">
+    <h6 style="margin-bottom:14px; color: var(--primary-green); font-weight: 800; font-size: 1.1rem;">📊 Check Attendance</h6>
+    <div class="mb-3">
+      <label class="form-label mb-1" style="font-weight: 600; color: var(--text-dark);">Registration Number</label>
+      <input type="text" id="att_reg_no" class="form-control" placeholder="e.g., 21CS001" style="border: 2px solid var(--primary-green); border-radius: 8px; padding: 10px;">
     </div>
-    <button class="btn btn-sm w-100 mb-2" id="att_check_btn" style="background: linear-gradient(135deg, var(--primary-green), var(--light-green)); color: white; font-weight: 600;">Check</button>
-    <div id="att_result" style="display:none; font-size:0.95rem; background: var(--pale-green); padding: 12px; border-radius: 8px; margin-top: 10px;">
-      <div style="margin-bottom: 8px;"><strong id="att_name" style="color: var(--primary-green);"></strong> (<span id="att_reg"></span>)</div>
-      <div style="margin-bottom: 5px;">Attendance: <strong id="att_pct" style="color: var(--primary-green);"></strong></div>
-      <div style="font-size: 0.9rem; color: var(--text-gray);">Total: <span id="att_total"></span>, Attended: <span id="att_attended"></span>, Missed: <span id="att_missed"></span></div>
+    <button class="btn w-100 mb-2" id="att_check_btn" style="background: linear-gradient(135deg, var(--primary-green), var(--light-green)); color: white; font-weight: 700; padding: 12px; border-radius: 8px; border: none;">Check Attendance</button>
+    <div id="att_result" style="display:none; font-size:0.95rem; background: var(--pale-green); padding: 15px; border-radius: 10px; margin-top: 12px;">
+      <div style="margin-bottom: 10px; font-size: 1.05rem;"><strong id="att_name" style="color: var(--primary-green);"></strong> (<span id="att_reg"></span>)</div>
+      <div style="margin-bottom: 8px; font-size: 1.1rem;">Attendance: <strong id="att_pct" style="color: var(--primary-green); font-size: 1.3rem;"></strong></div>
+      <div style="font-size: 0.9rem; color: var(--text-gray);">
+        Total: <span id="att_total"></span> | Attended: <span id="att_attended"></span> | Missed: <span id="att_missed"></span>
+      </div>
     </div>
-    <div id="att_error" class="text-danger" style="display:none; font-size:0.9rem; margin-top: 10px;"></div>
+    <div id="att_error" class="text-danger" style="display:none; font-size:0.95rem; margin-top: 12px; font-weight: 600;"></div>
   </div>
 
-  <!-- ==================== FLOATING CHAT BUTTON (RIGHT SIDE) ==================== -->
   <div id="chat-toggle">
-    AI
+    🤖
   </div>
 
-  <!-- ==================== CHAT WINDOW ==================== -->
   <div id="chat-window">
-    <div style="padding: 12px 18px; background: linear-gradient(135deg, #0d6efd, #0056d2); color:#fff; border-top-left-radius:10px; border-top-right-radius:10px; font-weight: 600;">
+    <div style="padding: 14px 20px; background: linear-gradient(135deg, #0d6efd, #0056d2); color:#fff; border-top-left-radius:13px; border-top-right-radius:13px; font-weight: 700; font-size: 1.05rem;">
       🤖 Institution Assistant
     </div>
-    <div id="chat-messages" style="padding: 12px 18px; overflow-y:auto; flex:1; font-size: 0.95rem; max-height: 360px;">
-      <div style="margin-bottom: 10px; background: #f0f0f0; padding: 10px; border-radius: 8px;"><strong>Assistant:</strong> Hi! Ask me about the institution, departments, or exams.</div>
+    <div id="chat-messages" style="padding: 15px 20px; overflow-y:auto; flex:1; font-size: 0.95rem; max-height: 400px; background: #f8f9fa;">
+      <div style="margin-bottom: 12px; background: white; padding: 12px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);"><strong style="color: #0d6efd;">Assistant:</strong> Hi! Ask me about the institution, departments, or exams.</div>
     </div>
-    <form id="chat-form" style="display:flex; border-top:2px solid #0d6efd;">
-      <input id="chat-input" type="text" class="form-control" placeholder="Type your question..." autocomplete="off" style="border:0; border-radius:0; padding: 12px;">
-      <button class="btn btn-primary" type="submit" style="border-radius: 0; padding: 12px 20px; font-weight: 600;">Send</button>
+    <form id="chat-form" style="display:flex; border-top:3px solid #0d6efd;">
+      <input id="chat-input" type="text" class="form-control" placeholder="Type your question..." autocomplete="off" style="border:0; border-radius:0; padding: 14px; font-size: 0.95rem;">
+      <button class="btn btn-primary" type="submit" style="border-radius: 0; padding: 14px 24px; font-weight: 700; background: linear-gradient(135deg, #0d6efd, #0056d2); border: none;">Send</button>
     </form>
   </div>
 
-  <!-- ==================== GSAP & ScrollTrigger ==================== -->
+  <!-- ==================== GSAP ==================== -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   
   <script>
-    // Register GSAP Plugin
     gsap.registerPlugin(ScrollTrigger);
 
-    // ==================== SVG LOGO INTRO ANIMATION ====================
+    // ==================== CUSTOM CURSOR ====================
+    const cursor = document.getElementById('customCursor');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.style.display = 'block';
+    });
+
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.15;
+      cursorY += (mouseY - cursorY) * 0.15;
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    document.querySelectorAll('a, button, .service-card, .programme-card, .news-card').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+    });
+
+    // ==================== SVG LOGO INTRO ====================
     const logoOverlay = document.querySelector('.logo-intro-overlay');
     const svgPaths = document.querySelectorAll('.logo-svg-path');
 
@@ -1468,11 +1740,9 @@
       onComplete: () => {
         gsap.to(logoOverlay, {
           opacity: 0,
-          duration: 0.6,
+          duration: 0.7,
           ease: "power2.inOut",
-          onComplete: () => {
-            logoOverlay.style.display = 'none';
-          }
+          onComplete: () => logoOverlay.style.display = 'none'
         });
       }
     });
@@ -1480,26 +1750,26 @@
     logoTimeline
       .to(svgPaths, {
         strokeDashoffset: 0,
-        duration: 2.2,
-        stagger: 0.35,
+        duration: 2.5,
+        stagger: 0.4,
         ease: "power2.inOut"
       })
       .to(svgPaths, {
         fill: "white",
-        duration: 0.9,
-        stagger: 0.25
-      }, "-=0.6");
+        duration: 1,
+        stagger: 0.3
+      }, "-=0.8");
 
-    // ==================== HERO CONTENT REVEAL ====================
+    // ==================== HERO REVEAL ====================
     gsap.to('.hero-content', {
       opacity: 1,
       y: 0,
-      duration: 1.3,
-      delay: 3.2,
+      duration: 1.5,
+      delay: 3.5,
       ease: "power3.out"
     });
 
-    // ==================== ANIMATED COUNTER FOR STATISTICS ====================
+    // ==================== ANIMATED COUNTERS ====================
     gsap.utils.toArray('.stat-card').forEach((stat, index) => {
       const numberElement = stat.querySelector('.stat-number');
       const targetCount = parseInt(numberElement.getAttribute('data-count'));
@@ -1507,24 +1777,23 @@
       gsap.to(stat, {
         opacity: 1,
         y: 0,
-        duration: 0.9,
-        delay: index * 0.18,
+        duration: 1,
+        delay: index * 0.2,
         scrollTrigger: {
           trigger: '.stats-section',
-          start: 'top 70%',
+          start: 'top 75%',
           toggleActions: 'play none none reverse'
         }
       });
 
-      // Animated counter
       ScrollTrigger.create({
         trigger: '.stats-section',
-        start: 'top 70%',
+        start: 'top 75%',
         onEnter: () => {
           gsap.to({value: 0}, {
             value: targetCount,
-            duration: 2,
-            ease: "power1.out",
+            duration: 2.5,
+            ease: "power2.out",
             onUpdate: function() {
               const current = Math.round(this.targets()[0].value);
               if (targetCount > 100) {
@@ -1538,58 +1807,41 @@
       });
     });
 
-    // ==================== SECTION REVEAL WITH SCRUB ====================
+    // ==================== SECTION REVEALS ====================
     const revealSections = gsap.utils.toArray('.about-section, .services-section, .programmes-section, .news-section, .campus-map-section, .club-events-section, .recruiters-section');
     
     revealSections.forEach(section => {
       gsap.from(section, {
         opacity: 0,
-        y: 80,
-        duration: 1.2,
+        y: 100,
+        duration: 1.3,
         scrollTrigger: {
           trigger: section,
-          start: 'top 78%',
-          end: 'top 25%',
-          scrub: 1.5,
+          start: 'top 80%',
+          end: 'top 30%',
+          scrub: 2,
           toggleActions: 'play none none reverse'
         }
       });
     });
 
-    // ==================== SERVICE CARDS WITH ROTATION EFFECT ====================
+    // ==================== SERVICE CARDS ROTATION ====================
     gsap.utils.toArray('.service-card').forEach((card, index) => {
       gsap.from(card, {
         opacity: 0,
-        y: 60,
-        rotationX: -15,
-        duration: 0.8,
-        delay: index * 0.12,
+        y: 80,
+        rotationX: -20,
+        duration: 1,
+        delay: index * 0.15,
         scrollTrigger: {
           trigger: '.services-grid',
-          start: 'top 72%',
+          start: 'top 75%',
           toggleActions: 'play none none reverse'
         }
       });
-
-      // Hover rotation effect
-      card.addEventListener('mouseenter', () => {
-        gsap.to(card, {
-          rotationY: 5,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      });
-
-      card.addEventListener('mouseleave', () => {
-        gsap.to(card, {
-          rotationY: 0,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      });
     });
 
-    // ==================== HORIZONTAL SCROLL WITH PINNING ====================
+    // ==================== HORIZONTAL SCROLL ====================
     const horizontalSection = document.querySelector('.horizontal-wrapper');
     const scrollContainer = document.querySelector('.horizontal-container');
 
@@ -1600,29 +1852,14 @@
         trigger: horizontalSection,
         start: 'top top',
         end: () => `+=${scrollContainer.scrollWidth}`,
-        scrub: 1.8,
+        scrub: 2,
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true
       }
     });
 
-    // Parallax effect on horizontal panels
-    gsap.utils.toArray('.horizontal-panel').forEach((panel, index) => {
-      const img = panel.querySelector('img');
-      gsap.to(img, {
-        scale: 1.15,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: horizontalSection,
-          start: 'top top',
-          end: () => `+=${scrollContainer.scrollWidth}`,
-          scrub: true
-        }
-      });
-    });
-
-    // ==================== MAGNETIC BUTTON EFFECT ====================
+    // ==================== MAGNETIC BUTTONS ====================
     const magneticButtons = document.querySelectorAll('.magnetic-btn');
 
     magneticButtons.forEach(btn => {
@@ -1632,9 +1869,9 @@
         const y = e.clientY - rect.top - rect.height / 2;
         
         gsap.to(btn, {
-          x: x * 0.35,
-          y: y * 0.35,
-          duration: 0.35,
+          x: x * 0.4,
+          y: y * 0.4,
+          duration: 0.4,
           ease: 'power2.out'
         });
       });
@@ -1643,15 +1880,15 @@
         gsap.to(btn, {
           x: 0,
           y: 0,
-          duration: 0.6,
-          ease: 'elastic.out(1, 0.35)'
+          duration: 0.7,
+          ease: 'elastic.out(1, 0.4)'
         });
       });
     });
 
-    // ==================== PARALLAX HERO BACKGROUND ====================
+    // ==================== PARALLAX HERO ====================
     gsap.to('.hero-section', {
-      backgroundPosition: '50% 120%',
+      backgroundPosition: '50% 130%',
       ease: 'none',
       scrollTrigger: {
         trigger: '.hero-section',
@@ -1661,30 +1898,30 @@
       }
     });
 
-    // ==================== PROGRAMME CARDS FLIP ENTRANCE ====================
+    // ==================== PROGRAMME CARDS FLIP ====================
     gsap.utils.toArray('.programme-card').forEach((card, index) => {
       gsap.from(card, {
         opacity: 0,
-        rotationY: -90,
+        rotationY: -100,
         transformOrigin: 'left center',
-        duration: 1,
-        delay: index * 0.2,
+        duration: 1.2,
+        delay: index * 0.25,
         scrollTrigger: {
           trigger: '.programmes-grid',
-          start: 'top 72%',
+          start: 'top 75%',
           toggleActions: 'play none none reverse'
         }
       });
     });
 
-    // ==================== EVENT CARDS STAGGER WITH SCALE ====================
+    // ==================== EVENT CARDS SCALE ====================
     gsap.utils.toArray('.event-card').forEach((card, index) => {
       gsap.from(card, {
         opacity: 0,
-        scale: 0.85,
-        y: 40,
-        duration: 0.7,
-        delay: index * 0.15,
+        scale: 0.8,
+        y: 50,
+        duration: 0.8,
+        delay: index * 0.2,
         scrollTrigger: {
           trigger: card,
           start: 'top 85%',
@@ -1693,28 +1930,28 @@
       });
     });
 
-    // ==================== NEWS CARDS WAVE ANIMATION ====================
+    // ==================== NEWS CARDS WAVE ====================
     gsap.from('.news-card', {
       opacity: 0,
-      x: -50,
-      y: 30,
-      rotation: -3,
-      duration: 0.9,
-      stagger: 0.22,
+      x: -60,
+      y: 40,
+      rotation: -5,
+      duration: 1,
+      stagger: 0.25,
       scrollTrigger: {
         trigger: '.news-grid',
-        start: 'top 72%',
+        start: 'top 75%',
         toggleActions: 'play none none reverse'
       }
     });
 
-    // ==================== SECTION TITLES SPLIT TEXT EFFECT ====================
+    // ==================== SECTION TITLES ====================
     gsap.utils.toArray('.section-title').forEach(title => {
       gsap.from(title, {
         opacity: 0,
-        y: 50,
-        scale: 0.9,
-        duration: 1,
+        y: 60,
+        scale: 0.85,
+        duration: 1.2,
         scrollTrigger: {
           trigger: title,
           start: 'top 85%',
@@ -1726,8 +1963,8 @@
     // ==================== FOOTER REVEAL ====================
     gsap.from('.footer', {
       opacity: 0,
-      y: 100,
-      duration: 1.2,
+      y: 120,
+      duration: 1.5,
       scrollTrigger: {
         trigger: '.footer',
         start: 'top 90%',
@@ -1735,20 +1972,18 @@
       }
     });
 
-    // ==================== FLOATING BUTTONS ENTRANCE ====================
+    // ==================== FLOATING BUTTONS ====================
     gsap.from('#att-toggle, #chat-toggle', {
       scale: 0,
       opacity: 0,
-      duration: 0.6,
-      delay: 3.8,
+      duration: 0.7,
+      delay: 4,
       stagger: 0.2,
-      ease: 'back.out(1.7)'
+      ease: 'back.out(2)'
     });
 
-    // ==================== REFRESH SCROLLTRIGGER ON RESIZE ====================
-    window.addEventListener('resize', () => {
-      ScrollTrigger.refresh();
-    });
+    // ==================== REFRESH ====================
+    window.addEventListener('resize', () => ScrollTrigger.refresh());
 
     // ==================== ATTENDANCE LOGIC ====================
     const ATT_API_URL = '/api/att';
@@ -1831,7 +2066,7 @@
       const text = chatInput.value.trim();
       if (!text) return;
 
-      const userHtml = `<div style="margin-bottom: 10px; background: #e3f2fd; padding: 10px; border-radius: 8px; text-align: right;"><strong>You:</strong> ${text}</div>`;
+      const userHtml = `<div style="margin-bottom: 12px; background: #0d6efd; color: white; padding: 12px; border-radius: 10px; text-align: right; box-shadow: 0 2px 6px rgba(0,0,0,0.1);"><strong>You:</strong> ${text}</div>`;
       chatMessages.insertAdjacentHTML("beforeend", userHtml);
       chatInput.value = "";
       chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -1845,17 +2080,17 @@
 
         const data = await resp.json();
         const reply = data.reply || "Sorry, I could not understand that.";
-        const botHtml = `<div style="margin-bottom: 10px; background: #f0f0f0; padding: 10px; border-radius: 8px;"><strong>Assistant:</strong> ${reply}</div>`;
+        const botHtml = `<div style="margin-bottom: 12px; background: white; padding: 12px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);"><strong style="color: #0d6efd;">Assistant:</strong> ${reply}</div>`;
         chatMessages.insertAdjacentHTML("beforeend", botHtml);
         chatMessages.scrollTop = chatMessages.scrollHeight;
       } catch (err) {
-        const errHtml = `<div style="margin-bottom: 10px; background: #ffebee; padding: 10px; border-radius: 8px;"><strong>Assistant:</strong> There was an error talking to the server.</div>`;
+        const errHtml = `<div style="margin-bottom: 12px; background: #ffebee; padding: 12px; border-radius: 10px;"><strong style="color: #d32f2f;">Assistant:</strong> Error connecting to server.</div>`;
         chatMessages.insertAdjacentHTML("beforeend", errHtml);
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
     });
 
-    console.log('CODE-X Institution Portal Loaded with Advanced GSAP Animations');
+    console.log('CODE-X Portal Loaded with Advanced GSAP Animations');
   </script>
 </body>
 </html>
