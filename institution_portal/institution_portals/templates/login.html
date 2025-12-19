@@ -1,735 +1,1115 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Login — CODE-X Institutions</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8" />
+<title>Login — CODE-X Institutions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Professional Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<style>
+:root{
+  --green:#4a9d5f;
+  --green-soft:#e8f5e9;
+  --green-light:#66b57a;
+  --green-accent:#8fd19e;
+  --green-dark:#3a7d4f;
+}
 
-    :root {
-      --primary-green: #4a9d5f;
-      --light-green: #66b57a;
-      --accent-green: #8fd19e;
-      --pale-green: #e8f5e9;
-      --dark-green: #3a7d4f;
-    }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, var(--pale-green) 0%, #ffffff 100%);
-      min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
-    }
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:#fafffe;
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+}
 
-    /* Animated Background Pattern */
-    body::before {
-      content: '';
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 20% 50%, rgba(74, 157, 95, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(102, 181, 122, 0.05) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-    }
+/* ANIMATED GRADIENT BACKGROUND */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(74,157,95,0.12), transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(143,209,158,0.10), transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(102,181,122,0.06), transparent 60%);
+  animation:bgPulse 20s ease-in-out infinite;
+  z-index:0;
+}
 
-    /* Floating Particles */
-    .particle {
-      position: fixed;
-      width: 4px;
-      height: 4px;
-      background: var(--accent-green);
-      border-radius: 50%;
-      opacity: 0.3;
-      pointer-events: none;
-      z-index: 1;
-    }
+@keyframes bgPulse{
+  0%, 100%{opacity:1; transform:scale(1)}
+  50%{opacity:0.7; transform:scale(1.05)}
+}
 
-    /* HEADER */
-    header {
-      background: linear-gradient(135deg, var(--primary-green), var(--light-green));
-      padding: 18px 32px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      color: white;
-      font-weight: 700;
-      font-size: 1.5rem;
-      box-shadow: 0 4px 16px rgba(74, 157, 95, 0.2);
-      position: relative;
-      z-index: 100;
-      overflow: hidden;
-    }
+/* FLOATING GEOMETRIC SHAPES */
+.geo-shape{
+  position:fixed;
+  border-radius:50%;
+  opacity:0.08;
+  z-index:1;
+  pointer-events:none;
+}
 
-    header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-      animation: shimmer 3s infinite;
-    }
+.geo-1{
+  width:300px;
+  height:300px;
+  background:linear-gradient(135deg, var(--green), var(--green-light));
+  top:-100px;
+  right:-100px;
+  animation:float1 15s ease-in-out infinite;
+}
 
-    @keyframes shimmer {
-      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-    }
+.geo-2{
+  width:200px;
+  height:200px;
+  background:linear-gradient(135deg, var(--green-light), var(--green-accent));
+  bottom:-50px;
+  left:-50px;
+  animation:float2 18s ease-in-out infinite;
+}
 
-    header img {
-      width: 36px;
-      height: 36px;
-      filter: brightness(0) invert(1);
-      position: relative;
-      z-index: 2;
-    }
+.geo-3{
+  width:150px;
+  height:150px;
+  background:linear-gradient(135deg, var(--green-accent), var(--green));
+  top:40%;
+  left:10%;
+  animation:float3 12s ease-in-out infinite;
+}
 
-    header span {
-      position: relative;
-      z-index: 2;
-      letter-spacing: 0.5px;
-    }
+@keyframes float1{
+  0%, 100%{transform:translate(0,0) rotate(0deg)}
+  50%{transform:translate(50px,-50px) rotate(180deg)}
+}
 
-    /* MAIN LOGIN CARD */
-    .container {
-      max-width: 480px;
-      margin: 80px auto;
-      background: #ffffff;
-      padding: 45px 40px;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(74, 157, 95, 0.15);
-      position: relative;
-      z-index: 10;
-      opacity: 0;
-      transform: translateY(30px);
-      border: 1px solid rgba(74, 157, 95, 0.1);
-    }
+@keyframes float2{
+  0%, 100%{transform:translate(0,0) rotate(0deg)}
+  50%{transform:translate(-40px,40px) rotate(-180deg)}
+}
 
-    .container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, var(--primary-green), var(--light-green), var(--accent-green));
-      border-radius: 20px 20px 0 0;
-    }
+@keyframes float3{
+  0%, 100%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(30px,30px) scale(1.2)}
+}
 
-    .logo-container {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+/* GRID PATTERN OVERLAY */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(74,157,95,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74,157,95,0.03) 1px, transparent 1px);
+  background-size:50px 50px;
+  animation:gridMove 30s linear infinite;
+  z-index:1;
+  pointer-events:none;
+}
 
-    .logo-circle {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, var(--primary-green), var(--light-green));
-      border-radius: 50%;
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 8px 24px rgba(74, 157, 95, 0.25);
-      position: relative;
-      overflow: hidden;
-    }
+@keyframes gridMove{
+  0%{transform:translate(0,0)}
+  100%{transform:translate(50px,50px)}
+}
 
-    .logo-circle::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.3), transparent);
-      animation: rotate 3s linear infinite;
-    }
+/* ANIMATED LINES */
+.animated-line{
+  position:fixed;
+  height:2px;
+  background:linear-gradient(90deg, transparent, var(--green-accent), transparent);
+  opacity:0.2;
+  z-index:1;
+  pointer-events:none;
+}
 
-    @keyframes rotate {
-      100% { transform: rotate(360deg); }
-    }
+.line-1{
+  top:20%;
+  left:-100%;
+  width:40%;
+}
 
-    .logo-circle svg {
-      width: 40px;
-      height: 40px;
-      fill: white;
-      position: relative;
-      z-index: 2;
-    }
+.line-2{
+  top:60%;
+  right:-100%;
+  width:50%;
+}
 
-    .title {
-      text-align: center;
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 8px;
-      color: var(--primary-green);
-      letter-spacing: -0.5px;
-    }
+.line-3{
+  top:80%;
+  left:-100%;
+  width:35%;
+}
 
-    .subtitle {
-      text-align: center;
-      font-size: 0.95rem;
-      color: #666;
-      margin-bottom: 35px;
-      font-weight: 400;
-    }
+/* HEADER */
+header{
+  background:linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
+  padding:18px 32px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  color:#fff;
+  font-weight:700;
+  font-size:1.5rem;
+  box-shadow:0 8px 32px rgba(74,157,95,0.25);
+  position:relative;
+  z-index:100;
+  overflow:hidden;
+  letter-spacing:0.5px;
+}
 
-    .form-group {
-      margin-bottom: 24px;
-      position: relative;
-    }
+header::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
+  transform:translateX(-100%);
+  animation:headerShine 3s ease-in-out infinite;
+}
 
-    label {
-      font-weight: 600;
-      display: block;
-      font-size: 0.95rem;
-      color: #333;
-      margin-bottom: 8px;
-      transition: color 0.3s;
-    }
+@keyframes headerShine{
+  0%{transform:translateX(-100%)}
+  50%, 100%{transform:translateX(200%)}
+}
 
-    .input-wrapper {
-      position: relative;
-    }
+header img{
+  width:36px;
+  height:36px;
+  filter:brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  position:relative;
+  z-index:2;
+}
 
-    .input-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.2rem;
-      color: var(--primary-green);
-      opacity: 0.7;
-      transition: opacity 0.3s;
-    }
+/* LOGIN CARD */
+.container{
+  max-width:480px;
+  margin:70px auto;
+  background:#ffffff;
+  padding:50px 45px;
+  border-radius:24px;
+  box-shadow:
+    0 40px 100px rgba(74,157,95,0.2),
+    0 0 0 1px rgba(74,157,95,0.08);
+  position:relative;
+  z-index:10;
+  opacity:0;
+  transform:translateY(50px) scale(0.95);
+}
 
-    input {
-      width: 100%;
-      padding: 14px 14px 14px 45px;
-      border-radius: 12px;
-      border: 2px solid #e0e0e0;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-      background: #fafafa;
-      font-family: 'Inter', sans-serif;
-    }
+.container::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:6px;
+  background:linear-gradient(90deg, var(--green), var(--green-light), var(--green-accent));
+  border-radius:24px 24px 0 0;
+}
 
-    input:focus {
-      border-color: var(--primary-green);
-      outline: none;
-      box-shadow: 0 0 0 4px rgba(74, 157, 95, 0.1);
-      background: white;
-    }
+/* GLOWING EFFECT */
+.container::after{
+  content:'';
+  position:absolute;
+  inset:-2px;
+  background:linear-gradient(135deg, var(--green), var(--green-light));
+  border-radius:24px;
+  z-index:-1;
+  opacity:0;
+  filter:blur(20px);
+  transition:opacity 0.6s;
+}
 
-    input:focus + .input-icon {
-      opacity: 1;
-    }
+.container:hover::after{
+  opacity:0.3;
+}
 
-    input::placeholder {
-      color: #999;
-    }
+/* LOGO CIRCLE */
+.logo-wrapper{
+  text-align:center;
+  margin-bottom:30px;
+  position:relative;
+}
 
-    .btn {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, var(--primary-green), var(--light-green));
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      margin-top: 10px;
-      font-weight: 700;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 16px rgba(74, 157, 95, 0.3);
-      position: relative;
-      overflow: hidden;
-      letter-spacing: 0.5px;
-    }
+.logo-circle{
+  width:90px;
+  height:90px;
+  margin:0 auto 20px;
+  background:linear-gradient(135deg, var(--green), var(--green-light));
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  box-shadow:0 10px 30px rgba(74,157,95,0.3);
+  animation:logoFloat 3s ease-in-out infinite;
+}
 
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
+@keyframes logoFloat{
+  0%, 100%{transform:translateY(0)}
+  50%{transform:translateY(-15px)}
+}
 
-    .btn:hover::before {
-      width: 300px;
-      height: 300px;
-    }
+.logo-circle::before{
+  content:'';
+  position:absolute;
+  inset:-5px;
+  border-radius:50%;
+  background:conic-gradient(
+    from 0deg,
+    var(--green),
+    var(--green-light),
+    var(--green-accent),
+    var(--green)
+  );
+  z-index:-1;
+  opacity:0.6;
+  animation:logoRotate 4s linear infinite;
+}
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(74, 157, 95, 0.4);
-    }
+@keyframes logoRotate{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
 
-    .btn:active {
-      transform: translateY(0);
-    }
+.logo-circle svg{
+  width:45px;
+  height:45px;
+  fill:white;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,0.2));
+}
 
-    /* FLASH MESSAGE */
-    .flash {
-      padding: 14px 16px;
-      background: linear-gradient(135deg, #fff3f3, #ffe8e8);
-      border-left: 5px solid #ff4949;
-      margin-bottom: 24px;
-      border-radius: 10px;
-      color: #c62828;
-      font-size: 0.92rem;
-      font-weight: 500;
-      box-shadow: 0 4px 12px rgba(255, 73, 73, 0.1);
-      opacity: 0;
-      animation: slideIn 0.5s forwards;
-    }
+/* ORBITING DOTS AROUND LOGO */
+.orbit-dot{
+  position:absolute;
+  width:8px;
+  height:8px;
+  background:var(--green);
+  border-radius:50%;
+  top:50%;
+  left:50%;
+}
 
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+.title{
+  text-align:center;
+  font-size:2.2rem;
+  font-weight:800;
+  margin-bottom:8px;
+  background:linear-gradient(135deg, var(--green), var(--green-dark));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  letter-spacing:-0.5px;
+}
 
-    .note {
-      color: #666;
-      font-size: 0.88rem;
-      margin-top: 28px;
-      text-align: center;
-      line-height: 1.6;
-      padding: 16px;
-      background: var(--pale-green);
-      border-radius: 10px;
-      font-weight: 400;
-    }
+.subtitle{
+  text-align:center;
+  font-size:1rem;
+  color:#666;
+  margin-bottom:35px;
+  font-weight:400;
+}
 
-    /* Success Icon Animation */
-    .success-icon {
-      width: 60px;
-      height: 60px;
-      margin: 0 auto 20px;
-      display: none;
-    }
+/* FLASH MESSAGE */
+.flash{
+  padding:14px 18px;
+  background:linear-gradient(135deg, #fff5f5, #ffebee);
+  border-left:5px solid #e53935;
+  margin-bottom:24px;
+  border-radius:12px;
+  color:#c62828;
+  font-size:0.92rem;
+  font-weight:500;
+  box-shadow:0 4px 12px rgba(229,57,53,0.15);
+  position:relative;
+  overflow:hidden;
+}
 
-    .success-icon.show {
-      display: block;
-    }
+.flash::before{
+  content:'⚠';
+  position:absolute;
+  right:15px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:1.5rem;
+  opacity:0.3;
+  animation:warningPulse 1.5s ease-in-out infinite;
+}
 
-    /* Decorative Elements */
-    .decoration {
-      position: fixed;
-      pointer-events: none;
-      opacity: 0.15;
-      z-index: 1;
-    }
+@keyframes warningPulse{
+  0%, 100%{opacity:0.3; transform:translateY(-50%) scale(1)}
+  50%{opacity:0.6; transform:translateY(-50%) scale(1.1)}
+}
 
-    .decoration.circle-1 {
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, var(--accent-green), transparent);
-      top: -100px;
-      right: -100px;
-      border-radius: 50%;
-    }
+/* FORM */
+.form-group{
+  margin-bottom:24px;
+  position:relative;
+}
 
-    .decoration.circle-2 {
-      width: 200px;
-      height: 200px;
-      background: radial-gradient(circle, var(--light-green), transparent);
-      bottom: -50px;
-      left: -50px;
-      border-radius: 50%;
-    }
+label{
+  font-weight:600;
+  display:block;
+  font-size:0.95rem;
+  color:#2f2f2f;
+  margin-bottom:8px;
+  transition:color 0.3s;
+}
 
-    /* Loading Spinner */
-    .spinner {
-      display: none;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto;
-    }
+.input-wrapper{
+  position:relative;
+}
 
-    @keyframes spin {
-      100% { transform: rotate(360deg); }
-    }
+.input-icon{
+  position:absolute;
+  left:16px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:1.3rem;
+  transition:all 0.3s;
+  z-index:2;
+}
 
-    .btn.loading .spinner {
-      display: block;
-    }
+input{
+  width:100%;
+  padding:14px 16px 14px 50px;
+  border-radius:12px;
+  border:2px solid #e0f2e4;
+  font-size:1rem;
+  background:#fafffe;
+  transition:all 0.3s ease;
+  font-family:'Inter',sans-serif;
+  position:relative;
+  color:#2f2f2f;
+}
 
-    .btn.loading span {
-      display: none;
-    }
+input:focus{
+  border-color:var(--green);
+  outline:none;
+  box-shadow:
+    0 0 0 4px rgba(74,157,95,0.12),
+    0 4px 12px rgba(74,157,95,0.15);
+  background:#ffffff;
+  transform:translateY(-2px);
+}
 
-    /* Responsive */
-    @media (max-width: 576px) {
-      .container {
-        margin: 40px 20px;
-        padding: 35px 28px;
-      }
+input:focus ~ .input-icon{
+  color:var(--green);
+  transform:translateY(-50%) scale(1.15);
+}
 
-      .title {
-        font-size: 1.7rem;
-      }
+input::placeholder{
+  color:#999;
+}
 
-      header {
-        padding: 16px 20px;
-        font-size: 1.3rem;
-      }
-    }
+/* BUTTON - FIXED VISIBILITY */
+.btn{
+  width:100%;
+  padding:16px;
+  background:linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
+  color:#ffffff !important;
+  border:none;
+  border-radius:12px;
+  font-size:1.1rem;
+  cursor:pointer;
+  margin-top:10px;
+  font-weight:700;
+  position:relative;
+  overflow:hidden;
+  letter-spacing:0.5px;
+  box-shadow:
+    0 6px 20px rgba(74,157,95,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+  transition:all 0.3s ease;
+  text-shadow:0 1px 2px rgba(0,0,0,0.1);
+}
 
-    /* Floating Animation for Logo */
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
+.btn::before{
+  content:'';
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:0;
+  height:0;
+  border-radius:50%;
+  background:rgba(255,255,255,0.3);
+  transform:translate(-50%, -50%);
+  transition:width 0.6s, height 0.6s;
+}
 
-    .logo-circle {
-      animation: float 3s ease-in-out infinite;
-    }
+.btn:hover{
+  transform:translateY(-3px);
+  box-shadow:
+    0 10px 30px rgba(74,157,95,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+  background:linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+}
 
-    /* Pulse Animation for Button */
-    @keyframes pulse {
-      0% { box-shadow: 0 4px 16px rgba(74, 157, 95, 0.3); }
-      50% { box-shadow: 0 4px 24px rgba(74, 157, 95, 0.5); }
-      100% { box-shadow: 0 4px 16px rgba(74, 157, 95, 0.3); }
-    }
+.btn:hover::before{
+  width:400px;
+  height:400px;
+}
 
-    .btn {
-      animation: pulse 2s ease-in-out infinite;
-    }
-  </style>
+.btn:active{
+  transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(74,157,95,0.3);
+}
+
+/* RIPPLE EFFECT */
+.btn-ripple{
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,0.6);
+  transform:scale(0);
+  pointer-events:none;
+}
+
+/* NOTE */
+.note{
+  color:#666;
+  font-size:0.88rem;
+  margin-top:28px;
+  text-align:center;
+  line-height:1.6;
+  padding:16px;
+  background:linear-gradient(135deg, var(--green-soft), #ffffff);
+  border-radius:12px;
+  border:1px solid rgba(74,157,95,0.1);
+  font-weight:400;
+  position:relative;
+}
+
+.note::before{
+  content:'🎓';
+  display:block;
+  font-size:1.5rem;
+  margin-bottom:8px;
+}
+
+/* PARTICLES */
+.particle{
+  position:fixed;
+  width:6px;
+  height:6px;
+  background:var(--green-accent);
+  border-radius:50%;
+  opacity:0.4;
+  pointer-events:none;
+  z-index:2;
+}
+
+/* FLOATING ICONS */
+.float-icon{
+  position:fixed;
+  font-size:2rem;
+  opacity:0.08;
+  pointer-events:none;
+  z-index:2;
+}
+
+/* DECORATIVE CORNER ELEMENTS */
+.corner-decoration{
+  position:absolute;
+  width:60px;
+  height:60px;
+  border:3px solid var(--green-soft);
+  pointer-events:none;
+}
+
+.corner-top-left{
+  top:-3px;
+  left:-3px;
+  border-right:none;
+  border-bottom:none;
+  border-radius:24px 0 0 0;
+}
+
+.corner-bottom-right{
+  bottom:-3px;
+  right:-3px;
+  border-left:none;
+  border-top:none;
+  border-radius:0 0 24px 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 576px){
+  .container{
+    margin:40px 20px;
+    padding:40px 30px;
+  }
+  
+  .title{
+    font-size:1.9rem;
+  }
+  
+  header{
+    padding:16px 24px;
+    font-size:1.3rem;
+  }
+  
+  .logo-circle{
+    width:75px;
+    height:75px;
+  }
+  
+  .logo-circle svg{
+    width:38px;
+    height:38px;
+  }
+}
+
+/* LOADING ANIMATION */
+@keyframes btnLoading{
+  0%, 100%{transform:translateX(-100%)}
+  50%{transform:translateX(100%)}
+}
+
+.btn.loading::after{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  width:30%;
+  height:100%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation:btnLoading 1.5s ease-in-out infinite;
+}
+
+/* SUCCESS CHECKMARK ANIMATION */
+.success-checkmark{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  width:100px;
+  height:100px;
+  display:none;
+  z-index:1000;
+}
+
+.success-circle{
+  stroke:var(--green);
+  stroke-width:3;
+  fill:none;
+}
+
+.success-check{
+  stroke:var(--green);
+  stroke-width:4;
+  fill:none;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- Decorative Elements -->
-  <div class="decoration circle-1"></div>
-  <div class="decoration circle-2"></div>
+<!-- Geometric Shapes -->
+<div class="geo-shape geo-1"></div>
+<div class="geo-shape geo-2"></div>
+<div class="geo-shape geo-3"></div>
 
-  <!-- Floating Particles -->
-  <div class="particle" style="top: 20%; left: 10%;"></div>
-  <div class="particle" style="top: 60%; left: 80%;"></div>
-  <div class="particle" style="top: 80%; left: 20%;"></div>
-  <div class="particle" style="top: 40%; left: 90%;"></div>
-  <div class="particle" style="top: 70%; left: 50%;"></div>
+<!-- Animated Lines -->
+<div class="animated-line line-1"></div>
+<div class="animated-line line-2"></div>
+<div class="animated-line line-3"></div>
 
-  <!-- HEADER -->
-  <header>
-    <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Logo">
-    <span>CODE-X Institutions</span>
-  </header>
+<!-- Particles -->
+<div class="particle" style="top:15%; left:8%;"></div>
+<div class="particle" style="top:25%; right:12%;"></div>
+<div class="particle" style="top:60%; left:85%;"></div>
+<div class="particle" style="top:75%; left:15%;"></div>
+<div class="particle" style="top:45%; right:25%;"></div>
+<div class="particle" style="top:80%; right:70%;"></div>
 
-  <!-- LOGIN CARD -->
-  <div class="container" id="loginCard">
+<!-- Floating Icons -->
+<div class="float-icon" style="top:10%; left:5%;">📚</div>
+<div class="float-icon" style="top:70%; right:8%;">🎓</div>
+<div class="float-icon" style="top:30%; right:15%;">💻</div>
+<div class="float-icon" style="bottom:15%; left:12%;">🔬</div>
 
-    <div class="logo-container">
-      <div class="logo-circle">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-        </svg>
+<header id="header">
+  <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Logo">
+  CODE-X Institutions
+</header>
+
+<div class="container" id="loginCard">
+  
+  <!-- Corner Decorations -->
+  <div class="corner-decoration corner-top-left"></div>
+  <div class="corner-decoration corner-bottom-right"></div>
+
+  <div class="logo-wrapper">
+    <div class="logo-circle">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+      </svg>
+    </div>
+    <!-- Orbiting Dots -->
+    <div class="orbit-dot" id="orbitDot1"></div>
+    <div class="orbit-dot" id="orbitDot2"></div>
+    <div class="orbit-dot" id="orbitDot3"></div>
+  </div>
+
+  <div class="title">Login Portal</div>
+  <div class="subtitle">Welcome back to CODE-X</div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {% for category, msg in messages %}
+  <div class="flash" id="flashMsg">{{ msg }}</div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+  <form method="POST" action="{{ url_for('login') }}" id="loginForm">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+      <label for="reg_no">Registration No / Email</label>
+      <div class="input-wrapper">
+        {{ form.reg_no(id="reg_no", placeholder="example: 23uai0001 or student@codex.edu") }}
+        <div class="input-icon">👤</div>
       </div>
     </div>
 
-    <div class="title">Login Portal</div>
-    <div class="subtitle">Welcome back to CODE-X Institutions</div>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, msg in messages %}
-          <div class="flash">
-            {{ msg }}
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-
-    <form method="POST" action="{{ url_for('login') }}" id="loginForm">
-      {{ form.hidden_tag() }}
-
-      <div class="form-group">
-        <label for="reg_no">Registration No / Email</label>
-        <div class="input-wrapper">
-          {{ form.reg_no(id="reg_no", placeholder="example: 23uai0001 or student@codex.edu") }}
-          <div class="input-icon">👤</div>
-        </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <div class="input-wrapper">
+        {{ form.password(id="password", placeholder="Enter your password") }}
+        <div class="input-icon">🔒</div>
       </div>
+    </div>
 
-      <div class="form-group">
-        <label for="password">Password</label>
-        <div class="input-wrapper">
-          {{ form.password(id="password", placeholder="Enter your password") }}
-          <div class="input-icon">🔒</div>
-        </div>
-      </div>
+    {{ form.submit(class_="btn", value="Login", id="loginBtn") }}
+  </form>
 
-      {{ form.submit(class_="btn", value="Login", id="loginBtn") }}
-    </form>
+  <p class="note">
+    Students, Staff, and Admins must use credentials provided by CODE-X Institutions.
+  </p>
+</div>
 
-    <p class="note">
-      🎓 Students, Staff, and Admins must use credentials provided by CODE-X Institutions.
-    </p>
-  </div>
+<!-- Success Checkmark SVG -->
+<svg class="success-checkmark" id="successCheck" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+  <circle class="success-circle" cx="26" cy="26" r="25"/>
+  <path class="success-check" d="M14 27l7.5 7.5L38 18"/>
+</svg>
 
-  <!-- GSAP Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+// ==================== GSAP ANIMATIONS ====================
+
+// Header slide in
+gsap.from("#header", {
+  y: -100,
+  opacity: 0,
+  duration: 0.8,
+  ease: "power3.out"
+});
+
+// Card entrance with scale and fade
+gsap.to("#loginCard", {
+  opacity: 1,
+  y: 0,
+  scale: 1,
+  duration: 1.2,
+  delay: 0.3,
+  ease: "power3.out"
+});
+
+// Logo entrance with elastic bounce
+gsap.from(".logo-circle", {
+  scale: 0,
+  rotation: 360,
+  opacity: 0,
+  duration: 1.2,
+  delay: 0.5,
+  ease: "elastic.out(1, 0.6)"
+});
+
+// Orbiting dots around logo
+const orbitRadius = 60;
+const orbitDots = [
+  { el: document.getElementById('orbitDot1'), offset: 0 },
+  { el: document.getElementById('orbitDot2'), offset: 120 },
+  { el: document.getElementById('orbitDot3'), offset: 240 }
+];
+
+orbitDots.forEach(dot => {
+  gsap.to(dot.el, {
+    rotation: 360,
+    transformOrigin: `${orbitRadius}px ${orbitRadius}px`,
+    duration: 4,
+    repeat: -1,
+    ease: "none",
+    delay: dot.offset / 360
+  });
+});
+
+// Title reveal with character split effect
+gsap.from(".title", {
+  opacity: 0,
+  y: -30,
+  duration: 0.8,
+  delay: 0.7,
+  ease: "power3.out"
+});
+
+// Subtitle fade
+gsap.from(".subtitle", {
+  opacity: 0,
+  duration: 0.6,
+  delay: 0.9,
+  ease: "power2.out"
+});
+
+// Corner decorations animate in
+gsap.from(".corner-top-left", {
+  x: -30,
+  y: -30,
+  opacity: 0,
+  duration: 0.8,
+  delay: 0.6,
+  ease: "power2.out"
+});
+
+gsap.from(".corner-bottom-right", {
+  x: 30,
+  y: 30,
+  opacity: 0,
+  duration: 0.8,
+  delay: 0.8,
+  ease: "power2.out"
+});
+
+// Form elements stagger
+gsap.from(".form-group", {
+  opacity: 0,
+  x: -30,
+  duration: 0.7,
+  stagger: 0.15,
+  delay: 1,
+  ease: "power2.out"
+});
+
+// Button entrance with bounce
+gsap.from("#loginBtn", {
+  opacity: 1,
+  scale: 0.9,
+  duration: 0.6,
+  delay: 1.4,
+  ease: "back.out(1.5)"
+});
+
+// Note fade in
+gsap.from(".note", {
+  opacity: 0,
+  y: 20,
+  duration: 0.6,
+  delay: 1.6,
+  ease: "power2.out"
+});
+
+// Animated lines crossing screen
+gsap.to(".line-1", {
+  left: "100%",
+  duration: 8,
+  delay: 1,
+  ease: "power1.inOut",
+  repeat: -1,
+  repeatDelay: 5
+});
+
+gsap.to(".line-2", {
+  right: "100%",
+  duration: 10,
+  delay: 3,
+  ease: "power1.inOut",
+  repeat: -1,
+  repeatDelay: 6
+});
+
+gsap.to(".line-3", {
+  left: "100%",
+  duration: 9,
+  delay: 5,
+  ease: "power1.inOut",
+  repeat: -1,
+  repeatDelay: 7
+});
+
+// Particles floating animation
+gsap.utils.toArray(".particle").forEach((particle, i) => {
+  gsap.to(particle, {
+    y: "+=40",
+    duration: 2 + i * 0.5,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
   
-  <script>
-    // ==================== GSAP ANIMATIONS ====================
+  gsap.to(particle, {
+    x: "+=30",
+    duration: 3 + i * 0.3,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
+  
+  // Random opacity pulse
+  gsap.to(particle, {
+    opacity: 0.6,
+    duration: 1.5 + i * 0.2,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
+});
 
-    // Animate Login Card Entrance
-    gsap.to('#loginCard', {
-      opacity: 1,
-      y: 0,
-      duration: 1.2,
-      delay: 0.3,
-      ease: 'power3.out'
-    });
+// Floating icons gentle movement
+gsap.utils.toArray(".float-icon").forEach((icon, i) => {
+  gsap.to(icon, {
+    y: "+=20",
+    duration: 3 + i * 0.5,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
+  
+  gsap.to(icon, {
+    rotation: 10,
+    duration: 4 + i * 0.3,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
+});
 
-    // Animate Form Groups
-    gsap.from('.form-group', {
-      opacity: 0,
-      x: -30,
-      duration: 0.8,
-      stagger: 0.15,
-      delay: 0.6,
-      ease: 'power2.out'
-    });
+// Geometric shapes animation
+gsap.to(".geo-1", {
+  rotation: 360,
+  duration: 20,
+  repeat: -1,
+  ease: "none"
+});
 
-    // Animate Button
-    gsap.from('.btn', {
-      opacity: 0,
-      scale: 0.9,
-      duration: 0.6,
-      delay: 1,
-      ease: 'back.out(1.4)'
-    });
+gsap.to(".geo-2", {
+  rotation: -360,
+  duration: 25,
+  repeat: -1,
+  ease: "none"
+});
 
-    // Animate Note
-    gsap.from('.note', {
-      opacity: 0,
-      y: 20,
-      duration: 0.6,
-      delay: 1.2,
-      ease: 'power2.out'
-    });
+gsap.to(".geo-3", {
+  rotation: 360,
+  duration: 15,
+  repeat: -1,
+  ease: "none"
+});
 
-    // Animate Logo Circle
-    gsap.from('.logo-circle', {
-      scale: 0,
-      rotation: 360,
-      duration: 1,
-      delay: 0.2,
-      ease: 'elastic.out(1, 0.5)'
-    });
+// ==================== INTERACTIONS ====================
 
-    // Animate Title
-    gsap.from('.title', {
-      opacity: 0,
-      y: -20,
-      duration: 0.8,
-      delay: 0.5,
-      ease: 'power3.out'
-    });
-
-    // Animate Subtitle
-    gsap.from('.subtitle', {
-      opacity: 0,
-      duration: 0.6,
-      delay: 0.7,
-      ease: 'power2.out'
-    });
-
-    // Animate Particles
-    gsap.utils.toArray('.particle').forEach((particle, index) => {
-      gsap.to(particle, {
-        y: '+=30',
-        duration: 2 + index * 0.5,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut'
-      });
-
-      gsap.to(particle, {
-        x: '+=20',
-        duration: 3 + index * 0.3,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut'
-      });
-    });
-
-    // Animate Decorative Circles
-    gsap.to('.circle-1', {
+// Input focus animations
+const inputs = document.querySelectorAll("input");
+inputs.forEach(input => {
+  input.addEventListener("focus", function() {
+    gsap.to(this.parentElement.querySelector(".input-icon"), {
       scale: 1.2,
-      duration: 4,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut'
+      duration: 0.3,
+      ease: "back.out(1.7)"
     });
-
-    gsap.to('.circle-2', {
-      scale: 1.3,
-      duration: 5,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut'
+    
+    gsap.to(this.parentElement.parentElement.querySelector("label"), {
+      color: "#4a9d5f",
+      scale: 1.02,
+      duration: 0.3
     });
-
-    // Input Focus Animation
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => {
-      input.addEventListener('focus', function() {
-        gsap.to(this.parentElement.querySelector('.input-icon'), {
-          scale: 1.2,
-          duration: 0.3,
-          ease: 'back.out(1.7)'
-        });
-        
-        gsap.to(this.parentElement.parentElement.querySelector('label'), {
-          color: '#4a9d5f',
-          duration: 0.3
-        });
-      });
-
-      input.addEventListener('blur', function() {
-        gsap.to(this.parentElement.querySelector('.input-icon'), {
-          scale: 1,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-        
-        gsap.to(this.parentElement.parentElement.querySelector('label'), {
-          color: '#333',
-          duration: 0.3
-        });
-      });
+    
+    // Create focus ripple effect
+    gsap.fromTo(this,
+      { boxShadow: "0 0 0 0px rgba(74,157,95,0.3)" },
+      { 
+        boxShadow: "0 0 0 8px rgba(74,157,95,0)",
+        duration: 0.6,
+        ease: "power2.out"
+      }
+    );
+  });
+  
+  input.addEventListener("blur", function() {
+    gsap.to(this.parentElement.querySelector(".input-icon"), {
+      scale: 1,
+      duration: 0.3
     });
-
-    // Button Hover Animation
-    const loginBtn = document.getElementById('loginBtn');
-    loginBtn.addEventListener('mouseenter', function() {
-      gsap.to(this, {
-        scale: 1.02,
-        duration: 0.3,
-        ease: 'power2.out'
-      });
+    
+    gsap.to(this.parentElement.parentElement.querySelector("label"), {
+      color: "#2f2f2f",
+      scale: 1,
+      duration: 0.3
     });
+  });
+  
+  // Input typing animation
+  input.addEventListener("input", function() {
+    gsap.fromTo(this, 
+      { x: -2 },
+      { x: 2, duration: 0.1, yoyo: true, repeat: 1 }
+    );
+  });
+});
 
-    loginBtn.addEventListener('mouseleave', function() {
-      gsap.to(this, {
-        scale: 1,
-        duration: 0.3,
-        ease: 'power2.out'
-      });
-    });
+// Button ripple effect
+const loginBtn = document.getElementById("loginBtn");
 
-    // Form Submit Animation
-    const loginForm = document.getElementById('loginForm');
-    loginForm.addEventListener('submit', function(e) {
-      const btn = document.getElementById('loginBtn');
-      
-      // Add loading state
-      gsap.to(btn, {
-        scale: 0.95,
-        duration: 0.2,
-        ease: 'power2.inOut',
-        onComplete: function() {
-          gsap.to(btn, {
-            scale: 1,
-            duration: 0.2,
-            ease: 'power2.out'
-          });
-        }
-      });
+loginBtn.addEventListener("click", function(e) {
+  const rect = this.getBoundingClientRect();
+  const ripple = document.createElement("span");
+  ripple.className = "btn-ripple";
+  
+  const size = Math.max(rect.width, rect.height);
+  ripple.style.width = ripple.style.height = size + "px";
+  ripple.style.left = e.clientX - rect.left - size / 2 + "px";
+  ripple.style.top = e.clientY - rect.top - size / 2 + "px";
+  
+  this.appendChild(ripple);
+  
+  gsap.to(ripple, {
+    scale: 4,
+    opacity: 0,
+    duration: 0.8,
+    ease: "power2.out",
+    onComplete: () => ripple.remove()
+  });
+});
 
-      // Pulse animation
-      gsap.to(btn, {
-        boxShadow: '0 8px 32px rgba(74, 157, 95, 0.6)',
-        duration: 0.3,
-        yoyo: true,
-        repeat: 1
-      });
-    });
+// Button hover with magnetic effect
+loginBtn.addEventListener("mouseenter", function() {
+  gsap.to(this, {
+    scale: 1.03,
+    duration: 0.3,
+    ease: "power2.out"
+  });
+});
 
-    // Shake animation for flash messages
-    const flashMessages = document.querySelectorAll('.flash');
-    flashMessages.forEach(flash => {
-      gsap.from(flash, {
-        x: -10,
-        duration: 0.1,
-        repeat: 5,
-        yoyo: true,
-        ease: 'power1.inOut'
-      });
-    });
+loginBtn.addEventListener("mouseleave", function() {
+  gsap.to(this, {
+    scale: 1,
+    duration: 0.3,
+    ease: "power2.out"
+  });
+});
 
-    // Header Animation
-    gsap.from('header', {
-      y: -100,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power3.out'
-    });
+// Button magnetic follow cursor
+loginBtn.addEventListener("mousemove", function(e) {
+  const rect = this.getBoundingClientRect();
+  const x = e.clientX - rect.left - rect.width / 2;
+  const y = e.clientY - rect.top - rect.height / 2;
+  
+  gsap.to(this, {
+    x: x * 0.1,
+    y: y * 0.1,
+    duration: 0.3,
+    ease: "power2.out"
+  });
+});
 
-    // Continuous subtle animation on logo circle
-    gsap.to('.logo-circle svg', {
-      rotation: 360,
-      duration: 20,
-      repeat: -1,
-      ease: 'none'
-    });
+loginBtn.addEventListener("mouseleave", function() {
+  gsap.to(this, {
+    x: 0,
+    y: 0,
+    duration: 0.5,
+    ease: "elastic.out(1, 0.5)"
+  });
+});
 
-    // Add ripple effect on button click
-    loginBtn.addEventListener('click', function(e) {
-      const ripple = document.createElement('div');
-      ripple.style.position = 'absolute';
-      ripple.style.borderRadius = '50%';
-      ripple.style.background = 'rgba(255,255,255,0.6)';
-      ripple.style.width = '100px';
-      ripple.style.height = '100px';
-      ripple.style.top = e.offsetY - 50 + 'px';
-      ripple.style.left = e.offsetX - 50 + 'px';
-      ripple.style.pointerEvents = 'none';
-      
-      this.appendChild(ripple);
-      
-      gsap.to(ripple, {
-        scale: 4,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power2.out',
-        onComplete: () => ripple.remove()
-      });
-    });
+// Flash message shake
+const flashMsg = document.getElementById("flashMsg");
+if (flashMsg) {
+  gsap.from(flashMsg, {
+    x: -10,
+    duration: 0.1,
+    repeat: 7,
+    yoyo: true,
+    ease: "power1.inOut"
+  });
+}
 
-    console.log('CODE-X Login Portal - GSAP Animations Loaded');
-  </script>
+// Form submit animation
+const loginForm = document.getElementById("loginForm");
+loginForm.addEventListener("submit", function(e) {
+  loginBtn.classList.add("loading");
+  
+  gsap.to(loginBtn, {
+    scale: 0.98,
+    duration: 0.2,
+    yoyo: true,
+    repeat: 1,
+    ease: "power2.inOut"
+  });
+  
+  gsap.to("#loginCard", {
+    scale: 0.98,
+    duration: 0.3,
+    ease: "power2.inOut"
+  });
+});
+
+// Container hover glow effect
+const container = document.getElementById("loginCard");
+container.addEventListener("mouseenter", function() {
+  gsap.to(this, {
+    boxShadow: "0 50px 120px rgba(74,157,95,0.3), 0 0 0 1px rgba(74,157,95,0.12)",
+    duration: 0.4,
+    ease: "power2.out"
+  });
+});
+
+container.addEventListener("mouseleave", function() {
+  gsap.to(this, {
+    boxShadow: "0 40px 100px rgba(74,157,95,0.2), 0 0 0 1px rgba(74,157,95,0.08)",
+    duration: 0.4,
+    ease: "power2.out"
+  });
+});
+
+// Continuous subtle pulse on logo circle
+gsap.to(".logo-circle", {
+  boxShadow: "0 15px 40px rgba(74,157,95,0.5)",
+  duration: 2,
+  yoyo: true,
+  repeat: -1,
+  ease: "sine.inOut"
+});
+
+// SVG logo rotation
+gsap.to(".logo-circle svg", {
+  rotation: 360,
+  duration: 20,
+  repeat: -1,
+  ease: "none"
+});
+
+// Mouse parallax effect on card
+document.addEventListener("mousemove", (e) => {
+  const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+  const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+  
+  gsap.to("#loginCard", {
+    x: moveX,
+    y: moveY,
+    duration: 1,
+    ease: "power2.out"
+  });
+});
+
+console.log("CODE-X Login Portal - Enhanced GSAP Animations Loaded");
+</script>
+
 </body>
 </html>
