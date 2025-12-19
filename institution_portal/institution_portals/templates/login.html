@@ -1,134 +1,464 @@
-<!-- templates/login.html -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Login — Codex Institutions</title>
+  <title>Login — CODE-X Institutions</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Professional Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-green: #4a9d5f;
+      --light-green: #66b57a;
+      --accent-green: #8fd19e;
+      --pale-green: #e8f5e9;
+      --dark-green: #3a7d4f;
+    }
+
     body {
       margin: 0;
       padding: 0;
       font-family: 'Inter', sans-serif;
-      background-color: #F7F4EA;
+      background: linear-gradient(135deg, var(--pale-green) 0%, #ffffff 100%);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Animated Background Pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(74, 157, 95, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(102, 181, 122, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Floating Particles */
+    .particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      opacity: 0.3;
+      pointer-events: none;
+      z-index: 1;
     }
 
     /* HEADER */
     header {
-      background-color: #9593D9;
-      padding: 14px 28px;
+      background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+      padding: 18px 32px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       color: white;
-      font-weight: 600;
-      font-size: 1.35rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      font-weight: 700;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 16px rgba(74, 157, 95, 0.2);
+      position: relative;
+      z-index: 100;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
     }
 
     header img {
-      width: 30px;
-      height: 30px;
+      width: 36px;
+      height: 36px;
       filter: brightness(0) invert(1);
+      position: relative;
+      z-index: 2;
+    }
+
+    header span {
+      position: relative;
+      z-index: 2;
+      letter-spacing: 0.5px;
     }
 
     /* MAIN LOGIN CARD */
     .container {
-      max-width: 420px;
-      margin: 70px auto;
+      max-width: 480px;
+      margin: 80px auto;
       background: #ffffff;
-      padding: 32px;
-      border-radius: 14px;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      padding: 45px 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(74, 157, 95, 0.15);
+      position: relative;
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(30px);
+      border: 1px solid rgba(74, 157, 95, 0.1);
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-green), var(--light-green), var(--accent-green));
+      border-radius: 20px 20px 0 0;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .logo-circle {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(74, 157, 95, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-circle::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: rotate 3s linear infinite;
+    }
+
+    @keyframes rotate {
+      100% { transform: rotate(360deg); }
+    }
+
+    .logo-circle svg {
+      width: 40px;
+      height: 40px;
+      fill: white;
+      position: relative;
+      z-index: 2;
     }
 
     .title {
       text-align: center;
-      font-size: 1.6rem;
-      font-weight: 600;
-      margin-bottom: 28px;
-      color: #222;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--primary-green);
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 35px;
+      font-weight: 400;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+      position: relative;
     }
 
     label {
-      font-weight: 500;
-      margin-top: 16px;
+      font-weight: 600;
       display: block;
       font-size: 0.95rem;
       color: #333;
+      margin-bottom: 8px;
+      transition: color 0.3s;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: var(--primary-green);
+      opacity: 0.7;
+      transition: opacity 0.3s;
     }
 
     input {
       width: 100%;
-      padding: 12px;
-      margin-top: 6px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+      padding: 14px 14px 14px 45px;
+      border-radius: 12px;
+      border: 2px solid #e0e0e0;
       font-size: 1rem;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
+      background: #fafafa;
+      font-family: 'Inter', sans-serif;
     }
 
     input:focus {
-      border-color: #9593D9;
+      border-color: var(--primary-green);
       outline: none;
-      box-shadow: 0 0 0 2px rgba(149,147,217,0.25);
+      box-shadow: 0 0 0 4px rgba(74, 157, 95, 0.1);
+      background: white;
+    }
+
+    input:focus + .input-icon {
+      opacity: 1;
+    }
+
+    input::placeholder {
+      color: #999;
     }
 
     .btn {
       width: 100%;
-      padding: 12px;
-      background-color: #9593D9;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--primary-green), var(--light-green));
       color: white;
       border: none;
-      border-radius: 8px;
-      font-size: 1.05rem;
+      border-radius: 12px;
+      font-size: 1.1rem;
       cursor: pointer;
-      margin-top: 24px;
-      font-weight: 600;
-      transition: background 0.2s ease;
+      margin-top: 10px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(74, 157, 95, 0.3);
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.5px;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
     }
 
     .btn:hover {
-      background-color: #7E7BC7;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(74, 157, 95, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(0);
     }
 
     /* FLASH MESSAGE */
     .flash {
-      padding: 12px;
-      background-color: #ffe2e2;
-      border-left: 4px solid #ff4949;
-      margin-bottom: 18px;
-      border-radius: 6px;
-      color: #b10000;
-      font-size: 0.9rem;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, #fff3f3, #ffe8e8);
+      border-left: 5px solid #ff4949;
+      margin-bottom: 24px;
+      border-radius: 10px;
+      color: #c62828;
+      font-size: 0.92rem;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(255, 73, 73, 0.1);
+      opacity: 0;
+      animation: slideIn 0.5s forwards;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .note {
-      color: #555;
-      font-size: 0.85rem;
-      margin-top: 18px;
+      color: #666;
+      font-size: 0.88rem;
+      margin-top: 28px;
       text-align: center;
-      line-height: 1.4;
+      line-height: 1.6;
+      padding: 16px;
+      background: var(--pale-green);
+      border-radius: 10px;
+      font-weight: 400;
+    }
+
+    /* Success Icon Animation */
+    .success-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 20px;
+      display: none;
+    }
+
+    .success-icon.show {
+      display: block;
+    }
+
+    /* Decorative Elements */
+    .decoration {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.15;
+      z-index: 1;
+    }
+
+    .decoration.circle-1 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, var(--accent-green), transparent);
+      top: -100px;
+      right: -100px;
+      border-radius: 50%;
+    }
+
+    .decoration.circle-2 {
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, var(--light-green), transparent);
+      bottom: -50px;
+      left: -50px;
+      border-radius: 50%;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    .btn.loading .spinner {
+      display: block;
+    }
+
+    .btn.loading span {
+      display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+      .container {
+        margin: 40px 20px;
+        padding: 35px 28px;
+      }
+
+      .title {
+        font-size: 1.7rem;
+      }
+
+      header {
+        padding: 16px 20px;
+        font-size: 1.3rem;
+      }
+    }
+
+    /* Floating Animation for Logo */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .logo-circle {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* Pulse Animation for Button */
+    @keyframes pulse {
+      0% { box-shadow: 0 4px 16px rgba(74, 157, 95, 0.3); }
+      50% { box-shadow: 0 4px 24px rgba(74, 157, 95, 0.5); }
+      100% { box-shadow: 0 4px 16px rgba(74, 157, 95, 0.3); }
+    }
+
+    .btn {
+      animation: pulse 2s ease-in-out infinite;
     }
   </style>
 </head>
 
 <body>
 
+  <!-- Decorative Elements -->
+  <div class="decoration circle-1"></div>
+  <div class="decoration circle-2"></div>
+
+  <!-- Floating Particles -->
+  <div class="particle" style="top: 20%; left: 10%;"></div>
+  <div class="particle" style="top: 60%; left: 80%;"></div>
+  <div class="particle" style="top: 80%; left: 20%;"></div>
+  <div class="particle" style="top: 40%; left: 90%;"></div>
+  <div class="particle" style="top: 70%; left: 50%;"></div>
+
   <!-- HEADER -->
   <header>
     <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Logo">
-    Codex Institutions
+    <span>CODE-X Institutions</span>
   </header>
 
   <!-- LOGIN CARD -->
-  <div class="container">
+  <div class="container" id="loginCard">
+
+    <div class="logo-container">
+      <div class="logo-circle">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+      </div>
+    </div>
 
     <div class="title">Login Portal</div>
+    <div class="subtitle">Welcome back to CODE-X Institutions</div>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
@@ -140,22 +470,266 @@
       {% endif %}
     {% endwith %}
 
-    <form method="POST" action="{{ url_for('login') }}">
+    <form method="POST" action="{{ url_for('login') }}" id="loginForm">
       {{ form.hidden_tag() }}
 
-      <label for="reg_no">Registration No / Email</label>
-      {{ form.reg_no(id="reg_no", placeholder="example: 23uai0001 or student@codex.edu") }}
+      <div class="form-group">
+        <label for="reg_no">Registration No / Email</label>
+        <div class="input-wrapper">
+          {{ form.reg_no(id="reg_no", placeholder="example: 23uai0001 or student@codex.edu") }}
+          <div class="input-icon">👤</div>
+        </div>
+      </div>
 
-      <label for="password">Password</label>
-      {{ form.password(id="password", placeholder="Enter your password") }}
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          {{ form.password(id="password", placeholder="Enter your password") }}
+          <div class="input-icon">🔒</div>
+        </div>
+      </div>
 
-      {{ form.submit(class_="btn", value="Login") }}
+      {{ form.submit(class_="btn", value="Login", id="loginBtn") }}
     </form>
 
     <p class="note">
-      Students, Staff, and Admins must use credentials provided by Codex Institutions.
+      🎓 Students, Staff, and Admins must use credentials provided by CODE-X Institutions.
     </p>
   </div>
 
+  <!-- GSAP Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  
+  <script>
+    // ==================== GSAP ANIMATIONS ====================
+
+    // Animate Login Card Entrance
+    gsap.to('#loginCard', {
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      delay: 0.3,
+      ease: 'power3.out'
+    });
+
+    // Animate Form Groups
+    gsap.from('.form-group', {
+      opacity: 0,
+      x: -30,
+      duration: 0.8,
+      stagger: 0.15,
+      delay: 0.6,
+      ease: 'power2.out'
+    });
+
+    // Animate Button
+    gsap.from('.btn', {
+      opacity: 0,
+      scale: 0.9,
+      duration: 0.6,
+      delay: 1,
+      ease: 'back.out(1.4)'
+    });
+
+    // Animate Note
+    gsap.from('.note', {
+      opacity: 0,
+      y: 20,
+      duration: 0.6,
+      delay: 1.2,
+      ease: 'power2.out'
+    });
+
+    // Animate Logo Circle
+    gsap.from('.logo-circle', {
+      scale: 0,
+      rotation: 360,
+      duration: 1,
+      delay: 0.2,
+      ease: 'elastic.out(1, 0.5)'
+    });
+
+    // Animate Title
+    gsap.from('.title', {
+      opacity: 0,
+      y: -20,
+      duration: 0.8,
+      delay: 0.5,
+      ease: 'power3.out'
+    });
+
+    // Animate Subtitle
+    gsap.from('.subtitle', {
+      opacity: 0,
+      duration: 0.6,
+      delay: 0.7,
+      ease: 'power2.out'
+    });
+
+    // Animate Particles
+    gsap.utils.toArray('.particle').forEach((particle, index) => {
+      gsap.to(particle, {
+        y: '+=30',
+        duration: 2 + index * 0.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+      });
+
+      gsap.to(particle, {
+        x: '+=20',
+        duration: 3 + index * 0.3,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+      });
+    });
+
+    // Animate Decorative Circles
+    gsap.to('.circle-1', {
+      scale: 1.2,
+      duration: 4,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut'
+    });
+
+    gsap.to('.circle-2', {
+      scale: 1.3,
+      duration: 5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut'
+    });
+
+    // Input Focus Animation
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        gsap.to(this.parentElement.querySelector('.input-icon'), {
+          scale: 1.2,
+          duration: 0.3,
+          ease: 'back.out(1.7)'
+        });
+        
+        gsap.to(this.parentElement.parentElement.querySelector('label'), {
+          color: '#4a9d5f',
+          duration: 0.3
+        });
+      });
+
+      input.addEventListener('blur', function() {
+        gsap.to(this.parentElement.querySelector('.input-icon'), {
+          scale: 1,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+        
+        gsap.to(this.parentElement.parentElement.querySelector('label'), {
+          color: '#333',
+          duration: 0.3
+        });
+      });
+    });
+
+    // Button Hover Animation
+    const loginBtn = document.getElementById('loginBtn');
+    loginBtn.addEventListener('mouseenter', function() {
+      gsap.to(this, {
+        scale: 1.02,
+        duration: 0.3,
+        ease: 'power2.out'
+      });
+    });
+
+    loginBtn.addEventListener('mouseleave', function() {
+      gsap.to(this, {
+        scale: 1,
+        duration: 0.3,
+        ease: 'power2.out'
+      });
+    });
+
+    // Form Submit Animation
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', function(e) {
+      const btn = document.getElementById('loginBtn');
+      
+      // Add loading state
+      gsap.to(btn, {
+        scale: 0.95,
+        duration: 0.2,
+        ease: 'power2.inOut',
+        onComplete: function() {
+          gsap.to(btn, {
+            scale: 1,
+            duration: 0.2,
+            ease: 'power2.out'
+          });
+        }
+      });
+
+      // Pulse animation
+      gsap.to(btn, {
+        boxShadow: '0 8px 32px rgba(74, 157, 95, 0.6)',
+        duration: 0.3,
+        yoyo: true,
+        repeat: 1
+      });
+    });
+
+    // Shake animation for flash messages
+    const flashMessages = document.querySelectorAll('.flash');
+    flashMessages.forEach(flash => {
+      gsap.from(flash, {
+        x: -10,
+        duration: 0.1,
+        repeat: 5,
+        yoyo: true,
+        ease: 'power1.inOut'
+      });
+    });
+
+    // Header Animation
+    gsap.from('header', {
+      y: -100,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power3.out'
+    });
+
+    // Continuous subtle animation on logo circle
+    gsap.to('.logo-circle svg', {
+      rotation: 360,
+      duration: 20,
+      repeat: -1,
+      ease: 'none'
+    });
+
+    // Add ripple effect on button click
+    loginBtn.addEventListener('click', function(e) {
+      const ripple = document.createElement('div');
+      ripple.style.position = 'absolute';
+      ripple.style.borderRadius = '50%';
+      ripple.style.background = 'rgba(255,255,255,0.6)';
+      ripple.style.width = '100px';
+      ripple.style.height = '100px';
+      ripple.style.top = e.offsetY - 50 + 'px';
+      ripple.style.left = e.offsetX - 50 + 'px';
+      ripple.style.pointerEvents = 'none';
+      
+      this.appendChild(ripple);
+      
+      gsap.to(ripple, {
+        scale: 4,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        onComplete: () => ripple.remove()
+      });
+    });
+
+    console.log('CODE-X Login Portal - GSAP Animations Loaded');
+  </script>
 </body>
 </html>
