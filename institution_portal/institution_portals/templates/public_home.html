@@ -1,257 +1,1861 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Institution Portal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CODE-X - Dr SNS Rajalakshmi College of Arts & Science</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <style>
+    /* ==================== ROOT VARIABLES ==================== */
+    :root {
+      --primary-green: #2d5f3f;
+      --light-green: #5a9367;
+      --accent-green: #7fb88d;
+      --pale-green: #e8f5e9;
+      --soft-white: #fafafa;
+      --text-dark: #1a1a1a;
+      --text-gray: #4a4a4a;
+      --border-light: #e0e0e0;
+    }
 
-  <!-- Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    
-  >
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text-dark);
+      background: var(--soft-white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ==================== SVG LOGO INTRO OVERLAY ==================== */
+    .logo-intro-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      opacity: 1;
+    }
+
+    .logo-intro-overlay svg {
+      width: 280px;
+      height: 280px;
+    }
+
+    .logo-svg-path {
+      stroke: white;
+      stroke-width: 2.5;
+      fill: none;
+      stroke-dasharray: 1200;
+      stroke-dashoffset: 1200;
+    }
+
+    /* ==================== NAVBAR - GREEN BACKGROUND ==================== */
+    .navbar {
+      background: linear-gradient(135deg, var(--primary-green), var(--light-green)) !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      padding: 0.8rem 0;
+    }
+
+    .navbar-brand {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: white !important;
+    }
+
+    /* ==================== HERO SECTION ==================== */
+    .hero-section {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(45, 95, 63, 0.92), rgba(90, 147, 103, 0.85)), 
+                  url('https://images.unsplash.com/photo-1562774053-701939374585?w=1920&q=80') center/cover;
+      color: white;
+      text-align: center;
+      padding: 0 20px;
+      margin-top: -70px;
+    }
+
+    .hero-content {
+      max-width: 1000px;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .hero-title {
+      font-size: 4rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-subtitle {
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: var(--accent-green);
+      margin-bottom: 25px;
+    }
+
+    .hero-description {
+      font-size: 1.35rem;
+      line-height: 1.75;
+      margin-bottom: 40px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-hero-primary,
+    .btn-hero-secondary {
+      padding: 16px 44px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-block;
+      position: relative;
+    }
+
+    .btn-hero-primary {
+      background: white;
+      color: var(--primary-green);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    }
+
+    .btn-hero-primary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      color: var(--primary-green);
+    }
+
+    .btn-hero-secondary {
+      background: transparent;
+      border: 2.5px solid white;
+      color: white;
+    }
+
+    .btn-hero-secondary:hover {
+      background: white;
+      color: var(--primary-green);
+    }
+
+    /* ==================== STATISTICS SECTION ==================== */
+    .stats-section {
+      padding: 90px 0;
+      background: white;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 50px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .stat-card {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .stat-number {
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--primary-green);
+      margin-bottom: 10px;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 1.15rem;
+      color: var(--text-gray);
+      font-weight: 500;
+    }
+
+    /* ==================== ABOUT INSTITUTION SECTION ==================== */
+    .about-section {
+      padding: 110px 0;
+      background: var(--pale-green);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--primary-green);
+      margin-bottom: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-size: 1.3rem;
+      color: var(--text-gray);
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .about-content {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .about-paragraph {
+      font-size: 1.15rem;
+      line-height: 1.9;
+      color: var(--text-dark);
+      margin-bottom: 28px;
+      text-align: justify;
+    }
+
+    /* ==================== ACADEMIC SERVICES SECTION ==================== */
+    .services-section {
+      padding: 110px 0;
+      background: white;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 35px;
+      max-width: 1200px;
+      margin: 60px auto 0;
+    }
+
+    .service-card {
+      background: var(--soft-white);
+      padding: 45px 35px;
+      border-radius: 14px;
+      border: 2px solid var(--border-light);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .service-card:hover {
+      border-color: var(--primary-green);
+      box-shadow: 0 12px 35px rgba(45, 95, 63, 0.12);
+      transform: translateY(-10px);
+    }
+
+    .service-icon {
+      font-size: 3.5rem;
+      margin-bottom: 22px;
+      display: block;
+    }
+
+    .service-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--primary-green);
+      margin-bottom: 16px;
+    }
+
+    .service-description {
+      font-size: 1.05rem;
+      color: var(--text-gray);
+      line-height: 1.75;
+    }
+
+    /* ==================== HORIZONTAL SCROLL SECTION ==================== */
+    .horizontal-wrapper {
+      overflow: hidden;
+      padding: 110px 0;
+      background: linear-gradient(to bottom, white, var(--pale-green));
+    }
+
+    .horizontal-container {
+      display: flex;
+      width: fit-content;
+    }
+
+    .horizontal-panel {
+      width: 85vw;
+      height: 540px;
+      flex-shrink: 0;
+      margin-right: 45px;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 12px 45px rgba(0,0,0,0.12);
+    }
+
+    .horizontal-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .panel-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(45, 95, 63, 0.96), transparent);
+      color: white;
+      padding: 50px 45px;
+    }
+
+    .panel-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .panel-description {
+      font-size: 1.2rem;
+      line-height: 1.7;
+    }
+
+    /* ==================== CAMPUS MAP SECTION ==================== */
+    .campus-map-section {
+      padding: 110px 0;
+      background: white;
+    }
+
+    .map-placeholder {
+      width: 100%;
+      height: 650px;
+      background: var(--pale-green);
+      border-radius: 18px;
+      border: 3px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-icon {
+      width: 220px;
+      height: 220px;
+      opacity: 0.25;
+      margin-bottom: 25px;
+    }
+
+    .map-placeholder h3 {
+      font-size: 2rem;
+      color: var(--primary-green);
+      margin-bottom: 12px;
+    }
+
+    .map-placeholder p {
+      font-size: 1.15rem;
+      color: var(--text-gray);
+    }
+
+    .map-placeholder .map-note {
+      font-size: 0.95rem;
+      color: #999;
+      margin-top: 8px;
+    }
+
+    /* ==================== PROGRAMMES SECTION ==================== */
+    .programmes-section {
+      padding: 110px 0;
+      background: var(--pale-green);
+    }
+
+    .programmes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 45px;
+      max-width: 1200px;
+      margin: 60px auto 0;
+    }
+
+    .programme-card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.09);
+      transition: transform 0.35s;
+    }
+
+    .programme-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .programme-image {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+    }
+
+    .programme-body {
+      padding: 38px 35px;
+    }
+
+    .programme-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-green);
+      margin-bottom: 18px;
+    }
+
+    .programme-text {
+      font-size: 1.05rem;
+      color: var(--text-gray);
+      line-height: 1.75;
+      margin-bottom: 22px;
+    }
+
+    .programme-link {
+      color: var(--primary-green);
+      font-weight: 600;
+      font-size: 1.05rem;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .programme-link:hover {
+      color: var(--light-green);
+    }
+
+    /* ==================== NEWS & EVENTS SECTION ==================== */
+    .news-section {
+      padding: 110px 0;
+      background: white;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      max-width: 1200px;
+      margin: 60px auto 0;
+    }
+
+    .news-card {
+      background: var(--soft-white);
+      padding: 35px 32px;
+      border-radius: 14px;
+      border-left: 5px solid var(--primary-green);
+      transition: box-shadow 0.3s;
+    }
+
+    .news-card:hover {
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .news-date {
+      font-size: 0.95rem;
+      color: var(--light-green);
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .news-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-green);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .news-text {
+      font-size: 1.02rem;
+      color: var(--text-gray);
+      line-height: 1.75;
+      margin-bottom: 18px;
+    }
+
+    .news-link {
+      color: var(--primary-green);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* ==================== CLUB EVENTS SECTION ==================== */
+    .club-events-section {
+      padding: 110px 0;
+      background: var(--pale-green);
+    }
+
+    .event-card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.09);
+      margin-bottom: 35px;
+      transition: transform 0.35s;
+    }
+
+    .event-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .event-image {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+    }
+
+    .event-body {
+      padding: 38px 35px;
+    }
+
+    .event-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-green);
+      margin-bottom: 12px;
+    }
+
+    .event-meta {
+      font-size: 1rem;
+      color: var(--text-gray);
+      margin-bottom: 18px;
+      font-weight: 500;
+    }
+
+    .event-description {
+      font-size: 1.05rem;
+      color: var(--text-gray);
+      line-height: 1.75;
+    }
+
+    /* ==================== CTA SECTION ==================== */
+    .cta-section {
+      padding: 130px 0;
+      background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+      color: white;
+      text-align: center;
+    }
+
+    .cta-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 22px;
+      letter-spacing: -0.02em;
+    }
+
+    .cta-text {
+      font-size: 1.35rem;
+      line-height: 1.75;
+      margin-bottom: 45px;
+      max-width: 850px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ==================== FOOTER ==================== */
+    .footer {
+      background: var(--text-dark);
+      color: white;
+      padding: 90px 0 35px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 50px;
+      margin-bottom: 60px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .footer-section h3 {
+      color: var(--accent-green);
+      margin-bottom: 24px;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .footer-text {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 14px;
+    }
+
+    .footer-links a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-green);
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 18px;
+      margin-top: 25px;
+      font-size: 1.7rem;
+    }
+
+    .social-icons a {
+      color: white;
+      transition: transform 0.3s;
+      text-decoration: none;
+    }
+
+    .social-icons a:hover {
+      transform: scale(1.25);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 35px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      color: #999;
+      font-size: 0.95rem;
+    }
+
+    /* ==================== RECRUITERS SECTION ==================== */
+    .recruiters-section {
+      padding: 90px 0;
+      background: var(--soft-white);
+    }
+
+    .recruiters-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 35px;
+      max-width: 1200px;
+      margin: 50px auto 0;
+    }
+
+    .recruiter-card {
+      background: white;
+      padding: 35px 25px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s;
+    }
+
+    .recruiter-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .recruiter-card img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* ==================== FLOATING BUTTONS - REPOSITIONED ==================== */
+    #att-toggle {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      padding: 12px 20px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(45, 95, 63, 0.3);
+      z-index: 1050;
+      font-size: 15px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    #att-toggle:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(45, 95, 63, 0.4);
+    }
+
+    #att-panel {
+      position: fixed;
+      bottom: 85px;
+      left: 20px;
+      width: 340px;
+      max-height: 280px;
+      background: #fff;
+      border: 2px solid var(--primary-green);
+      border-radius: 12px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+      z-index: 1050;
+      padding: 18px;
+    }
+
+    #chat-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0d6efd, #0056d2);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(13, 110, 253, 0.3);
+      z-index: 1050;
+      font-size: 1.4rem;
+      font-weight: 700;
+      transition: all 0.3s;
+    }
+
+    #chat-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(13, 110, 253, 0.4);
+    }
+
+    #chat-window {
+      position: fixed;
+      bottom: 95px;
+      right: 20px;
+      width: 360px;
+      max-height: 480px;
+      background: #fff;
+      border: 2px solid #0d6efd;
+      border-radius: 12px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+      z-index: 1050;
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 992px) {
+      .hero-title {
+        font-size: 3rem;
+      }
+
+      .hero-subtitle {
+        font-size: 2rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+      }
+
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .programmes-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .news-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .recruiters-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .horizontal-panel {
+        width: 90vw;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .hero-title {
+        font-size: 2.2rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.6rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .recruiters-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      #att-toggle {
+        left: 10px;
+        font-size: 13px;
+        padding: 10px 16px;
+      }
+
+      #att-panel {
+        left: 10px;
+        width: calc(100% - 20px);
+      }
+
+      #chat-window {
+        right: 10px;
+        width: calc(100% - 20px);
+      }
+    }
+  </style>
 </head>
 <body>
 
-<!-- Top navbar with Sign in on right -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-  <div class="container-fluid">
-    <a class="navbar-brand fw-bold" href="{{ url_for('public_home') }}">
-      Institution Portal
-    </a>
-    <div class="ms-auto">
-      <a class="btn btn-light" href="{{ url_for('login') }}">Sign in</a>
-    </div>
+  <!-- ==================== SVG LOGO INTRO ==================== -->
+  <div class="logo-intro-overlay">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30,100 L50,60 L70,100 L90,40 L110,100 L130,70 L150,100" class="logo-svg-path"/>
+      <path d="M20,130 Q100,190 180,130" class="logo-svg-path"/>
+      <circle cx="100" cy="100" r="85" class="logo-svg-path"/>
+      <path d="M100,30 L100,170 M30,100 L170,100" class="logo-svg-path"/>
+    </svg>
   </div>
-</nav>
 
-<!-- Spacer so content is not hidden under fixed navbar -->
-<div style="height: 70px;"></div>
+  <!-- ==================== NAVBAR - GREEN BACKGROUND ==================== -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#">CODE-X Institution Portal</a>
+      <div class="ms-auto">
+        <a class="btn btn-light" href="#">Sign in</a>
+      </div>
+    </div>
+  </nav>
 
-<div class="container mt-4">
+  <!-- Spacer for fixed navbar -->
+  <div style="height: 70px;"></div>
 
-  <h3 class="mt-2">Attendance</h3>
-  <p>Students can quickly view their overall attendance using registration number.</p>
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Welcome to CODE-X</h1>
+      <div class="hero-subtitle">Dr SNS Rajalakshmi College of Arts & Science</div>
+      <p class="hero-description">
+        A premier institution committed to academic excellence, innovative research, and holistic development. 
+        Join our vibrant community of scholars, innovators, and leaders shaping the future through knowledge, 
+        creativity, and unwavering dedication to progress.
+      </p>
+      <div class="hero-cta-group">
+        <a href="#" class="btn-hero-primary magnetic-btn">Apply Now</a>
+        <a href="#" class="btn-hero-secondary magnetic-btn">Explore Programs</a>
+      </div>
+    </div>
+  </section>
 
-  <hr class="my-4">
-  <h2 class="mb-3 text-center">Upcoming Club Events</h2>
+  <!-- ==================== STATISTICS SECTION ==================== -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" data-count="5000">0</div>
+          <div class="stat-label">Students Enrolled</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-count="92">0</div>
+          <div class="stat-label">Placement Rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-count="28">0</div>
+          <div class="stat-label">Academic Departments</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" data-count="250">0</div>
+          <div class="stat-label">Expert Faculty</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  {% if events %}
-    {% for e in events %}
-    <div class="row mb-4">
-      <div class="col-lg-10 col-xl-8 mx-auto">
-        <div class="card shadow-sm">
-          {% if e.image_name %}
-          <img
-            src="{{ url_for('event_image', filename=e.image_name) }}"
-            class="card-img-top"
-            style="width:100%; height:auto;"
-          >
-          {% endif %}
-          <div class="card-body">
-            <h5 class="card-title mb-1">{{ e.title }}</h5>
-            <p class="card-subtitle text-muted mb-2">
-              {% if e.date %}{{ e.date }}{% endif %}
-              {% if e.venue %} · {{ e.venue }}{% endif %}
+  <!-- ==================== ABOUT INSTITUTION ==================== -->
+  <section class="about-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">About CODE-X Institution</h2>
+        <p class="section-subtitle">
+          Building tomorrow's leaders through excellence in education, research, and innovation
+        </p>
+      </div>
+      
+      <div class="about-content">
+        <p class="about-paragraph">
+          Dr SNS Rajalakshmi College of Arts & Science, known as CODE-X, stands as a distinguished institution 
+          in higher education, committed to nurturing future leaders, innovators, and responsible global citizens. 
+          Established with the vision of providing transformative education that transcends traditional boundaries, 
+          our institution has consistently maintained its reputation for academic rigor, innovative pedagogy, and 
+          comprehensive student development. We believe that true education extends beyond classroom instruction, 
+          encompassing character building, critical thinking, creative problem-solving, and ethical leadership. 
+          Our holistic approach ensures that every student receives personalized attention, access to world-class 
+          resources, and opportunities to excel in their chosen fields while developing the skills necessary to 
+          navigate an increasingly complex and interconnected world.
+        </p>
+        
+        <p class="about-paragraph">
+          Accredited with an A+ grade by the National Assessment and Accreditation Council (NAAC), CODE-X maintains 
+          the highest standards of quality in all aspects of institutional operations. Our sprawling campus features 
+          state-of-the-art infrastructure including modern laboratories equipped with cutting-edge technology, a 
+          comprehensive digital library with access to over 50,000 e-books and international research databases, 
+          smart classrooms with interactive learning systems, collaborative learning spaces designed to foster 
+          teamwork and innovation, advanced research facilities, sports complexes, cultural centers, and residential 
+          facilities that create a conducive environment for academic pursuit and personal growth. Our distinguished 
+          faculty comprises experienced educators, accomplished researchers, and industry professionals who bring 
+          real-world expertise into the classroom, ensuring that theoretical knowledge is seamlessly integrated with 
+          practical application and industry-relevant skills.
+        </p>
+        
+        <p class="about-paragraph">
+          Beyond academic excellence, CODE-X places significant emphasis on extracurricular activities, community 
+          engagement, leadership development, and social responsibility. Our campus hosts numerous student clubs, 
+          cultural societies, technical forums, entrepreneurship cells, and social service organizations that provide 
+          platforms for students to explore diverse interests, develop leadership capabilities, enhance communication 
+          skills, and build lasting professional networks. Throughout the year, we organize national conferences, 
+          technical symposiums, cultural festivals, hackathons, innovation challenges, guest lectures by industry 
+          leaders, and international exchange programs that expose students to global perspectives and emerging trends. 
+          We maintain strong partnerships with leading corporations, research institutions, government organizations, 
+          and international universities, facilitating internships, collaborative research projects, industrial visits, 
+          and global learning opportunities that bridge the gap between academic theory and professional practice.
+        </p>
+        
+        <p class="about-paragraph">
+          The institution is deeply committed to fostering a culture of research and innovation, with dedicated 
+          research centers focusing on emerging technologies, sustainable development, interdisciplinary studies, 
+          and societal challenges. We actively encourage students to participate in research activities from their 
+          early years, providing mentorship, funding support, and platforms to present their work at national and 
+          international forums. Our dedicated placement cell works year-round to ensure graduates are well-prepared 
+          for professional success, consistently achieving placement rates exceeding 92% across all departments with 
+          students securing positions in multinational corporations, government organizations, research institutions, 
+          and successful entrepreneurial ventures. Our global alumni network, spanning across continents and industries, 
+          serves as a testament to our commitment to excellence, with graduates holding leadership positions worldwide 
+          and contributing meaningfully to society through their professional achievements and social initiatives.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ACADEMIC & DIGITAL SERVICES ==================== -->
+  <section class="services-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Academic & Digital Services</h2>
+        <p class="section-subtitle">
+          Comprehensive support systems designed to enhance your educational journey and career success
+        </p>
+      </div>
+      
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-icon">📚</span>
+          <h3 class="service-title">Digital Library</h3>
+          <p class="service-description">
+            Access over 50,000 e-books, international research journals, academic databases, multimedia resources, 
+            and digital archives 24/7 through our advanced library portal with AI-powered search and recommendation systems.
+          </p>
+        </div>
+        
+        <div class="service-card">
+          <span class="service-icon">💻</span>
+          <h3 class="service-title">Learning Management System</h3>
+          <p class="service-description">
+            Comprehensive online platform featuring lecture recordings, interactive assignments, discussion forums, 
+            real-time collaboration tools, and progress tracking for enhanced remote and hybrid learning experiences.
+          </p>
+        </div>
+        
+        <div class="service-card">
+          <span class="service-icon">🎓</span>
+          <h3 class="service-title">Career Development Center</h3>
+          <p class="service-description">
+            Personalized career counseling, professional skill development workshops, resume building sessions, 
+            mock interviews, aptitude training, and direct connections with industry recruiters and placement partners.
+          </p>
+        </div>
+        
+        <div class="service-card">
+          <span class="service-icon">🔬</span>
+          <h3 class="service-title">Research Support Services</h3>
+          <p class="service-description">
+            Dedicated research mentorship programs, access to advanced laboratories, funding assistance for innovative 
+            projects, publication support, and opportunities to present at national and international conferences.
+          </p>
+        </div>
+        
+        <div class="service-card">
+          <span class="service-icon">🌐</span>
+          <h3 class="service-title">Integrated Student Portal</h3>
+          <p class="service-description">
+            Unified dashboard for attendance tracking, grade monitoring, fee payments, course registration, exam schedules, 
+            library access, and direct communication with faculty and administrative staff.
+          </p>
+        </div>
+        
+        <div class="service-card">
+          <span class="service-icon">🏆</span>
+          <h3 class="service-title">Innovation & Incubation Lab</h3>
+          <p class="service-description">
+            State-of-the-art makerspace equipped with 3D printers, IoT development kits, robotics tools, AI platforms, 
+            and mentorship programs to transform innovative ideas into working prototypes and startups.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== HORIZONTAL SCROLL CLUBS/FACILITIES ==================== -->
+  <section class="horizontal-wrapper">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Clubs, Activities & Facilities</h2>
+        <p class="section-subtitle">
+          Explore our vibrant campus life through diverse student organizations and world-class facilities
+        </p>
+      </div>
+    </div>
+    
+    <div class="horizontal-container" id="horizontalScroll">
+      <div class="horizontal-panel">
+        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1400&q=80" alt="Robotics & AI Club">
+        <div class="panel-content">
+          <h3 class="panel-title">Robotics & AI Club</h3>
+          <p class="panel-description">
+            Design and build autonomous robots, participate in national competitions, work on cutting-edge AI projects, 
+            and collaborate with industry mentors on real-world automation challenges.
+          </p>
+        </div>
+      </div>
+      
+      <div class="horizontal-panel">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1400&q=80" alt="Coding & Development Society">
+        <div class="panel-content">
+          <h3 class="panel-title">Coding & Development Society</h3>
+          <p class="panel-description">
+            Master programming languages, participate in hackathons, contribute to open-source projects, collaborate 
+            on web and mobile applications, and prepare for technical interviews.
+          </p>
+        </div>
+      </div>
+      
+      <div class="horizontal-panel">
+        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1400&q=80" alt="Cultural & Arts Society">
+        <div class="panel-content">
+          <h3 class="panel-title">Cultural & Arts Society</h3>
+          <p class="panel-description">
+            Express your creativity through music, dance, theater, fine arts, photography, and literary events. 
+            Organize and participate in annual cultural festivals and intercollegiate competitions.
+          </p>
+        </div>
+      </div>
+      
+      <div class="horizontal-panel">
+        <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1400&q=80" alt="Sports Complex">
+        <div class="panel-content">
+          <h3 class="panel-title">Sports & Wellness Complex</h3>
+          <p class="panel-description">
+            World-class facilities including cricket ground, basketball courts, indoor badminton, table tennis, 
+            swimming pool, fully-equipped gymnasium, and yoga centers for physical and mental wellness.
+          </p>
+        </div>
+      </div>
+      
+      <div class="horizontal-panel">
+        <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1400&q=80" alt="Entrepreneurship Cell">
+        <div class="panel-content">
+          <h3 class="panel-title">Entrepreneurship Cell</h3>
+          <p class="panel-description">
+            Transform your business ideas into reality with expert mentorship, seed funding opportunities, 
+            incubation support, networking with successful entrepreneurs, and startup ecosystem access.
+          </p>
+        </div>
+      </div>
+      
+      <div class="horizontal-panel">
+        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1400&q=80" alt="Central Library">
+        <div class="panel-content">
+          <h3 class="panel-title">Central Library & Learning Hub</h3>
+          <p class="panel-description">
+            Modern learning facility with 100,000+ books, digital resources, quiet study zones, collaborative 
+            learning spaces, research carrels, and 24/7 access to online databases and e-journals.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CAMPUS MAP SECTION ==================== -->
+  <section class="campus-map-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Campus Map</h2>
+        <p class="section-subtitle">
+          Navigate our expansive campus with ease and discover all academic buildings, facilities, and amenities
+        </p>
+      </div>
+      
+      <div class="map-placeholder">
+        <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="color: var(--primary-green);">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+        </svg>
+        <h3>Interactive Campus Navigation</h3>
+        <p>Detailed campus map with building locations and facility information will be displayed here</p>
+        <p class="map-note">(Backend integration and API connectivity pending)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== POPULAR PROGRAMMES ==================== -->
+  <section class="programmes-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Popular Programmes</h2>
+        <p class="section-subtitle">
+          Discover our flagship academic programs designed to prepare you for success in your chosen career path
+        </p>
+      </div>
+      
+      <div class="programmes-grid">
+        <div class="programme-card">
+          <img class="programme-image" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&q=80" alt="Computer Studies">
+          <div class="programme-body">
+            <h3 class="programme-title">Computer Studies</h3>
+            <p class="programme-text">
+              Cutting-edge curriculum in computer science, artificial intelligence, data science, machine learning, 
+              cybersecurity, and cloud computing with state-of-the-art labs, industry partnerships, internship 
+              opportunities, and excellent placement assistance in top IT firms and tech startups.
             </p>
-            {% if e.description %}
-            <p class="card-text" style="font-size:0.9rem;">{{ e.description }}</p>
-            {% endif %}
+            <a href="#" class="programme-link">Learn More →</a>
+          </div>
+        </div>
+
+        <div class="programme-card">
+          <img class="programme-image" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=900&q=80" alt="Business Administration">
+          <div class="programme-body">
+            <h3 class="programme-title">Business Administration</h3>
+            <p class="programme-text">
+              Comprehensive MBA and undergraduate programs focusing on strategic management, leadership development, 
+              digital marketing, financial analysis, entrepreneurship, and global business strategies with case study 
+              methodology, industry immersion, and corporate mentorship programs.
+            </p>
+            <a href="#" class="programme-link">Learn More →</a>
+          </div>
+        </div>
+
+        <div class="programme-card">
+          <img class="programme-image" src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=900&q=80" alt="Applied Sciences">
+          <div class="programme-body">
+            <h3 class="programme-title">Applied Sciences</h3>
+            <p class="programme-text">
+              Comprehensive programs in physics, chemistry, biology, biotechnology, environmental sciences, and 
+              nanotechnology with hands-on research opportunities, modern laboratories, expert faculty mentorship, 
+              and pathways to academic research and industrial R&D careers.
+            </p>
+            <a href="#" class="programme-link">Learn More →</a>
+          </div>
+        </div>
+
+        <div class="programme-card">
+          <img class="programme-image" src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=900&q=80" alt="Arts & Humanities">
+          <div class="programme-body">
+            <h3 class="programme-title">Arts & Humanities</h3>
+            <p class="programme-text">
+              Rich programs in literature, history, philosophy, psychology, sociology, and fine arts that foster 
+              critical thinking, creative expression, cultural awareness, and ethical reasoning in an inclusive 
+              learning environment with diverse perspectives and global connections.
+            </p>
+            <a href="#" class="programme-link">Learn More →</a>
           </div>
         </div>
       </div>
     </div>
-    {% endfor %}
-  {% else %}
-    <p class="text-center">No upcoming events.</p>
-  {% endif %}
+  </section>
 
-</div>
+  <!-- ==================== NEWS & EVENTS ==================== -->
+  <section class="news-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">News & Events</h2>
+        <p class="section-subtitle">
+          Stay informed about the latest developments, achievements, and upcoming events across campus
+        </p>
+      </div>
+      
+      <div class="news-grid">
+        <article class="news-card">
+          <div class="news-date">December 15, 2024</div>
+          <h3 class="news-title">Annual Tech Fest 2024 Concluded Successfully</h3>
+          <p class="news-text">
+            Our flagship technology festival showcased innovative projects from over 500 students, featuring robotics 
+            competitions, AI hackathons, coding challenges, and inspiring guest lectures from industry leaders 
+            representing Google, Microsoft, Amazon, and leading startups.
+          </p>
+          <a href="#" class="news-link">Read More →</a>
+        </article>
 
-<!-- Floating attendance button -->
-<div id="att-toggle" style="
-  position: fixed; bottom: 20px; right: 90px;
-  padding: 8px 14px; border-radius: 20px;
-  background-color: #198754; color: #fff;
-  cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  z-index: 1050; font-size: 14px; font-weight: 600;
-">
-  Check Attendance
-</div>
+        <article class="news-card">
+          <div class="news-date">December 10, 2024</div>
+          <h3 class="news-title">New Research Center for AI & Machine Learning Inaugurated</h3>
+          <p class="news-text">
+            The college inaugurated a state-of-the-art research facility dedicated to artificial intelligence 
+            and machine learning, featuring advanced computing infrastructure, GPU clusters, collaborative research 
+            spaces, and partnerships with leading tech companies for cutting-edge research.
+          </p>
+          <a href="#" class="news-link">Read More →</a>
+        </article>
 
-<!-- Attendance slide-up panel -->
-<div id="att-panel" style="
-  position: fixed; bottom: 80px; right: 20px;
-  width: 320px; max-height: 260px;
-  background: #fff; border: 1px solid #ccc; border-radius: 8px;
-  display: none; flex-direction: column;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  z-index: 1050; padding: 12px;
-">
-  <h6 style="margin-bottom:8px;">📊 Check Attendance</h6>
-  <div class="mb-2">
-    <label class="form-label mb-1">Registration Number</label>
-    <input type="text" id="att_reg_no" class="form-control form-control-sm"
-           placeholder="e.g., 21CS001">
-  </div>
-  <button class="btn btn-success btn-sm w-100 mb-2" id="att_check_btn">
-    Check
-  </button>
-  <div id="att_result" style="display:none; font-size:0.9rem;">
-    <div><strong id="att_name"></strong> (<span id="att_reg"></span>)</div>
-    <div>Attendance: <strong id="att_pct"></strong></div>
-    <div>Total: <span id="att_total"></span>,
-        Attended: <span id="att_attended"></span>,
-        Missed: <span id="att_missed"></span>
+        <article class="news-card">
+          <div class="news-date">December 5, 2024</div>
+          <h3 class="news-title">Students Win National Innovation Challenge</h3>
+          <p class="news-text">
+            A team of final-year engineering students secured first place in the prestigious National Innovation 
+            Challenge with their sustainable energy solution, winning a ₹5 lakh grant for further development and 
+            mentorship from industry experts and investors.
+          </p>
+          <a href="#" class="news-link">Read More →</a>
+        </article>
+      </div>
     </div>
+  </section>
+
+  <!-- ==================== CLUB EVENTS SECTION (FROM BACKEND) ==================== -->
+  <section class="club-events-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Upcoming Club Events</h2>
+        <p class="section-subtitle">
+          Participate in exciting club activities, workshops, competitions, and cultural events throughout the year
+        </p>
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-10 col-xl-9 mx-auto">
+          {% if events %}
+            {% for e in events %}
+            <div class="event-card">
+              {% if e.image_name %}
+              <img src="{{ url_for('event_image', filename=e.image_name) }}" class="event-image" alt="{{ e.title }}">
+              {% endif %}
+              <div class="event-body">
+                <h3 class="event-title">{{ e.title }}</h3>
+                <p class="event-meta">
+                  {% if e.date %}📅 {{ e.date }}{% endif %}
+                  {% if e.venue %} • 📍 {{ e.venue }}{% endif %}
+                </p>
+                {% if e.description %}
+                <p class="event-description">{{ e.description }}</p>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="text-center" style="padding: 60px 20px;">
+              <h4 style="color: var(--text-gray); font-size: 1.3rem;">No upcoming events scheduled at this time.</h4>
+              <p style="color: var(--text-gray); margin-top: 10px;">Check back soon for exciting club activities and campus events!</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== RECRUITERS SECTION ==================== -->
+  <section class="recruiters-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Our Recruitment Partners</h2>
+        <p class="section-subtitle">
+          Leading companies and organizations that have partnered with CODE-X for campus recruitment
+        </p>
+      </div>
+
+      <div class="recruiters-grid">
+        <div class="recruiter-card">
+          <img src="recruiter1.png" alt="Recruitment Partner 1" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+1'">
+        </div>
+        <div class="recruiter-card">
+          <img src="recruiter2.png" alt="Recruitment Partner 2" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+2'">
+        </div>
+        <div class="recruiter-card">
+          <img src="recruiter3.png" alt="Recruitment Partner 3" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+3'">
+        </div>
+        <div class="recruiter-card">
+          <img src="recruiter4.png" alt="Recruitment Partner 4" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+4'">
+        </div>
+        <div class="recruiter-card">
+          <img src="recruiter5.png" alt="Recruitment Partner 5" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+5'">
+        </div>
+        <div class="recruiter-card">
+          <img src="recruiter6.png" alt="Recruitment Partner 6" onerror="this.src='https://via.placeholder.com/150x80?text=Partner+6'">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CTA SECTION ==================== -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="cta-title">Ready to Begin Your Journey?</h2>
+      <p class="cta-text">
+        Join thousands of successful students who chose CODE-X as their pathway to excellence. Applications are now 
+        open for the upcoming academic year. Take the first step towards a brighter future and transformative 
+        educational experience that will shape your career and life.
+      </p>
+      <div class="hero-cta-group">
+        <a href="#" class="btn-hero-primary magnetic-btn">Apply Now</a>
+        <a href="#" class="btn-hero-secondary magnetic-btn">Schedule Campus Tour</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <p class="footer-text">📍 Dr SNS Rajalakshmi College of Arts & Science</p>
+          <p class="footer-text">Coimbatore, Tamil Nadu - 641049</p>
+          <p class="footer-text">📞 Phone: +91-XXX-XXX-XXXX</p>
+          <p class="footer-text">✉️ Email: info@codex.edu.in</p>
+          <div class="social-icons">
+            <a href="#" aria-label="Facebook">📘</a>
+            <a href="#" aria-label="Twitter">🐦</a>
+            <a href="#" aria-label="Instagram">📷</a>
+            <a href="#" aria-label="LinkedIn">💼</a>
+            <a href="#" aria-label="YouTube">📹</a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Admissions</a></li>
+            <li><a href="#">Academic Calendar</a></li>
+            <li><a href="#">Library</a></li>
+            <li><a href="#">Placements</a></li>
+            <li><a href="#">Research</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Academics</h3>
+          <ul class="footer-links">
+            <li><a href="#">Undergraduate Programs</a></li>
+            <li><a href="#">Postgraduate Programs</a></li>
+            <li><a href="#">Doctoral Programs</a></li>
+            <li><a href="#">Online Courses</a></li>
+            <li><a href="#">Departments</a></li>
+            <li><a href="#">Faculty Directory</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Resources</h3>
+          <ul class="footer-links">
+            <li><a href="#">Student Portal</a></li>
+            <li><a href="#">Campus Map</a></li>
+            <li><a href="#">Career Services</a></li>
+            <li><a href="#">Alumni Network</a></li>
+            <li><a href="#">News & Media</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2024 CODE-X - Dr SNS Rajalakshmi College of Arts & Science. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== FLOATING ATTENDANCE BUTTON (LEFT SIDE) ==================== -->
+  <div id="att-toggle">
+    📊 Check Attendance
   </div>
-  <div id="att_error" class="text-danger" style="display:none; font-size:0.9rem;"></div>
-</div>
 
-<!-- Floating chat button -->
-<div id="chat-toggle" style="
-  position: fixed; bottom: 20px; right: 20px;
-  width: 60px; height: 60px; border-radius: 50%;
-  background-color: #0d6efd; color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  z-index: 1050;
-">
-  AI
-</div>
-
-<!-- Chat window -->
-<div id="chat-window" style="
-  position: fixed; bottom: 90px; right: 20px;
-  width: 320px; max-height: 420px;
-  background: #fff; border: 1px solid #ccc; border-radius: 8px;
-  display: none; flex-direction: column;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  z-index: 1050;
-">
-  <div style="padding: 8px 12px; background:#0d6efd; color:#fff;
-              border-top-left-radius:8px;border-top-right-radius:8px;">
-    Institution Assistant
+  <!-- ==================== ATTENDANCE PANEL ==================== -->
+  <div id="att-panel">
+    <h6 style="margin-bottom:12px; color: var(--primary-green); font-weight: 700;">📊 Check Attendance</h6>
+    <div class="mb-2">
+      <label class="form-label mb-1" style="font-weight: 600;">Registration Number</label>
+      <input type="text" id="att_reg_no" class="form-control form-control-sm" placeholder="e.g., 21CS001">
+    </div>
+    <button class="btn btn-sm w-100 mb-2" id="att_check_btn" style="background: linear-gradient(135deg, var(--primary-green), var(--light-green)); color: white; font-weight: 600;">Check</button>
+    <div id="att_result" style="display:none; font-size:0.95rem; background: var(--pale-green); padding: 12px; border-radius: 8px; margin-top: 10px;">
+      <div style="margin-bottom: 8px;"><strong id="att_name" style="color: var(--primary-green);"></strong> (<span id="att_reg"></span>)</div>
+      <div style="margin-bottom: 5px;">Attendance: <strong id="att_pct" style="color: var(--primary-green);"></strong></div>
+      <div style="font-size: 0.9rem; color: var(--text-gray);">Total: <span id="att_total"></span>, Attended: <span id="att_attended"></span>, Missed: <span id="att_missed"></span></div>
+    </div>
+    <div id="att_error" class="text-danger" style="display:none; font-size:0.9rem; margin-top: 10px;"></div>
   </div>
-  <div id="chat-messages" style="padding: 8px 12px; overflow-y:auto; flex:1; font-size: 0.9rem;">
-    <div><strong>Assistant:</strong> Hi! Ask me about the institution, departments, or exams.</div>
+
+  <!-- ==================== FLOATING CHAT BUTTON (RIGHT SIDE) ==================== -->
+  <div id="chat-toggle">
+    AI
   </div>
-  <form id="chat-form" style="display:flex; border-top:1px solid #ddd;">
-    <input id="chat-input" type="text" class="form-control"
-           placeholder="Type your question..." autocomplete="off"
-           style="border:0; border-radius:0;">
-    <button class="btn btn-primary" type="submit">Send</button>
-  </form>
-</div>
 
-<script>
-  const ATT_API_URL = '/api/att';
+  <!-- ==================== CHAT WINDOW ==================== -->
+  <div id="chat-window">
+    <div style="padding: 12px 18px; background: linear-gradient(135deg, #0d6efd, #0056d2); color:#fff; border-top-left-radius:10px; border-top-right-radius:10px; font-weight: 600;">
+      🤖 Institution Assistant
+    </div>
+    <div id="chat-messages" style="padding: 12px 18px; overflow-y:auto; flex:1; font-size: 0.95rem; max-height: 360px;">
+      <div style="margin-bottom: 10px; background: #f0f0f0; padding: 10px; border-radius: 8px;"><strong>Assistant:</strong> Hi! Ask me about the institution, departments, or exams.</div>
+    </div>
+    <form id="chat-form" style="display:flex; border-top:2px solid #0d6efd;">
+      <input id="chat-input" type="text" class="form-control" placeholder="Type your question..." autocomplete="off" style="border:0; border-radius:0; padding: 12px;">
+      <button class="btn btn-primary" type="submit" style="border-radius: 0; padding: 12px 20px; font-weight: 600;">Send</button>
+    </form>
+  </div>
 
-  const attToggle = document.getElementById('att-toggle');
-  const attPanel  = document.getElementById('att-panel');
-  const attInput  = document.getElementById('att_reg_no');
-  const attBtn    = document.getElementById('att_check_btn');
-  const attResult = document.getElementById('att_result');
-  const attError  = document.getElementById('att_error');
+  <!-- ==================== GSAP & ScrollTrigger ==================== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
+  <script>
+    // Register GSAP Plugin
+    gsap.registerPlugin(ScrollTrigger);
 
-  attToggle.addEventListener('click', () => {
-    const visible = attPanel.style.display === 'flex';
-    attPanel.style.display = visible ? 'none' : 'flex';
-    if (!visible) {
-      attResult.style.display = 'none';
-      attError.style.display = 'none';
-      attInput.value = '';
-      attInput.focus();
-    }
-  });
+    // ==================== SVG LOGO INTRO ANIMATION ====================
+    const logoOverlay = document.querySelector('.logo-intro-overlay');
+    const svgPaths = document.querySelectorAll('.logo-svg-path');
 
-  attBtn.addEventListener('click', checkAttSmall);
-  attInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') checkAttSmall();
-  });
-
-  async function checkAttSmall() {
-    const regNo = attInput.value.trim();
-    if (!regNo) {
-      showAttError('Please enter a registration number');
-      return;
-    }
-    attResult.style.display = 'none';
-    attError.style.display = 'none';
-
-    try {
-      const resp = await fetch(`${ATT_API_URL}/attendance/${encodeURIComponent(regNo)}`);
-      const data = await resp.json();
-      if (!resp.ok) {
-        showAttError(data.error || 'Student not found');
-        return;
+    const logoTimeline = gsap.timeline({
+      onComplete: () => {
+        gsap.to(logoOverlay, {
+          opacity: 0,
+          duration: 0.6,
+          ease: "power2.inOut",
+          onComplete: () => {
+            logoOverlay.style.display = 'none';
+          }
+        });
       }
-      displayAttResult(data);
-    } catch (e) {
-      showAttError('Error fetching attendance. Try again.');
-    }
-  }
+    });
 
-  function displayAttResult(data) {
-    document.getElementById('att_name').textContent = data.student_name;
-    document.getElementById('att_reg').textContent = data.reg_no;
-    document.getElementById('att_pct').textContent = data.attendance_percentage + '%';
-    document.getElementById('att_total').textContent = data.total_classes;
-    document.getElementById('att_attended').textContent = data.attended_classes;
-    document.getElementById('att_missed').textContent =
-      data.total_classes - data.attended_classes;
+    logoTimeline
+      .to(svgPaths, {
+        strokeDashoffset: 0,
+        duration: 2.2,
+        stagger: 0.35,
+        ease: "power2.inOut"
+      })
+      .to(svgPaths, {
+        fill: "white",
+        duration: 0.9,
+        stagger: 0.25
+      }, "-=0.6");
 
-    attError.style.display = 'none';
-    attResult.style.display = 'block';
-  }
+    // ==================== HERO CONTENT REVEAL ====================
+    gsap.to('.hero-content', {
+      opacity: 1,
+      y: 0,
+      duration: 1.3,
+      delay: 3.2,
+      ease: "power3.out"
+    });
 
-  function showAttError(msg) {
-    attResult.style.display = 'none';
-    attError.textContent = msg;
-    attError.style.display = 'block';
-  }
-
-  const chatToggle = document.getElementById("chat-toggle");
-  const chatWindow = document.getElementById("chat-window");
-  const chatForm = document.getElementById("chat-form");
-  const chatInput = document.getElementById("chat-input");
-  const chatMessages = document.getElementById("chat-messages");
-
-  chatToggle.addEventListener("click", () => {
-    const visible = chatWindow.style.display === "flex";
-    chatWindow.style.display = visible ? "none" : "flex";
-  });
-
-  chatForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const text = chatInput.value.trim();
-    if (!text) return;
-
-    const userHtml = `<div><strong>You:</strong> ${text}</div>`;
-    chatMessages.insertAdjacentHTML("beforeend", userHtml);
-    chatInput.value = "";
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-    try {
-      const resp = await fetch("/api/assistant/chat", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({message: text})
+    // ==================== ANIMATED COUNTER FOR STATISTICS ====================
+    gsap.utils.toArray('.stat-card').forEach((stat, index) => {
+      const numberElement = stat.querySelector('.stat-number');
+      const targetCount = parseInt(numberElement.getAttribute('data-count'));
+      
+      gsap.to(stat, {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        delay: index * 0.18,
+        scrollTrigger: {
+          trigger: '.stats-section',
+          start: 'top 70%',
+          toggleActions: 'play none none reverse'
+        }
       });
 
-      const data = await resp.json();
-      const reply = data.reply || "Sorry, I could not understand that.";
-      const botHtml = `<div><strong>Assistant:</strong> ${reply}</div>`;
-      chatMessages.insertAdjacentHTML("beforeend", botHtml);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    } catch (err) {
-      const errHtml = `<div><strong>Assistant:</strong> There was an error talking to the server.</div>`;
-      chatMessages.insertAdjacentHTML("beforeend", errHtml);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-  });
-</script>
+      // Animated counter
+      ScrollTrigger.create({
+        trigger: '.stats-section',
+        start: 'top 70%',
+        onEnter: () => {
+          gsap.to({value: 0}, {
+            value: targetCount,
+            duration: 2,
+            ease: "power1.out",
+            onUpdate: function() {
+              const current = Math.round(this.targets()[0].value);
+              if (targetCount > 100) {
+                numberElement.textContent = current.toLocaleString() + '+';
+              } else {
+                numberElement.textContent = current + '%';
+              }
+            }
+          });
+        }
+      });
+    });
 
+    // ==================== SECTION REVEAL WITH SCRUB ====================
+    const revealSections = gsap.utils.toArray('.about-section, .services-section, .programmes-section, .news-section, .campus-map-section, .club-events-section, .recruiters-section');
+    
+    revealSections.forEach(section => {
+      gsap.from(section, {
+        opacity: 0,
+        y: 80,
+        duration: 1.2,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 78%',
+          end: 'top 25%',
+          scrub: 1.5,
+          toggleActions: 'play none none reverse'
+        }
+      });
+    });
+
+    // ==================== SERVICE CARDS WITH ROTATION EFFECT ====================
+    gsap.utils.toArray('.service-card').forEach((card, index) => {
+      gsap.from(card, {
+        opacity: 0,
+        y: 60,
+        rotationX: -15,
+        duration: 0.8,
+        delay: index * 0.12,
+        scrollTrigger: {
+          trigger: '.services-grid',
+          start: 'top 72%',
+          toggleActions: 'play none none reverse'
+        }
+      });
+
+      // Hover rotation effect
+      card.addEventListener('mouseenter', () => {
+        gsap.to(card, {
+          rotationY: 5,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+      });
+
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, {
+          rotationY: 0,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+      });
+    });
+
+    // ==================== HORIZONTAL SCROLL WITH PINNING ====================
+    const horizontalSection = document.querySelector('.horizontal-wrapper');
+    const scrollContainer = document.querySelector('.horizontal-container');
+
+    gsap.to(scrollContainer, {
+      x: () => -(scrollContainer.scrollWidth - window.innerWidth),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: horizontalSection,
+        start: 'top top',
+        end: () => `+=${scrollContainer.scrollWidth}`,
+        scrub: 1.8,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true
+      }
+    });
+
+    // Parallax effect on horizontal panels
+    gsap.utils.toArray('.horizontal-panel').forEach((panel, index) => {
+      const img = panel.querySelector('img');
+      gsap.to(img, {
+        scale: 1.15,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: horizontalSection,
+          start: 'top top',
+          end: () => `+=${scrollContainer.scrollWidth}`,
+          scrub: true
+        }
+      });
+    });
+
+    // ==================== MAGNETIC BUTTON EFFECT ====================
+    const magneticButtons = document.querySelectorAll('.magnetic-btn');
+
+    magneticButtons.forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        
+        gsap.to(btn, {
+          x: x * 0.35,
+          y: y * 0.35,
+          duration: 0.35,
+          ease: 'power2.out'
+        });
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        gsap.to(btn, {
+          x: 0,
+          y: 0,
+          duration: 0.6,
+          ease: 'elastic.out(1, 0.35)'
+        });
+      });
+    });
+
+    // ==================== PARALLAX HERO BACKGROUND ====================
+    gsap.to('.hero-section', {
+      backgroundPosition: '50% 120%',
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero-section',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true
+      }
+    });
+
+    // ==================== PROGRAMME CARDS FLIP ENTRANCE ====================
+    gsap.utils.toArray('.programme-card').forEach((card, index) => {
+      gsap.from(card, {
+        opacity: 0,
+        rotationY: -90,
+        transformOrigin: 'left center',
+        duration: 1,
+        delay: index * 0.2,
+        scrollTrigger: {
+          trigger: '.programmes-grid',
+          start: 'top 72%',
+          toggleActions: 'play none none reverse'
+        }
+      });
+    });
+
+    // ==================== EVENT CARDS STAGGER WITH SCALE ====================
+    gsap.utils.toArray('.event-card').forEach((card, index) => {
+      gsap.from(card, {
+        opacity: 0,
+        scale: 0.85,
+        y: 40,
+        duration: 0.7,
+        delay: index * 0.15,
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+          toggleActions: 'play none none reverse'
+        }
+      });
+    });
+
+    // ==================== NEWS CARDS WAVE ANIMATION ====================
+    gsap.from('.news-card', {
+      opacity: 0,
+      x: -50,
+      y: 30,
+      rotation: -3,
+      duration: 0.9,
+      stagger: 0.22,
+      scrollTrigger: {
+        trigger: '.news-grid',
+        start: 'top 72%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    // ==================== SECTION TITLES SPLIT TEXT EFFECT ====================
+    gsap.utils.toArray('.section-title').forEach(title => {
+      gsap.from(title, {
+        opacity: 0,
+        y: 50,
+        scale: 0.9,
+        duration: 1,
+        scrollTrigger: {
+          trigger: title,
+          start: 'top 85%',
+          toggleActions: 'play none none reverse'
+        }
+      });
+    });
+
+    // ==================== FOOTER REVEAL ====================
+    gsap.from('.footer', {
+      opacity: 0,
+      y: 100,
+      duration: 1.2,
+      scrollTrigger: {
+        trigger: '.footer',
+        start: 'top 90%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+
+    // ==================== FLOATING BUTTONS ENTRANCE ====================
+    gsap.from('#att-toggle, #chat-toggle', {
+      scale: 0,
+      opacity: 0,
+      duration: 0.6,
+      delay: 3.8,
+      stagger: 0.2,
+      ease: 'back.out(1.7)'
+    });
+
+    // ==================== REFRESH SCROLLTRIGGER ON RESIZE ====================
+    window.addEventListener('resize', () => {
+      ScrollTrigger.refresh();
+    });
+
+    // ==================== ATTENDANCE LOGIC ====================
+    const ATT_API_URL = '/api/att';
+    const attToggle = document.getElementById('att-toggle');
+    const attPanel = document.getElementById('att-panel');
+    const attInput = document.getElementById('att_reg_no');
+    const attBtn = document.getElementById('att_check_btn');
+    const attResult = document.getElementById('att_result');
+    const attError = document.getElementById('att_error');
+
+    attToggle.addEventListener('click', () => {
+      const visible = attPanel.style.display === 'flex';
+      attPanel.style.display = visible ? 'none' : 'flex';
+      if (!visible) {
+        attResult.style.display = 'none';
+        attError.style.display = 'none';
+        attInput.value = '';
+        attInput.focus();
+      }
+    });
+
+    attBtn.addEventListener('click', checkAttSmall);
+    attInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') checkAttSmall();
+    });
+
+    async function checkAttSmall() {
+      const regNo = attInput.value.trim();
+      if (!regNo) {
+        showAttError('Please enter a registration number');
+        return;
+      }
+      attResult.style.display = 'none';
+      attError.style.display = 'none';
+
+      try {
+        const resp = await fetch(`${ATT_API_URL}/attendance/${encodeURIComponent(regNo)}`);
+        const data = await resp.json();
+        if (!resp.ok) {
+          showAttError(data.error || 'Student not found');
+          return;
+        }
+        displayAttResult(data);
+      } catch (e) {
+        showAttError('Error fetching attendance. Try again.');
+      }
+    }
+
+    function displayAttResult(data) {
+      document.getElementById('att_name').textContent = data.student_name;
+      document.getElementById('att_reg').textContent = data.reg_no;
+      document.getElementById('att_pct').textContent = data.attendance_percentage + '%';
+      document.getElementById('att_total').textContent = data.total_classes;
+      document.getElementById('att_attended').textContent = data.attended_classes;
+      document.getElementById('att_missed').textContent = data.total_classes - data.attended_classes;
+      attError.style.display = 'none';
+      attResult.style.display = 'block';
+    }
+
+    function showAttError(msg) {
+      attResult.style.display = 'none';
+      attError.textContent = msg;
+      attError.style.display = 'block';
+    }
+
+    // ==================== CHATBOT LOGIC ====================
+    const chatToggle = document.getElementById("chat-toggle");
+    const chatWindow = document.getElementById("chat-window");
+    const chatForm = document.getElementById("chat-form");
+    const chatInput = document.getElementById("chat-input");
+    const chatMessages = document.getElementById("chat-messages");
+
+    chatToggle.addEventListener("click", () => {
+      const visible = chatWindow.style.display === "flex";
+      chatWindow.style.display = visible ? "none" : "flex";
+    });
+
+    chatForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      const userHtml = `<div style="margin-bottom: 10px; background: #e3f2fd; padding: 10px; border-radius: 8px; text-align: right;"><strong>You:</strong> ${text}</div>`;
+      chatMessages.insertAdjacentHTML("beforeend", userHtml);
+      chatInput.value = "";
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      try {
+        const resp = await fetch("/api/assistant/chat", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({message: text})
+        });
+
+        const data = await resp.json();
+        const reply = data.reply || "Sorry, I could not understand that.";
+        const botHtml = `<div style="margin-bottom: 10px; background: #f0f0f0; padding: 10px; border-radius: 8px;"><strong>Assistant:</strong> ${reply}</div>`;
+        chatMessages.insertAdjacentHTML("beforeend", botHtml);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      } catch (err) {
+        const errHtml = `<div style="margin-bottom: 10px; background: #ffebee; padding: 10px; border-radius: 8px;"><strong>Assistant:</strong> There was an error talking to the server.</div>`;
+        chatMessages.insertAdjacentHTML("beforeend", errHtml);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+    });
+
+    console.log('CODE-X Institution Portal Loaded with Advanced GSAP Animations');
+  </script>
 </body>
 </html>
