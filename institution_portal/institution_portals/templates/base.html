@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  
+
   <style>
     :root {
       --primary: #10b981;
@@ -26,6 +26,10 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
     }
 
     body {
@@ -259,17 +263,18 @@
     .main-layout {
       display: flex;
       min-height: calc(100vh - 100px);
+      align-items: stretch;
     }
 
-    /* ==================== SIDEBAR ==================== */
-    /* === UPDATED SIDEBAR STYLES === */
+    /* ==================== SIDEBAR (UNIFIED) ==================== */
     .sidebar {
-      width: 260px;                /* a bit narrower so text fits */
+      width: 260px;
+      flex: 0 0 260px;   /* fixed, never shrinks */
       background: var(--sidebar-bg);
       position: relative;
-      overflow-y: auto;            /* allow scrolling if many items */
-      overflow-x: hidden;          /* prevent text from going off-screen */
-      flex-shrink: 0;              /* do not shrink when content grows */
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 5;
     }
 
     .sidebar::before {
@@ -301,21 +306,21 @@
       text-transform: uppercase;
       padding: 0 18px 15px;
       letter-spacing: 2px;
-      white-space: nowrap;        /* keep label on one line */
+      white-space: nowrap;
     }
 
     .sidebar a {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 14px 18px;         /* reduced padding so text doesn't overflow */
+      padding: 14px 18px;
       color: rgba(255,255,255,0.7);
       text-decoration: none;
       font-weight: 500;
       transition: all 0.3s;
       position: relative;
       border-left: 4px solid transparent;
-      white-space: nowrap;        /* keep each item in a single line */
+      white-space: nowrap;
     }
 
     .sidebar a::before {
@@ -333,7 +338,7 @@
       color: white;
       background: rgba(16, 185, 129, 0.1);
       border-left-color: var(--sidebar-active);
-      padding-left: 30px;         /* small shift on hover, still in view */
+      padding-left: 30px;
     }
 
     .sidebar a:hover::before {
@@ -350,7 +355,7 @@
     .sidebar a .icon {
       font-size: 1.4rem;
       transition: transform 0.3s;
-      flex-shrink: 0;             /* icon stays visible */
+      flex-shrink: 0;
     }
 
     .sidebar a:hover .icon {
@@ -359,7 +364,8 @@
 
     /* ==================== CONTENT AREA ==================== */
     .content-area {
-      flex: 1;
+      flex: 1 1 auto;
+      min-width: 0;
       padding: 40px;
       position: relative;
       z-index: 10;
@@ -381,7 +387,7 @@
     @media (max-width: 768px) {
       body { cursor: auto; }
       .cursor, .cursor-dot { display: none; }
-      
+
       header {
         padding: 15px 20px;
         flex-direction: column;
@@ -397,6 +403,7 @@
         left: -260px;
         top: 0;
         height: 100vh;
+        flex: 0 0 260px;
         z-index: 9999;
         transition: left 0.3s;
       }
@@ -410,7 +417,7 @@
       }
     }
   </style>
-  
+
   {% block extra_styles %}{% endblock %}
 </head>
 <body>
@@ -472,7 +479,7 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-    
+
     {% block content %}{% endblock %}
   </main>
 </div>
@@ -480,7 +487,7 @@
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-// ==================== CURSOR ====================
+// CURSOR
 const cursor = document.querySelector('.cursor');
 const cursorDot = document.querySelector('.cursor-dot');
 let mouseX = 0, mouseY = 0;
@@ -512,7 +519,7 @@ document.querySelectorAll('a, button, input, .card').forEach(el => {
   el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
 });
 
-// ==================== PARTICLES ====================
+// PARTICLES
 const particleSystem = document.getElementById('particleSystem');
 for (let i = 0; i < 50; i++) {
   const particle = document.createElement('div');
@@ -531,22 +538,22 @@ for (let i = 0; i < 50; i++) {
   });
 }
 
-// ==================== SCROLL PROGRESS ====================
+// SCROLL PROGRESS
 window.addEventListener('scroll', () => {
   const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
   document.getElementById('scrollProgress').style.width = scrolled + '%';
 });
 
-// ==================== ANIMATIONS ====================
+// ANIMATIONS
 gsap.from('#mainHeader', { y: -100, opacity: 0, duration: 1, ease: 'power3.out' });
 gsap.from('.logo-circle', { scale: 0, rotation: 360, duration: 1, delay: 0.3, ease: 'elastic.out(1, 0.5)' });
 gsap.from('.brand-name', { opacity: 0, x: -30, duration: 0.8, delay: 0.5 });
 gsap.from('.header-right', { opacity: 0, x: 30, duration: 0.8, delay: 0.6 });
 gsap.from('#sidebar', { x: -280, opacity: 0, duration: 1, delay: 0.4, ease: 'power3.out' });
-gsap.from('.sidebar a', { opacity: 1, x: -50, stagger: 0.1, delay: 0.7 });
+gsap.from('.sidebar a', { opacity: 1, x: -5, stagger: 0.1, delay: 0.7 });
 gsap.from('#contentArea', { opacity: 0, y: 50, duration: 1, delay: 0.5 });
 
-// Sidebar interactions
+// Sidebar ripple
 document.querySelectorAll('.sidebar a').forEach(link => {
   link.addEventListener('click', function(e) {
     const ripple = document.createElement('div');
@@ -558,7 +565,7 @@ document.querySelectorAll('.sidebar a').forEach(link => {
     ripple.style.left = e.offsetX + 'px';
     ripple.style.top = e.offsetY + 'px';
     this.appendChild(ripple);
-    
+
     gsap.to(ripple, {
       scale: 30,
       opacity: 0,
@@ -568,7 +575,7 @@ document.querySelectorAll('.sidebar a').forEach(link => {
   });
 });
 
-console.log('✨ CODE-X Portal - Professional Design Loaded');
+console.log('✨ CODE-X Portal - Unified Sidebar Layout Loaded');
 </script>
 
 {% block extra_scripts %}{% endblock %}
