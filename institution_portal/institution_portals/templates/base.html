@@ -2,55 +2,570 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>{% block title %}Codex Portal{% endblock %}</title>
+  <title>{% block title %}CODE-X Portal{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  
   <style>
-    body { margin:0; font-family:'Inter',sans-serif; background:#F7F4EA; }
-    header { background:#28273f; padding:14px 28px; color:#fff; font-weight:600;
-             display:flex; align-items:center; justify-content:space-between; }
-    .layout { display:flex; min-height:calc(100vh - 60px); }
-    .sidebar { width:220px; background:#c14242; box-shadow:2px 0 8px rgba(0,0,0,0.08); padding:18px; }
-    .sidebar a { display:block; padding:8px 4px; color:#333; text-decoration:none; font-size:0.95rem; }
-    .sidebar a:hover { color:#9593D9; }
-    .content { flex:1; padding:24px; }
+    :root {
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --primary-light: #34d399;
+      --accent: #6ee7b7;
+      --bg-main: #f0fdf4;
+      --bg-card: #ffffff;
+      --text-dark: #064e3b;
+      --text-light: #6b7280;
+      --sidebar-bg: #064e3b;
+      --sidebar-active: #10b981;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-main);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ==================== CUSTOM CURSOR ==================== */
+    .cursor {
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 99999;
+      transition: all 0.2s ease;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: difference;
+    }
+
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--primary);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 20px var(--primary);
+    }
+
+    .cursor.expand {
+      width: 80px;
+      height: 80px;
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    /* ==================== ANIMATED BACKGROUND ==================== */
+    .bg-animation {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .shape1 {
+      width: 500px;
+      height: 500px;
+      background: linear-gradient(45deg, #10b981, #34d399);
+      top: -250px;
+      left: -250px;
+      animation-delay: 0s;
+    }
+
+    .shape2 {
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(45deg, #6ee7b7, #a7f3d0);
+      bottom: -200px;
+      right: -200px;
+      animation-delay: -10s;
+    }
+
+    .shape3 {
+      width: 350px;
+      height: 350px;
+      background: linear-gradient(45deg, #059669, #10b981);
+      top: 50%;
+      right: 10%;
+      animation-delay: -5s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(50px, -50px) rotate(90deg); }
+      50% { transform: translate(100px, 50px) rotate(180deg); }
+      75% { transform: translate(-50px, 100px) rotate(270deg); }
+    }
+
+    /* Particle System */
+    .particle-system {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+
+    /* ==================== HEADER ==================== */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      padding: 20px 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
+      position: relative;
+      z-index: 1000;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      top: -50%;
+      left: -50%;
+      animation: headerShine 6s linear infinite;
+    }
+
+    @keyframes headerShine {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo-wrapper {
+      position: relative;
+      width: 60px;
+      height: 60px;
+    }
+
+    .logo-circle {
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255,255,255,0.3);
+      animation: logoFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .logo-circle img {
+      width: 35px;
+      filter: brightness(0) invert(1);
+    }
+
+    .brand-name {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: white;
+      letter-spacing: 1px;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .user-badge {
+      background: rgba(255,255,255,0.15);
+      padding: 12px 24px;
+      border-radius: 50px;
+      color: white;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: all 0.3s;
+    }
+
+    .user-badge:hover {
+      background: rgba(255,255,255,0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .logout-btn {
+      background: white;
+      color: var(--primary);
+      padding: 12px 28px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .logout-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    /* ==================== LAYOUT ==================== */
+    .main-layout {
+      display: flex;
+      min-height: calc(100vh - 100px);
+    }
+
+    /* ==================== SIDEBAR ==================== */
+    .sidebar {
+      width: 280px;
+      background: var(--sidebar-bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.1), transparent);
+      top: -50%;
+      left: -50%;
+      animation: sidebarGlow 10s linear infinite;
+    }
+
+    @keyframes sidebarGlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .sidebar-menu {
+      padding: 30px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .menu-title {
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0 25px 15px;
+      letter-spacing: 2px;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 18px 25px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+      position: relative;
+      border-left: 4px solid transparent;
+    }
+
+    .sidebar a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.3), transparent);
+      transition: width 0.3s;
+    }
+
+    .sidebar a:hover {
+      color: white;
+      background: rgba(16, 185, 129, 0.1);
+      border-left-color: var(--sidebar-active);
+      padding-left: 35px;
+    }
+
+    .sidebar a:hover::before {
+      width: 100%;
+    }
+
+    .sidebar a.active {
+      color: white;
+      background: rgba(16, 185, 129, 0.2);
+      border-left-color: var(--sidebar-active);
+      font-weight: 700;
+    }
+
+    .sidebar a .icon {
+      font-size: 1.4rem;
+      transition: transform 0.3s;
+    }
+
+    .sidebar a:hover .icon {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    /* ==================== CONTENT AREA ==================== */
+    .content-area {
+      flex: 1;
+      padding: 40px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ==================== SCROLL PROGRESS ==================== */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--accent));
+      z-index: 99999;
+      transform-origin: left;
+      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.5);
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 768px) {
+      body { cursor: auto; }
+      .cursor, .cursor-dot { display: none; }
+      
+      header {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .brand-name {
+        font-size: 1.4rem;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        height: 100vh;
+        z-index: 9999;
+        transition: left 0.3s;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .content-area {
+        padding: 20px;
+      }
+    }
   </style>
+  
+  {% block extra_styles %}{% endblock %}
 </head>
 <body>
-<header>
-  <div>
-    <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Logo" style="width:30px;height:30px;filter:brightness(0) invert(1);margin-right:8px;">
-    Codex Institutions
-  </div>
-   Codex Institution<a href="{{ url_for('go_home') }}"
-   style="display:inline-block;margin-top:8px;padding:6px 12px;
-          border-radius:4px;background:#0d6efd;color:#fff;text-decoration:none;">
-  Go to Home
-</a>
-  {% if current_user.is_authenticated %}
-    <div>{{ current_user.full_name or current_user.reg_no }} ({{ current_user.role|upper }}) |
-      <a href="{{ url_for('logout') }}" style="color:#fff;text-decoration:underline;">Logout</a>
+
+<!-- Cursor -->
+<div class="cursor"></div>
+<div class="cursor-dot"></div>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Background Animation -->
+<div class="bg-animation">
+  <div class="shape shape1"></div>
+  <div class="shape shape2"></div>
+  <div class="shape shape3"></div>
+</div>
+
+<!-- Particle System -->
+<div class="particle-system" id="particleSystem"></div>
+
+<!-- Header -->
+<header id="mainHeader">
+  <div class="header-left">
+    <div class="logo-wrapper">
+      <div class="logo-circle">
+        <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Logo">
+      </div>
     </div>
+    <div class="brand-name">CODE-X</div>
+  </div>
+
+  {% if current_user.is_authenticated %}
+  <div class="header-right">
+    <div class="user-badge">
+      {{ current_user.full_name or current_user.reg_no }} ({{ current_user.role|upper }})
+    </div>
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+  </div>
   {% endif %}
 </header>
 
-<div class="layout">
-  <aside class="sidebar">
-    {% block sidebar %}{% endblock %}
+<!-- Main Layout -->
+<div class="main-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-menu">
+      <div class="menu-title">Navigation</div>
+      {% block sidebar %}{% endblock %}
+    </div>
   </aside>
 
-  <main class="content">
+  <!-- Content -->
+  <main class="content-area" id="contentArea">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, msg in messages %}
-          <div style="margin-bottom:12px;padding:10px;border-radius:6px;background:#ffe2e2;border-left:4px solid #ff4949;font-size:0.9rem;">
-            {{ msg }}
-          </div>
+          <div class="alert alert-{{ category }}">{{ msg }}</div>
         {% endfor %}
       {% endif %}
     {% endwith %}
+    
     {% block content %}{% endblock %}
   </main>
 </div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ==================== CURSOR ====================
+const cursor = document.querySelector('.cursor');
+const cursorDot = document.querySelector('.cursor-dot');
+let mouseX = 0, mouseY = 0;
+let cursorX = 0, cursorY = 0;
+let dotX = 0, dotY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function animateCursor() {
+  cursorX += (mouseX - cursorX) * 0.2;
+  cursorY += (mouseY - cursorY) * 0.2;
+  cursor.style.left = cursorX + 'px';
+  cursor.style.top = cursorY + 'px';
+
+  dotX += (mouseX - dotX) * 0.3;
+  dotY += (mouseY - dotY) * 0.3;
+  cursorDot.style.left = dotX + 'px';
+  cursorDot.style.top = dotY + 'px';
+
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+document.querySelectorAll('a, button, input, .card').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+});
+
+// ==================== PARTICLES ====================
+const particleSystem = document.getElementById('particleSystem');
+for (let i = 0; i < 50; i++) {
+  const particle = document.createElement('div');
+  particle.className = 'particle';
+  particle.style.left = Math.random() * 100 + '%';
+  particle.style.top = Math.random() * 100 + '%';
+  particleSystem.appendChild(particle);
+
+  gsap.to(particle, {
+    x: (Math.random() - 0.5) * 100,
+    y: (Math.random() - 0.5) * 100,
+    duration: 3 + Math.random() * 3,
+    repeat: -1,
+    yoyo: true,
+    ease: 'sine.inOut'
+  });
+}
+
+// ==================== SCROLL PROGRESS ====================
+window.addEventListener('scroll', () => {
+  const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('scrollProgress').style.width = scrolled + '%';
+});
+
+// ==================== ANIMATIONS ====================
+gsap.from('#mainHeader', { y: -100, opacity: 0, duration: 1, ease: 'power3.out' });
+gsap.from('.logo-circle', { scale: 0, rotation: 360, duration: 1, delay: 0.3, ease: 'elastic.out(1, 0.5)' });
+gsap.from('.brand-name', { opacity: 0, x: -30, duration: 0.8, delay: 0.5 });
+gsap.from('.header-right', { opacity: 0, x: 30, duration: 0.8, delay: 0.6 });
+gsap.from('#sidebar', { x: -280, opacity: 0, duration: 1, delay: 0.4, ease: 'power3.out' });
+gsap.from('.sidebar a', { opacity: 0, x: -50, stagger: 0.1, delay: 0.7 });
+gsap.from('#contentArea', { opacity: 0, y: 50, duration: 1, delay: 0.5 });
+
+// Sidebar interactions
+document.querySelectorAll('.sidebar a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const ripple = document.createElement('div');
+    ripple.style.position = 'absolute';
+    ripple.style.width = '10px';
+    ripple.style.height = '10px';
+    ripple.style.background = 'rgba(16, 185, 129, 0.5)';
+    ripple.style.borderRadius = '50%';
+    ripple.style.left = e.offsetX + 'px';
+    ripple.style.top = e.offsetY + 'px';
+    this.appendChild(ripple);
+    
+    gsap.to(ripple, {
+      scale: 30,
+      opacity: 0,
+      duration: 0.8,
+      onComplete: () => ripple.remove()
+    });
+  });
+});
+
+console.log('✨ CODE-X Portal - Professional Design Loaded');
+</script>
+
+{% block extra_scripts %}{% endblock %}
+
 </body>
 </html>
