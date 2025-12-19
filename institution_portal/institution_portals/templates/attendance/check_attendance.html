@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block title %}Check Attendance{% endblock %}
+
+{% block sidebar %}
+<h3>Attendance</h3>
+<a href="{{ url_for('public_home') }}">Home</a>
+<a href="{{ url_for('staff_attendance') }}">Staff Mark Attendance</a>
+<a href="{{ url_for('admin_attendance_home') }}">Admin Attendance Setup</a>
+{% endblock %}
+
+{% block content %}
+<div style="
+  max-width:600px;
+  margin:0 auto;
+  background:white;
+  padding:32px;
+  border-radius:12px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.15);
+">
+  <h2 style="color:#11998e;margin-bottom:8px;font-size:28px;text-align:center;">
+    📊 Check Attendance
+  </h2>
+  <p style="color:#666;margin-bottom:20px;text-align:center;font-size:14px;">
+    Enter registration number to view attendance percentage.
+  </p>
+
+  <div class="search-box" style="margin-bottom:20px;">
+    <div class="form-group" style="margin-bottom:12px;">
+      <label style="font-weight:600;color:#333;">Registration Number:</label>
+      <input type="text" id="reg_no" class="form-control"
+             placeholder="e.g., 21CS001" onkeypress="handleKeyPress(event)">
+    </div>
+    <button class="btn btn-success w-100" onclick="checkAttendance()">🔍 Check Attendance</button>
+  </div>
+
+  <div id="result" class="result-card" style="
+      margin-top:20px;padding:24px;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      border-radius:12px;color:white;display:none;">
+    <div class="student-info" style="margin-bottom:16px;">
+      <h3 id="student_name" style="font-size:22px;margin-bottom:4px;">-</h3>
+      <p id="student_reg" style="opacity:0.9;font-size:14px;">Reg No: -</p>
+      <span id="status_badge" class="status-badge">-</span>
+    </div>
+
+    <div class="percentage-circle" id="percentage_circle" style="
+        --percentage:0deg;
+        width:150px;height:150px;margin:16px auto;
+        border-radius:50%;
+        background:conic-gradient(
+          #38ef7d 0deg,
+          #38ef7d var(--percentage),
+          rgba(255,255,255,0.3) var(--percentage),
+          rgba(255,255,255,0.3) 360deg
+        );
+        display:flex;align-items:center;justify-content:center;">
+      <div class="percentage-inner" style="
+          width:120px;height:120px;background:white;border-radius:50%;
+          display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <div class="percentage-value" id="percentage_value"
+             style="font-size:32px;font-weight:700;color:#11998e;">0%</div>
+        <div class="percentage-text" style="font-size:12px;color:#666;margin-top:4px;">
+          Attendance
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-grid" style="
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:12px;
+        margin-top:10px;">
+      <div class="stat-box" style="background:rgba(255,255,255,0.2);
+           padding:10px;border-radius:8px;text-align:center;">
+        <div class="stat-number" id="total_classes" style="font-size:22px;font-weight:700;">0</div>
+        <div class="stat-label" style="font-size:12px;opacity:0.9;">Total</div>
+      </div>
+      <div class="stat-box" style="background:rgba(255,255,255,0.2);
+           padding:10px;border-radius:8px;text-align:center;">
+        <div class="stat-number" id="attended_classes" style="font-size:22px;font-weight:700;">0</div>
+        <div class="stat-label" style="font-size:12px;opacity:0.9;">Attended</div>
+      </div>
+      <div class="stat-box" style="background:rgba(255,255,255,0.2);
+           padding:10px;border-radius:8px;text-align:center;">
+        <div class="stat-number" id="missed_classes" style="font-size:22px;font-weight:700;">0</div>
+        <div class="stat-label" style="font-size:12px;opacity:0.9;">Missed</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="error" class="alert alert-danger mt-3" style="display:none;">
+    <strong>❌ Error: </strong><span id="error_message">-</span>
+  </div>
+</div>
+
+<style>
+  .status-badge {
+    display:inline-block;
+    padding:4px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+    margin-top:6px;
+  }
+  .status-good { background:#38ef7d; color:#0d7a6f; }
+  .status-warning { background:#ffd93d; color:#856404; }
+  .status-danger { background:#ff6b6b; color:#fff; }
+</style>
+
+<script>
+  const API_URL = '/api/att';
+
+  function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      checkAttendance();
+    }
+  }
+
+  async function checkAttendance() {
+    const regNo = document.getElementById('reg_no').value.trim();
+    if (!regNo) {
+      showError('Please enter a registration number');
+      return;
+    }
+
+    document.getElementById('result').style.display = 'none';
+    document.getElementById('error').style.display = 'none';
+
+    try {
+      const response = await fetch(`${API_URL}/attendance/${encodeURIComponent(regNo)}`);
+      const data = await response.json();
+      if (response.ok) {
+        displayResult(data);
+      } else {
+        showError(data.error || 'Student not found');
+      }
+    } catch (err) {
+      showError('Error fetching attendance data. Please try again.');
+    }
+  }
+
+  function displayResult(data) {
+    document.getElementById('student_name').textContent = data.student_name;
+    document.getElementById('student_reg').textContent = `Reg No: ${data.reg_no}`;
+
+    const percentage = data.attendance_percentage;
+    document.getElementById('percentage_value').textContent = `${percentage}%`;
+
+    document.getElementById('total_classes').textContent = data.total_classes;
+    document.getElementById('attended_classes').textContent = data.attended_classes;
+    document.getElementById('missed_classes').textContent =
+      data.total_classes - data.attended_classes;
+
+    const circle = document.getElementById('percentage_circle');
+    const degrees = (percentage / 100) * 360;
+    circle.style.setProperty('--percentage', `${degrees}deg`);
+
+    const badge = document.getElementById('status_badge');
+    if (percentage >= 75) {
+      badge.textContent = '✓ Good Standing';
+      badge.className = 'status-badge status-good';
+    } else if (percentage >= 60) {
+      badge.textContent = '⚠ Warning';
+      badge.className = 'status-badge status-warning';
+    } else {
+      badge.textContent = '✗ Low Attendance';
+      badge.className = 'status-badge status-danger';
+    }
+
+    document.getElementById('result').style.display = 'block';
+  }
+
+  function showError(message) {
+    document.getElementById('error_message').textContent = message;
+    document.getElementById('error').style.display = 'block';
+  }
+
+  window.onload = function() {
+    document.getElementById('reg_no').focus();
+  };
+</script>
+{% endblock %}

@@ -1,6 +1,32 @@
-Department,Description,ContactEmail
-CSE,Computer Science and Engineering department focusing on software, AI, and systems.,cse-office@example.edu
-ECE,Electronics and Communication Engineering with labs in VLSI, embedded, and communication systems.,ece-office@example.edu
-ME,Mechanical Engineering covering design, manufacturing, and thermal engineering.,me-office@example.edu
-ADMIN,Administration office handling admissions, fees, and general queries.,admin-office@example.edu
-EXAM CELL,Exam cell responsible for exam scheduling, hall allocation, and results.,exam-cell@example.edu
+Institution,Department,Role,Name,Description,Source
+SNS Institutions Group,Overview,Institution,SNS Institutions Group,SNS Institutions Group is an educational trust based in Coimbatore offering Engineering Arts and Science Pharmacy Nursing Allied Health and Management education.,Official
+SNS College of Technology,Overview,Institution,SNS College of Technology,Engineering college under SNS Institutions offering UG PG PhD MBA and MCA programs.,Official
+SNS College of Engineering,Overview,Institution,SNS College of Engineering,Engineering college under SNS Institutions affiliated to Anna University.,Official
+Dr. SNS Rajalakshmi College of Arts and Science,Overview,Institution,Dr. SNS Rajalakshmi College of Arts and Science,Autonomous arts and science college under SNS Institutions affiliated to Bharathiar University.,Official
+
+SNS College of Technology,Administration,Principal,Dr. S. Chenthur Pandian,Principal of SNS College of Technology.,Official
+SNS College of Engineering,Administration,Principal,Dr. S. Charles,Principal of SNS College of Engineering.,Official
+Dr. SNS Rajalakshmi College of Arts and Science,Administration,Principal,Dr. R. Anitha Maniarasan,Principal of SNS Rajalakshmi College of Arts and Science.,Official
+
+SNS College of Technology,Aeronautical Engineering,HOD,Dr. M. Subramanian,Head of Aeronautical Engineering.,Official
+SNS College of Technology,Automobile Engineering,HOD,Dr. K. Senthilkumar,Head of Automobile Engineering.,Official
+SNS College of Technology,Civil Engineering,HOD,Dr. K. Thirumalai Raja,Head of Civil Engineering.,Official
+SNS College of Technology,Computer Science & Engineering,HOD,Dr. K. Sangeetha,Head of CSE.,Official
+SNS College of Technology,EEE,HOD,Dr. C. Ramakrishnan,Head of EEE.,Official
+SNS College of Technology,IT,HOD,Dr. M. Udhayamoorthi,Head of IT.,Official
+SNS College of Technology,Mechanical Engineering,HOD,Dr. C. Sowmya Dhanalakshmi,Head of Mechanical Engineering.,Official
+SNS College of Technology,Mechatronics Engineering,HOD,Dr. T. Prakash,Head of Mechatronics Engineering.,Official
+
+SNS College of Engineering,Computer Science & Engineering,HOD,Dr. K. Periyakaruppan,Head of CSE.,Official
+SNS College of Engineering,Electronics & Communication Engineering,HOD,Dr. P. Gnanasundari,Head of ECE.,Official
+SNS College of Engineering,EEE,HOD,Dr. S. Jebarani Evangeline,Head of EEE.,Official
+SNS College of Engineering,IT,HOD,Dr. P. Sumathi,Head of IT.,Official
+SNS College of Engineering,Mechanical Engineering,HOD,Dr. R. Sudhakaran,Head of Mechanical Engineering.,Official
+
+Dr. SNS Rajalakshmi College of Arts and Science,AI & DS,Program,B.Sc Computer Science AI & DS,Undergraduate program in Artificial Intelligence and Data Science.,Official
+Dr. SNS Rajalakshmi College of Arts and Science,AI & DS,Student,Vijaysarathi,Student of AI and Data Science.,User-provided
+Dr. SNS Rajalakshmi College of Arts and Science,AI & DS,Student,Gopi Krishnan,Student of AI and Data Science.,User-provided
+Dr. SNS Rajalakshmi College of Arts and Science,AI & DS,Student,Niranjan,Student of AI and Data Science.,User-provided
+Dr. SNS Rajalakshmi College of Arts and Science,AI & DS,Student,Akhil,Student of AI and Data Science.,User-provided
+Dr. SNS Rajalakshmi College of Arts and Science,AI & DS,Student,Kavin Ramesh,Student of AI and Data Science.,LinkedIn
+Dr. SNS Rajalakshmi College of Arts and Science,AI & DS,Student,Sabana S,Student of AI and Data Science.,LinkedIn

@@ -33,10 +33,10 @@
     border-bottom:2px solid #e0e0e0;
     flex-wrap:wrap;
   ">
-    <button class="tab active" onclick="switchTab('classes', event)">📚 Manage Classes</button>
-    <button class="tab" onclick="switchTab('students', event)">👨‍🎓 Add Students</button>
-    <button class="tab" onclick="switchTab('bulk', event)">📤 Bulk Upload</button>
-    <button class="tab" onclick="switchTab('view', event)">📋 View Students</button>
+    <button class="tab active" type="button" onclick="switchTab('classes', event)">📚 Manage Classes</button>
+    <button class="tab" type="button" onclick="switchTab('students', event)">👨‍🎓 Add Students</button>
+    <button class="tab" type="button" onclick="switchTab('bulk', event)">📤 Bulk Upload</button>
+    <button class="tab" type="button" onclick="switchTab('view', event)">📋 View Students</button>
   </div>
 
   <!-- Tab 1: Manage Classes -->
@@ -55,13 +55,13 @@
         <label>Department:</label>
         <input type="text" id="department" placeholder="e.g., Computer Science">
       </div>
-      <button onclick="addClass()">➕ Add Class</button>
+      <button type="button" onclick="addClass()">➕ Add Class</button>
       <div id="class_result"></div>
     </div>
 
     <div class="section">
       <h2>Existing Classes</h2>
-      <button onclick="loadClasses()" class="btn-secondary">🔄 Refresh List</button>
+      <button type="button" onclick="loadClasses()" class="btn-secondary">🔄 Refresh List</button>
       <div id="classes_list"></div>
     </div>
   </div>
@@ -84,7 +84,7 @@
           <option value="">-- Select Class --</option>
         </select>
       </div>
-      <button onclick="addStudent()">➕ Add Student</button>
+      <button type="button" onclick="addStudent()">➕ Add Student</button>
       <div id="student_result"></div>
     </div>
   </div>
@@ -100,7 +100,7 @@
         <label for="csv_file" class="upload-btn">Choose File</label>
         <p id="file_name" style="margin-top: 15px; color: #667eea; font-weight: 600;"></p>
       </div>
-      <button onclick="uploadCSV()" style="width: 100%;">⬆️ Upload and Import Students</button>
+      <button type="button" onclick="uploadCSV()" style="width: 100%;">⬆️ Upload and Import Students</button>
       <div id="bulk_result"></div>
 
       <div style="margin-top: 30px; padding: 20px; background: #fff3cd; border-radius: 8px;">
@@ -135,17 +135,13 @@
           <option value="">-- All Classes --</option>
         </select>
       </div>
-      <button onclick="loadStudents()" class="btn-secondary">🔄 Refresh</button>
+      <button type="button" onclick="loadStudents()" class="btn-secondary">🔄 Refresh</button>
       <div id="students_table"></div>
     </div>
   </div>
-
-  <!-- Link to staff attendance page using your Flask route -->
-
 </div>
 
 <style>
-  /* copied styles kept inside content so they don't break base.html */
   .tab { padding:12px 24px; background:none; border:none; cursor:pointer;
          font-size:16px; color:#666; border-bottom:3px solid transparent;
          transition:all 0.3s; }
@@ -180,9 +176,6 @@
   .upload-btn { display:inline-block; padding:10px 24px; background:#667eea; color:white;
                 border-radius:6px; cursor:pointer; font-weight:600; }
   .upload-btn:hover { background:#5568d3; }
-  .nav-link { display:inline-block; margin-top:20px; color:#667eea;
-              text-decoration:none; font-weight:600; font-size:15px; }
-  .nav-link:hover { text-decoration:underline; }
   .stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
                 gap:16px; margin-bottom:20px; }
   .stat-card { background:white; padding:16px; border-radius:8px; border-left:4px solid #667eea; }
@@ -191,7 +184,7 @@
 </style>
 
 <script>
-  const API_URL = '/api/att';  // your Flask API prefix
+  const API_URL = '/api/att';
 
   function switchTab(tabName, event) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -227,6 +220,7 @@
       document.getElementById('class_result').innerHTML =
         `<div class="result success">✅ ${result.message}</div>`;
       loadClasses();
+      loadClassesDropdown();
     } catch (error) {
       document.getElementById('class_result').innerHTML =
         `<div class="result error">❌ Error: ${error.message}</div>`;
@@ -314,6 +308,7 @@
       const result = await response.json();
       document.getElementById('bulk_result').innerHTML =
         `<div class="result success">✅ ${result.message}</div>`;
+      loadClassesDropdown();
     } catch (error) {
       document.getElementById('bulk_result').innerHTML =
         `<div class="result error">❌ Error: ${error.message}</div>`;
@@ -353,7 +348,7 @@
     }
   }
 
-  // initial load
+  // initial default view
   loadClasses();
   loadClassesDropdown();
 </script>

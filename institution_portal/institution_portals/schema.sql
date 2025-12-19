@@ -73,3 +73,45 @@ CREATE TABLE club_events (
     ON DELETE CASCADE
 );
 
+-- 6) Attendance: classes
+CREATE TABLE att_classes (
+  id INT PRIMARY KEY,              -- we control IDs from admin UI
+  class_name VARCHAR(100) NOT NULL,
+  department VARCHAR(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 7) Attendance: students mapped to a class
+CREATE TABLE att_students (
+  reg_no VARCHAR(50) PRIMARY KEY,
+  student_name VARCHAR(150) NOT NULL,
+  class_id INT NOT NULL,
+  CONSTRAINT fk_att_students_class
+    FOREIGN KEY (class_id) REFERENCES att_classes(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 8) Attendance: periods (each teaching hour)
+CREATE TABLE att_periods (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  class_id INT NOT NULL,
+  subject_name VARCHAR(150) NOT NULL,
+  period_date DATE NOT NULL,
+  period_number INT NOT NULL,
+  CONSTRAINT fk_att_periods_class
+    FOREIGN KEY (class_id) REFERENCES att_classes(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 9) Attendance: records per student per period
+CREATE TABLE att_records (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  period_id INT NOT NULL,
+  reg_no VARCHAR(50) NOT NULL,
+  is_present TINYINT(1) NOT NULL,
+  CONSTRAINT fk_att_records_period
+    FOREIGN KEY (period_id) REFERENCES att_periods(id)
+    ON DELETE CASCADE,
+  CONSTRAINT fk_att_records_student
+    FOREIGN KEY (reg_no) REFERENCES att_students(reg_no)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

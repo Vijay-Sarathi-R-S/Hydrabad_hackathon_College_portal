@@ -159,11 +159,26 @@ def read_halls(path: str) -> List[Tuple[str, int, int]]:
     return halls
 
 
+from functools import wraps
+from flask import abort
+from flask_login import current_user
+
+def roles_required(*roles):
+    def decorator(f):
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+            if not current_user.is_authenticated:
+                abort(401)
+            if getattr(current_user, "role", None) not in roles:
+                abort(403)
+            return f(*args, **kwargs)
+        return wrapped
+    return decorator
 
 # -------------------------------------------------------------------
 # Gemini config
 # -------------------------------------------------------------------
-GEMINI_API_KEY = " put your key"  # put your key
+GEMINI_API_KEY = "put your key"  # put your key
 gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 GEMINI_MODEL = "models/gemini-2.5-flash"
 # -------------------------------------------------------------------
@@ -171,7 +186,7 @@ GEMINI_MODEL = "models/gemini-2.5-flash"
 # -------------------------------------------------------------------
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.5-flash",
-    temperature=0.2,
+    temperature=0.8,
     max_output_tokens=256,
     google_api_key=GEMINI_API_KEY,
 )
@@ -985,6 +1000,14 @@ def staff_view_submissions(assessment_id):
     )
 
 
+
+
+@app.route("/staff/ai-chat", methods=["GET"])
+@login_required
+@role_required("staff")
+def staff_ai_chat():
+    return render_template("staff/staff_ai_chat.html")
+
 #-------------------------------------------------------------------
 # Staff: manage questions for an assessment
 #-------------------------------------------------------------------
@@ -1278,38 +1301,67 @@ def api_att_mark():
     return jsonify({"message": "Attendance saved"}), 200
 
 
-@app.route("/api/att/attendance/<reg_no>", methods=["GET"])
-@login_required
-def api_att_overall(reg_no):
-    # any logged-in user can query; add role checks if needed
-    from sqlalchemy import func, case
 
+@app.route("/attendance/check")
+def check_attendance_page():
+    return render_template("attendance/check_attendance.html")
+
+
+# -------------------------------------------------
+# Attendance: list classes (used by admin + staff)
+# -------------------------------------------------
+@app.route("/api/att/classes", methods=["GET"])
+def api_att_get_classes():
+    rows = AttClass.query.all()
+    data = []
+    for r in rows:
+        data.append({
+            "class_id": r.id,           # <- PRIMARY KEY FIELD NAME
+            "class_name": r.class_name,
+            "department": r.department,
+        })
+    return jsonify(data)
+
+
+
+from sqlalchemy import func, case
+
+@app.route("/api/att/attendance/<reg_no>", methods=["GET"])
+def api_att_overall(reg_no):
     q = (
         db.session.query(
             AttStudent.reg_no,
             AttStudent.student_name,
-            func.count(AttRecord.period_id),
-            func.sum(case((AttRecord.is_present == 1, 1), else_=0)),
+            func.count(AttRecord.period_id).label("total_classes"),
+            func.sum(
+                case(
+                    (AttRecord.is_present == 1, 1),
+                    else_=0
+                )
+            ).label("attended_classes"),
         )
         .outerjoin(AttRecord, AttStudent.reg_no == AttRecord.reg_no)
         .filter(AttStudent.reg_no == reg_no)
         .group_by(AttStudent.reg_no, AttStudent.student_name)
     )
+
     row = q.first()
     if not row:
         return jsonify({"error": "Student not found"}), 404
 
-    total = row[2] or 0
-    attended = row[3] or 0
+    total = int(row.total_classes or 0)
+    attended = int(row.attended_classes or 0)
     pct = round(attended * 100.0 / total, 2) if total else 0.0
 
     return jsonify({
-        "reg_no": row[0],
-        "student_name": row[1],
+        "reg_no": row.reg_no,
+        "student_name": row.student_name,
         "total_classes": total,
         "attended_classes": attended,
         "attendance_percentage": pct,
     })
+
+
 
 # -------------------------------------------------------------------
 # Admin home + course upload (principal level)
@@ -1350,36 +1402,6 @@ def admin_attendance_home():
     return render_template("attendance/admin.html")
 
 
-# API: classes
-@app.route("/api/att/classes", methods=["POST"])
-@login_required
-@role_required("admin")
-def api_att_add_class():
-    data = request.json or {}
-    cls = AttClass(
-        id=data["class_id"],
-        class_name=data["class_name"],
-        department=data.get("department", ""),
-    )
-    db.session.add(cls)
-    try:
-        db.session.commit()
-        return jsonify({"message": "Class added"}), 201
-    except Exception:
-        db.session.rollback()
-        return jsonify({"error": "Class ID already exists"}), 400
-
-
-@app.route("/api/att/classes", methods=["GET"])
-@login_required
-@role_required("admin")
-def api_att_get_classes():
-    rows = AttClass.query.all()
-    return jsonify([
-        {"class_id": r.id, "class_name": r.class_name, "department": r.department}
-        for r in rows
-    ])
-
 
 # API: students (single add)
 @app.route("/api/att/students", methods=["POST"])
@@ -1414,6 +1436,23 @@ def api_att_get_students():
         {"reg_no": r.reg_no, "student_name": r.student_name, "class_id": r.class_id}
         for r in rows
     ])
+
+
+@app.route("/api/att/students_staff", methods=["GET"])
+@login_required
+@role_required("staff")
+def api_att_get_students_staff():
+    class_id = request.args.get("class_id")
+    q = AttStudent.query
+    if class_id:
+        q = q.filter_by(class_id=class_id)
+    rows = q.all()
+    return jsonify([
+        {"reg_no": r.reg_no, "student_name": r.student_name, "class_id": r.class_id}
+        for r in rows
+    ])
+
+
 
 
 # API: bulk CSV upload (admin)
@@ -1763,6 +1802,19 @@ def hod_home():
 
     return render_template("hod/hod_dashboard.html", staff=staff, courses=courses)
 
+@app.route("/hod/sections")
+@login_required
+@role_required("hod")
+def hod_sections():
+    # temporarily reuse the main HOD dashboard
+    staff = User.query.filter_by(
+        role="staff",
+        department_id=current_user.department_id,
+    ).all()
+    courses = Course.query.filter_by(
+        department_id=current_user.department_id,
+    ).order_by(Course.semester, Course.code).all()
+    return render_template("hod/hod_dashboard.html", staff=staff, courses=courses)
 
 #-------------------------------------------------------------------
 # HOD upload staff list
@@ -2229,6 +2281,9 @@ if __name__ == "__main__":
 
 
 
+
+
+from flask import jsonify
 
 
 

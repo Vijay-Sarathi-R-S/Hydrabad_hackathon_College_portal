@@ -41,11 +41,11 @@
     <input type="date" id="period_date" class="form-control">
   </div>
 
-  <button class="btn btn-success" onclick="loadStudents()">Load Students</button>
+  <button class="btn btn-success" type="button" onclick="loadStudents()">Load Students</button>
 
   <div id="students_list" style="margin-top:24px;"></div>
 
-  <button class="btn btn-success w-100 mt-3" onclick="submitAttendance()">Submit Attendance</button>
+  <button class="btn btn-success w-100 mt-3" type="button" onclick="submitAttendance()">Submit Attendance</button>
 
   <div id="result" class="mt-3"></div>
 </div>
@@ -54,26 +54,29 @@
   const API_URL = '/api/att';
   let currentPeriodId = null;
 
-  // Set today's date
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('period_date').valueAsDate = new Date();
     loadClasses();
   });
 
-  // Load classes
+  // Load classes created by admin
   async function loadClasses() {
-    const response = await fetch(`${API_URL}/classes`);
-    const classes = await response.json();
-    const select = document.getElementById('class_id');
-    classes.forEach(c => {
-      select.innerHTML += `<option value="${c.class_id}">${c.class_name} - ${c.department}</option>`;
-    });
+    try {
+      const response = await fetch(`${API_URL}/classes`);
+      const classes = await response.json();
+      const select = document.getElementById('class_id');
+      classes.forEach(c => {
+        select.innerHTML += `<option value="${c.class_id}">${c.class_name} - ${c.department}</option>`;
+      });
+    } catch (err) {
+      alert('Error loading classes: ' + err.message);
+    }
   }
 
   // Load students for attendance
   async function loadStudents() {
     const classId = document.getElementById('class_id').value;
-    const subjectName = document.getElementById('subject_name').value;
+    const subjectName = document.getElementById('subject_name').value.trim();
     const periodNumber = document.getElementById('period_number').value;
     const periodDate = document.getElementById('period_date').value;
 
@@ -97,9 +100,11 @@
       const periodData = await periodResponse.json();
       currentPeriodId = periodData.period_id;
 
-      // Load students
-      const studentsResponse = await fetch(`${API_URL}/students?class_id=${classId}`);
-      const students = await studentsResponse.json();
+      // Load students in that class
+      // Load students (staff endpoint)
+        const studentsResponse = await fetch(`${API_URL}/students_staff?class_id=${classId}`);
+        const students = await studentsResponse.json();
+
 
       let html = '<h4>Mark Attendance:</h4>';
       students.forEach(student => {

@@ -3,8 +3,10 @@
 
 {% block sidebar %}
 <h3>HOD Menu</h3>
-<a href="{{ url_for('hod_home') }}">Dashboard</a>
-<a href="{{ url_for('hod_sections') }}">Sections & Attendance</a>
+  <a href="{{ url_for('hod_home') }}">Overview / Course Assign</a>
+  <a href="{{ url_for('hod_upload_staff') }}">Upload Staff (Excel)</a>
+  <a href="{{ url_for('hod_sections') }}">Sections & Attendance</a>
+
 
 {% endblock %}
 
