@@ -4,6 +4,8 @@ from functools import wraps
 from typing import Dict, List, Tuple, Optional
 from langchain_google_genai import ChatGoogleGenerativeAI
 from datetime import datetime 
+import requests
+
 import openpyxl
 import pandas as pd
 from sqlalchemy import func, case
@@ -27,6 +29,9 @@ from flask_limiter.util import get_remote_address
 
 from config import Config
 from google import genai
+
+
+
 
 BASE_DIR = os.path.dirname(__file__)
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -235,7 +240,14 @@ limiter = Limiter(
 # -------------------------------------------------------------------
 # Public home
 # -------------------------------------------------------------------
+class Config:
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "DATABASE_URL",
+        "mysql+pymysql://user:password@host:3306/dbname"
+    )
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+app.config.from_object(Config)
 
 # -------------------------------------------------------------------
 # Redirect root to public home
@@ -599,6 +611,13 @@ def logout():
 # -------------------------------------------------------------------
 # Student: take assessment (online test)
 # -------------------------------------------------------------------
+@app.route("/student/mindmap")
+@login_required
+def student_mindmap():
+    if current_user.role != "student":
+        flash("Students only.", "error")
+        return redirect(url_for("home"))
+    return render_template("student/mindmap.html")
 
 
 
@@ -732,6 +751,31 @@ def student_home():
 
 #-----------------------------------------------------------------------------------------------------------------
 #
+@app.route("/api/mindmap/upload", methods=["POST"])
+@login_required
+def mindmap_upload():
+    if current_user.role != "student":
+        return jsonify({"error": "Students only"}), 403
+
+    # Forward file + model to mindmap backend (port 5002)
+    resp = requests.post(
+        "http://localhost:5002/upload",
+        files=request.files,
+        data=request.form,
+        timeout=300,
+    )
+    return jsonify(resp.json()), resp.status_code
+
+
+@app.route("/api/mindmap/models")
+@login_required
+def mindmap_models():
+    if current_user.role != "student":
+        return jsonify({"error": "Students only"}), 403
+
+    resp = requests.get("http://localhost:5002/models", timeout=10)
+    return jsonify(resp.json()), resp.status_code
+
 #------------------------------------------------------------------------------------------------------------------
 
 @app.route("/student/materials")
