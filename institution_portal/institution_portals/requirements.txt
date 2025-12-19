@@ -1,19 +1,22 @@
-Flask>=2.2
-Flask-Login
-Flask-WTF
-Flask-SQLAlchemy
-Flask-Talisman
-Flask-Limiter
+# Web Framework & Security
+Flask==3.0.0
+Flask-SQLAlchemy==3.1.1
+Flask-WTF==1.2.1
+Flask-Login==0.6.3
+Flask-Talisman==1.1.0
+Flask-Limiter==3.5.0
+Werkzeug==3.0.1
 
-SQLAlchemy
-WTForms
-Werkzeug
-python-dotenv
+# Data Processing
+pandas==2.1.3
+openpyxl==3.1.2
+SQLAlchemy==2.0.23
 
-PyMySQL
-pandas
-openpyxl
+# AI & API Integration
+google-generativeai==0.3.1
+langchain-google-genai==0.0.5
+requests==2.31.0
 
-langchain
-langchain-google-genai
-google-generativeai
+# Database Driver (if using MySQL as mentioned in your comments)
+# If using SQLite (default for development), you can omit this.
+PyMySQL==1.1.0
