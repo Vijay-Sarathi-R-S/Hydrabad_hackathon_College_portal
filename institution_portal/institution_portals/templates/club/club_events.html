@@ -1,43 +1,227 @@
+{# templates/club/club_events.html #}
 {% extends "base.html" %}
-{% block title %}Club Events{% endblock %}
+{% block title %}Club Events — CODE-X{% endblock %}
+
+{% block extra_styles %}
+<style>
+  /* same styling as before, plus actions */
+  .club-form {
+    background: var(--bg-card);
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 18px 45px rgba(0,0,0,0.08);
+    border:1px solid rgba(16,185,129,0.12);
+    margin-bottom:30px;
+  }
+  .club-form h2 {
+    margin-bottom:15px;
+    font-size:1.7rem;
+    color:var(--text-dark);
+    font-weight:800;
+  }
+  .club-form p { margin-bottom:14px; }
+  .club-form input[type="text"],
+  .club-form input[type="date"],
+  .club-form textarea,
+  .club-form input[type="file"] {
+    width:100%;
+    padding:10px 12px;
+    border-radius:10px;
+    border:1px solid #d1d5db;
+    font-family:inherit;
+    font-size:0.95rem;
+    box-sizing:border-box;
+  }
+  .club-form button[type="submit"] {
+    padding:10px 22px;
+    border-radius:999px;
+    border:none;
+    background:linear-gradient(135deg,#10b981,#059669);
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+  }
+
+  .club-section-title {
+    font-size:1.5rem;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .club-section-title span.icon {
+    width:40px;
+    height:40px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#10b981,#34d399);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+  }
+
+  .club-events-grid {
+    display:flex;
+    flex-wrap:wrap;
+    gap:24px;
+  }
+  .club-event-card {
+    border-radius:18px;
+    padding:20px;
+    flex:1;
+    min-width:320px;
+    max-width:48%;
+    background:linear-gradient(135deg,#ffffff,#f9fafb);
+    box-shadow:0 10px 28px rgba(0,0,0,0.08);
+    border:1px solid rgba(16,185,129,0.1);
+  }
+  .club-event-title {
+    font-weight:700;
+    color:var(--text-dark);
+    margin-bottom:8px;
+    font-size:1.1rem;
+  }
+  .club-event-meta {
+    font-size:0.85rem;
+    color:#6b7280;
+    margin-bottom:12px;
+    line-height:1.4;
+  }
+  .club-event-status {
+    font-weight:600;
+    text-transform:capitalize;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:0.8rem;
+  }
+  .club-event-status.approved { 
+    background:#d1fae5; color:#059669; 
+  }
+  .club-event-status.pending { 
+    background:#fef3c7; color:#ca8a04; 
+  }
+  .club-event-status.rejected, 
+  .club-event-status.cancelled { 
+    background:#fee2e2; color:#b91c1c; 
+  }
+  .club-event-status.rescheduled { 
+    background:#dbeafe; color:#0ea5e9; 
+  }
+
+  .club-event-card img {
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    margin:12px 0;
+    border-radius:12px;
+    display:block;
+  }
+
+  .club-event-actions {
+    margin-top:16px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .btn-small {
+    padding:8px 16px;
+    border-radius:999px;
+    font-size:0.85rem;
+    font-weight:500;
+    border:none;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    transition:all 0.2s;
+  }
+  .btn-edit { 
+    background:#0ea5e9; color:#fff; 
+  }
+  .btn-edit:hover { background:#0284c7; }
+  .btn-cancel { 
+    background:#dc2626; color:#fff; 
+  }
+  .btn-cancel:hover { background:#b91c1c; }
+
+  @media (max-width:768px){
+    .club-events-grid { gap:16px; }
+    .club-event-card { 
+      max-width:100%; 
+      min-width:100%; 
+      padding:16px;
+    }
+    .club-event-actions { 
+      flex-direction:column; 
+    }
+  }
+</style>
+{% endblock %}
 
 {% block sidebar %}
-<h3>Club Menu</h3>
-<a href="{{ url_for('club_home') }}">Dashboard</a>
-<a href="{{ url_for('club_events') }}">Events</a>
+<div class="sidebar-title">Club Menu</div>
+<a href="{{ url_for('club_home') }}">
+  <span class="icon">🏠</span><span>Dashboard</span>
+</a>
+<a href="{{ url_for('club_events') }}" class="active">
+  <span class="icon">📅</span><span>Events</span>
+</a>
 {% endblock %}
 
 {% block content %}
-<h2>Propose New Event</h2>
-<form method="post" enctype="multipart/form-data">
-  <p><input type="text" name="title" placeholder="Event title" required></p>
-  <p><input type="date" name="date"></p>
-  <p><input type="text" name="venue" placeholder="Venue"></p>
-  <p><textarea name="description" rows="4" placeholder="Description" required></textarea></p>
-  <p>Poster / Pamphlet image (PNG/JPG/GIF): <input type="file" name="image" accept="image/*"></p>
-  <button type="submit">Send to Admin</button>
-</form>
+<div class="club-form">
+  <h2>📅 Propose New Event</h2>
+  <form method="post" enctype="multipart/form-data">
+    <p><input type="text" name="title" placeholder="Event title (e.g. Tech Fest 2026)" required></p>
+    <p><input type="date" name="date" min="{{ '2025-12-20' }}"></p>
+    <p><input type="text" name="venue" placeholder="Venue (e.g. Seminar Hall A)"></p>
+    <p><textarea name="description" rows="4" placeholder="Event description..." required></textarea></p>
+    <p><label>Poster / Pamphlet (PNG/JPG/GIF): </label><input type="file" name="image" accept="image/*"></p>
+    <button type="submit">🚀 Send to Admin for Approval</button>
+  </form>
+</div>
 
-<h3>Your Event Requests</h3>
-<div style="display:flex;flex-wrap:wrap;gap:24px;">
-  {% for e in events %}
-  <div style="
-      border:1px solid #ccc;
-      border-radius:4px;
-      padding:8px;
-      width:48%;           /* ~half of content width */
-      min-width:360px;
-      box-shadow:0 2px 4px rgba(0,0,0,0.1);
-  ">
-    <strong>{{ e.title }}</strong><br>
-    <small>{{ e.status }}{% if e.date %} · {{ e.date }}{% endif %}</small><br>
-    {% if e.image_name %}
-      <img src="{{ url_for('event_image', filename=e.image_name) }}"
-           style="width:100%;height:auto;margin-top:6px;display:block;">
+<h3 class="club-section-title">
+  <span class="icon">📋</span><span>Your Event Requests</span>
+</h3>
+
+{% if events %}
+<div class="club-events-grid">
+  {% for event in events %}
+  <div class="club-event-card">
+    <div class="club-event-title">{{ event.title }}</div>
+    <div class="club-event-meta">
+      <span class="club-event-status {{ event.status|lower }}">{{ event.status }}</span>
+      {% if event.date %} · {{ event.date.strftime('%d %b %Y') }}{% endif %}
+      {% if event.venue %} · {{ event.venue }}{% endif %}
+      {% if event.cancel_reason and event.status == 'cancelled' %} · <em>{{ event.cancel_reason }}</em>{% endif %}
+    </div>
+
+    {% if event.image_name %}
+      <img src="{{ url_for('event_image', filename=event.image_name) }}" alt="{{ event.title }} poster" loading="lazy">
+    {% endif %}
+
+    {% if event.status in ['pending', 'approved', 'rescheduled'] %}
+    <div class="club-event-actions">
+      <a class="btn-small btn-edit" href="{{ url_for('club_edit_event', event_id=event.id) }}">
+        ✏️ Edit / Reschedule
+      </a>
+      <form method="post" action="{{ url_for('club_cancel_event', event_id=event.id) }}" style="display:inline;" 
+            onsubmit="return confirm('Cancel this event request? This cannot be undone.');">
+        <button type="submit" class="btn-small btn-cancel">❌ Cancel</button>
+      </form>
+    </div>
     {% endif %}
   </div>
-  {% else %}
-  <p>No events submitted yet.</p>
   {% endfor %}
 </div>
+{% else %}
+<div style="text-align:center; padding:40px; color:#6b7280;">
+  <div style="font-size:3rem; margin-bottom:16px;">📅</div>
+  <p>No events submitted yet. Propose your first event above!</p>
+</div>
+{% endif %}
 {% endblock %}

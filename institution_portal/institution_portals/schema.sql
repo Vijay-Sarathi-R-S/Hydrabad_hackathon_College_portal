@@ -65,13 +65,15 @@ CREATE TABLE club_events (
   description TEXT NOT NULL,
   date DATE NULL,
   venue VARCHAR(200),
-  created_by INT NOT NULL,
+  image_name VARCHAR(255),
   status VARCHAR(20) NOT NULL DEFAULT 'pending',
+  cancel_reason VARCHAR(255),
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT fk_clubevents_user
+  created_by INT NOT NULL,
+  CONSTRAINT fk_club_events_user
     FOREIGN KEY (created_by) REFERENCES users(id)
     ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 6) Attendance: classes
 CREATE TABLE att_classes (

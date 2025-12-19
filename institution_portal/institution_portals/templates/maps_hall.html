@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Find My Hall — CODE-X</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  
+  <style>
+    :root {
+      --green: #4a9d5f;
+      --green-soft: #e8f5e9;
+      --green-light: #66b57a;
+      --green-accent: #8fd19e;
+      --green-dark: #3a7d4f;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--green-soft) 0%, #ffffff 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated Background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(74,157,95,0.08), transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(143,209,158,0.06), transparent 50%);
+      animation: bgPulse 15s ease-in-out infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes bgPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* Grid Pattern */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(74,157,95,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,157,95,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Floating Shapes */
+    .geo-shape {
+      position: fixed;
+      border-radius: 50%;
+      opacity: 0.06;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .geo-1 {
+      width: 250px;
+      height: 250px;
+      background: linear-gradient(135deg, var(--green), var(--green-light));
+      top: -80px;
+      right: -80px;
+    }
+
+    .geo-2 {
+      width: 180px;
+      height: 180px;
+      background: linear-gradient(135deg, var(--green-light), var(--green-accent));
+      bottom: -60px;
+      left: -60px;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%) !important;
+      box-shadow: 0 4px 20px rgba(74,157,95,0.2);
+      position: relative;
+      z-index: 100;
+      overflow: hidden;
+    }
+
+    .navbar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: translateX(-100%);
+      animation: navShine 4s ease-in-out infinite;
+    }
+
+    @keyframes navShine {
+      0% { transform: translateX(-100%); }
+      50%, 100% { transform: translateX(200%); }
+    }
+
+    .navbar-brand {
+      font-weight: 800 !important;
+      letter-spacing: 0.5px;
+      font-size: 1.4rem !important;
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Main Container */
+    .container {
+      position: relative;
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    /* Page Header */
+    .page-header {
+      text-align: center;
+      margin-bottom: 35px;
+      position: relative;
+    }
+
+    .page-header h3 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .page-header h3::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--green), var(--green-accent));
+      border-radius: 2px;
+    }
+
+    .page-header p {
+      color: #666;
+      font-size: 1.05rem;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Icon Container */
+    .icon-wrapper {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .map-icon-circle {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, var(--green), var(--green-light));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(74,157,95,0.3);
+      position: relative;
+      animation: iconFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes iconFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .map-icon-circle::before {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        var(--green),
+        var(--green-light),
+        var(--green-accent),
+        var(--green)
+      );
+      z-index: -1;
+      opacity: 0.5;
+      animation: iconRotate 4s linear infinite;
+    }
+
+    @keyframes iconRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .map-icon-circle svg {
+      width: 50px;
+      height: 50px;
+      fill: white;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
+    }
+
+    /* Card */
+    .card {
+      border: none !important;
+      border-radius: 20px !important;
+      box-shadow: 0 20px 60px rgba(74,157,95,0.15) !important;
+      background: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--green), var(--green-light), var(--green-accent));
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, var(--green), var(--green-light));
+      border-radius: 20px;
+      z-index: -1;
+      opacity: 0;
+      filter: blur(15px);
+      transition: opacity 0.5s;
+    }
+
+    .card:hover::after {
+      opacity: 0.2;
+    }
+
+    .card-body {
+      padding: 35px 30px !important;
+    }
+
+    /* Form Elements */
+    .form-label {
+      font-weight: 600;
+      color: #2f2f2f;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+      transition: color 0.3s;
+    }
+
+    .input-wrapper {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.3rem;
+      transition: all 0.3s;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .form-control {
+      padding: 14px 16px 14px 50px !important;
+      border-radius: 12px !important;
+      border: 2px solid #e0f2e4 !important;
+      font-size: 1rem !important;
+      background: #fafffe !important;
+      transition: all 0.3s ease !important;
+      font-family: 'Inter', sans-serif !important;
+    }
+
+    .form-control:focus {
+      border-color: var(--green) !important;
+      outline: none !important;
+      box-shadow: 0 0 0 4px rgba(74,157,95,0.12), 0 4px 12px rgba(74,157,95,0.15) !important;
+      background: white !important;
+      transform: translateY(-2px);
+    }
+
+    .form-control:focus ~ .input-icon {
+      color: var(--green);
+      transform: translateY(-50%) scale(1.15);
+    }
+
+    .form-control::placeholder {
+      color: #999 !important;
+    }
+
+    /* Button */
+    .btn-success {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%) !important;
+      border: none !important;
+      padding: 16px !important;
+      border-radius: 12px !important;
+      font-size: 1.1rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.5px !important;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(74,157,95,0.3) !important;
+      transition: all 0.3s ease;
+    }
+
+    .btn-success::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-success:hover {
+      transform: translateY(-3px) !important;
+      box-shadow: 0 10px 30px rgba(74,157,95,0.4) !important;
+      background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%) !important;
+    }
+
+    .btn-success:hover::before {
+      width: 400px;
+      height: 400px;
+    }
+
+    .btn-success:active {
+      transform: translateY(-1px) !important;
+    }
+
+    /* Button Icon */
+    .btn-icon {
+      display: inline-block;
+      margin-right: 8px;
+      font-size: 1.2rem;
+      transition: transform 0.3s;
+    }
+
+    .btn-success:hover .btn-icon {
+      transform: scale(1.2) rotate(10deg);
+    }
+
+    /* Info Text */
+    .info-text {
+      color: #666;
+      font-size: 0.88rem;
+      margin-top: 18px;
+      padding: 14px;
+      background: var(--green-soft);
+      border-radius: 10px;
+      border-left: 4px solid var(--green);
+      line-height: 1.5;
+    }
+
+    .info-text::before {
+      content: '💡';
+      margin-right: 8px;
+      font-size: 1.1rem;
+    }
+
+    /* Particles */
+    .particle {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: var(--green-accent);
+      border-radius: 50%;
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Ripple Effect */
+    .btn-ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+      transform: scale(0);
+      pointer-events: none;
+    }
+
+    /* Map Pin Animation */
+    .map-pin {
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      font-size: 3rem;
+      opacity: 0.1;
+      animation: pinBounce 2s ease-in-out infinite;
+    }
+
+    @keyframes pinBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Success Animation */
+    .success-pulse {
+      position: fixed;
+      width: 150px;
+      height: 150px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--green);
+      border-radius: 50%;
+      opacity: 0;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+      .page-header h3 {
+        font-size: 2rem;
+      }
+      
+      .card-body {
+        padding: 28px 24px !important;
+      }
+      
+      .map-icon-circle {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .map-icon-circle svg {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Geometric Shapes -->
+<div class="geo-shape geo-1"></div>
+<div class="geo-shape geo-2"></div>
+
+<!-- Particles -->
+<div class="particle" style="top: 20%; left: 10%;"></div>
+<div class="particle" style="top: 50%; right: 15%;"></div>
+<div class="particle" style="top: 70%; left: 80%;"></div>
+<div class="particle" style="top: 30%; left: 60%;"></div>
+<div class="particle" style="top: 80%; right: 25%;"></div>
+
+<!-- Success Pulse -->
+<div class="success-pulse" id="successPulse"></div>
+
+<nav class="navbar navbar-expand-lg navbar-dark" id="mainNav">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="{{ url_for('public_home') }}">
+      🎓 CODE-X Institution Portal
+    </a>
+  </div>
+</nav>
+
+<div class="container mt-5" style="max-width: 600px;" id="mainContainer">
+  
+  <div class="page-header">
+    <h3>Find My Hall</h3>
+    <p>
+      Enter your hall name or number and open it in Google Maps for directions.
+    </p>
+  </div>
+
+  <div class="icon-wrapper">
+    <div class="map-icon-circle">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="card shadow-sm" id="mapCard">
+    
+    <div class="card-body">
+      
+      <div class="input-wrapper">
+        <label class="form-label" for="hall_input">Hall name / number</label>
+        <input type="text" id="hall_input" class="form-control"
+               placeholder="e.g., MainHall, Block B 205">
+        
+      </div>
+
+      <div class="input-wrapper">
+        <label class="form-label" for="campus_input">Campus location (optional)</label>
+        <input type="text" id="campus_input" class="form-control"
+               placeholder="e.g., Your College Name, City">
+        
+      </div>
+
+      <button class="btn btn-success w-100" onclick="openMaps()" id="mapButton">
+      
+        Open in Google Maps
+      </button>
+
+      <div class="info-text">
+        This will open Google Maps with directions to the hall from your current location.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ==================== GSAP ANIMATIONS ====================
+
+  // Navbar animation
+  gsap.from("#mainNav", {
+    y: -100,
+    opacity: 0,
+    duration: 0.8,
+    ease: "power3.out"
+  });
+
+  // Container entrance
+  gsap.to("#mainContainer", {
+    opacity: 1,
+    y: 0,
+    duration: 1,
+    delay: 0.3,
+    ease: "power3.out"
+  });
+
+  // Page header animation
+  gsap.from(".page-header h3", {
+    opacity: 0,
+    y: -30,
+    duration: 0.8,
+    delay: 0.5,
+    ease: "power3.out"
+  });
+
+  gsap.from(".page-header p", {
+    opacity: 0,
+    duration: 0.6,
+    delay: 0.7,
+    ease: "power2.out"
+  });
+
+  // Icon circle entrance
+  gsap.from(".map-icon-circle", {
+    scale: 0,
+    rotation: 360,
+    opacity: 0,
+    duration: 1,
+    delay: 0.6,
+    ease: "elastic.out(1, 0.6)"
+  });
+
+  // Card entrance
+  gsap.from("#mapCard", {
+    opacity: 0,
+    y: 50,
+    scale: 0.95,
+    duration: 0.8,
+    delay: 0.9,
+    ease: "power3.out"
+  });
+
+  // Form elements stagger
+  gsap.from(".input-wrapper", {
+    opacity: 0,
+    x: -30,
+    duration: 0.6,
+    stagger: 0.15,
+    delay: 1.1,
+    ease: "power2.out"
+  });
+
+  // Button entrance
+  gsap.from("#mapButton", {
+    opacity: 1,
+    scale: 0.9,
+    duration: 0.6,
+    delay: 1.4,
+    ease: "back.out(1.5)"
+  });
+
+  // Info text fade
+  gsap.from(".info-text", {
+    opacity: 0,
+    y: 20,
+    duration: 0.5,
+    delay: 1.6,
+    ease: "power2.out"
+  });
+
+  // Geometric shapes animation
+  gsap.to(".geo-1", {
+    rotation: 360,
+    duration: 20,
+    repeat: -1,
+    ease: "none"
+  });
+
+  gsap.to(".geo-2", {
+    rotation: -360,
+    duration: 25,
+    repeat: -1,
+    ease: "none"
+  });
+
+  // Particles floating
+  gsap.utils.toArray(".particle").forEach((particle, i) => {
+    gsap.to(particle, {
+      y: "+=40",
+      duration: 2 + i * 0.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+    
+    gsap.to(particle, {
+      x: "+=30",
+      duration: 3 + i * 0.3,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+  });
+
+  // Map pin bounce
+  gsap.to(".map-pin", {
+    y: -10,
+    duration: 1.5,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut"
+  });
+
+  // ==================== INTERACTIONS ====================
+
+  // Input focus animations
+  const inputs = document.querySelectorAll(".form-control");
+  inputs.forEach(input => {
+    input.addEventListener("focus", function() {
+      const icon = this.parentElement.querySelector(".input-icon");
+      const label = this.parentElement.querySelector(".form-label");
+      
+      gsap.to(icon, {
+        scale: 1.2,
+        duration: 0.3,
+        ease: "back.out(1.7)"
+      });
+      
+      gsap.to(label, {
+        color: "#4a9d5f",
+        scale: 1.02,
+        duration: 0.3
+      });
+      
+      // Focus ripple
+      gsap.fromTo(this,
+        { boxShadow: "0 0 0 0px rgba(74,157,95,0.3)" },
+        { 
+          boxShadow: "0 0 0 8px rgba(74,157,95,0)",
+          duration: 0.6,
+          ease: "power2.out"
+        }
+      );
+    });
+    
+    input.addEventListener("blur", function() {
+      const icon = this.parentElement.querySelector(".input-icon");
+      const label = this.parentElement.querySelector(".form-label");
+      
+      gsap.to(icon, {
+        scale: 1,
+        duration: 0.3
+      });
+      
+      gsap.to(label, {
+        color: "#2f2f2f",
+        scale: 1,
+        duration: 0.3
+      });
+    });
+
+    // Typing animation
+    input.addEventListener("input", function() {
+      gsap.fromTo(this,
+        { x: -2 },
+        { x: 2, duration: 0.1, yoyo: true, repeat: 1 }
+      );
+    });
+  });
+
+  // Button interactions
+  const mapButton = document.getElementById("mapButton");
+
+  mapButton.addEventListener("mouseenter", function() {
+    gsap.to(this, {
+      scale: 1.03,
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  });
+
+  mapButton.addEventListener("mouseleave", function() {
+    gsap.to(this, {
+      scale: 1,
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  });
+
+  // Button click ripple
+  mapButton.addEventListener("click", function(e) {
+    const rect = this.getBoundingClientRect();
+    const ripple = document.createElement("span");
+    ripple.className = "btn-ripple";
+    
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.width = ripple.style.height = size + "px";
+    ripple.style.left = e.clientX - rect.left - size / 2 + "px";
+    ripple.style.top = e.clientY - rect.top - size / 2 + "px";
+    
+    this.appendChild(ripple);
+    
+    gsap.to(ripple, {
+      scale: 4,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power2.out",
+      onComplete: () => ripple.remove()
+    });
+  });
+
+  // Card hover glow
+  const mapCard = document.getElementById("mapCard");
+  mapCard.addEventListener("mouseenter", function() {
+    gsap.to(this, {
+      boxShadow: "0 25px 70px rgba(74,157,95,0.25) !important",
+      duration: 0.4
+    });
+  });
+
+  mapCard.addEventListener("mouseleave", function() {
+    gsap.to(this, {
+      boxShadow: "0 20px 60px rgba(74,157,95,0.15) !important",
+      duration: 0.4
+    });
+  });
+
+  // Logo pulse
+  gsap.to(".map-icon-circle", {
+    boxShadow: "0 15px 40px rgba(74,157,95,0.5)",
+    duration: 2,
+    yoyo: true,
+    repeat: -1,
+    ease: "sine.inOut"
+  });
+
+  // SVG rotation
+  gsap.to(".map-icon-circle svg", {
+    rotation: 360,
+    duration: 20,
+    repeat: -1,
+    ease: "none"
+  });
+
+  // ==================== ORIGINAL FUNCTION ====================
+  function openMaps() {
+    const hall = document.getElementById('hall_input').value.trim();
+    const campus = document.getElementById('campus_input').value.trim();
+    
+    if (!hall) {
+      // Shake animation for empty input
+      gsap.fromTo("#hall_input",
+        { x: -10 },
+        { x: 10, duration: 0.1, repeat: 5, yoyo: true, ease: "power1.inOut" }
+      );
+      alert('Please enter a hall name or number');
+      return;
+    }
+
+    // Success pulse animation
+    const successPulse = document.getElementById("successPulse");
+    gsap.fromTo(successPulse,
+      { scale: 0, opacity: 0.5 },
+      { 
+        scale: 3, 
+        opacity: 0, 
+        duration: 1,
+        ease: "power2.out"
+      }
+    );
+
+    // Button success animation
+    gsap.to(mapButton, {
+      scale: 0.95,
+      duration: 0.1,
+      yoyo: true,
+      repeat: 1,
+      ease: "power2.inOut"
+    });
+
+    const destination = encodeURIComponent(
+      campus ? `${hall}, ${campus}` : hall
+    );
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
+    window.open(url, '_blank');
+  }
+
+  console.log("Find My Hall - GSAP Animations Loaded");
+</script>
+
+</body>
+</html>

@@ -137,8 +137,8 @@
 
     .hero-content {
       max-width: 1000px;
-      opacity: 0;
-      transform: translateY(30px);
+      opacity: 1;          /* was 0 */
+      transform: translateY(0);
       position: relative;
       z-index: 2;
     }
@@ -1148,7 +1148,12 @@
     <div class="container-fluid">
       <a class="navbar-brand fw-bold" href="#">CODE-X Institution Portal</a>
       <div class="ms-auto">
-        <a class="btn btn-light" href="{{ url_for('login') }}">Sign in</a>
+        <a class="btn btn-outline-light me-2" href="{{ url_for('maps_page') }}">Maps</a><a class="btn btn-light" href="{{ url_for('login') }}">Sign in</a>
+      <div class="ms-auto d-flex gap-2">
+        
+        
+      </div>
+
       </div>
     </div>
   </nav>
@@ -1812,7 +1817,7 @@
     
     revealSections.forEach(section => {
       gsap.from(section, {
-        opacity: 0,
+        opacity: 1,
         y: 100,
         duration: 1.3,
         scrollTrigger: {

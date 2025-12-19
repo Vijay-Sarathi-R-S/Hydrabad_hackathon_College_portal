@@ -1,0 +1,151 @@
+{# templates/club/club_event_edit.html #}
+{% extends "base.html" %}
+{% block title %}Edit Event — CODE-X{% endblock %}
+
+{% block extra_styles %}
+<style>
+  .edit-form {
+    background: var(--bg-card);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.08);
+    border: 1px solid rgba(16,185,129,0.12);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .edit-form h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .edit-form input,
+  .edit-form textarea,
+  .edit-form select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #d1d5db;
+    font-family: inherit;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .edit-form input:focus,
+  .edit-form textarea:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+  }
+  .btn-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .btn-save {
+    padding: 12px 28px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    flex: 1;
+  }
+  .btn-cancel {
+    padding: 12px 28px;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    background: transparent;
+    color: #374151;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    flex: 1;
+    text-align: center;
+  }
+  .current-status {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    color: #92400e;
+  }
+  .event-preview {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+  }
+  @media (max-width: 768px) {
+    .btn-group { flex-direction: column; }
+  }
+</style>
+{% endblock %}
+
+{% block sidebar %}
+<div class="sidebar-title">Club Menu</div>
+<a href="{{ url_for('club_home') }}">
+  <span class="icon">🏠</span><span>Dashboard</span>
+</a>
+<a href="{{ url_for('club_events') }}" class="active">
+  <span class="icon">📅</span><span>Events</span>
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="edit-form">
+  <h2>✏️ Edit Event: {{ event.title }}</h2>
+  
+  {% if event.status != 'pending' %}
+  <div class="current-status">
+    <strong>Current Status:</strong> {{ event.status|title }} 
+    {% if event.status == 'approved' %}— Event is live!{% endif %}
+    {% if event.status == 'cancelled' and event.cancel_reason %}— {{ event.cancel_reason }}{% endif %}
+  </div>
+  {% endif %}
+
+  {% if event.image_name %}
+  <div class="event-preview">
+    <h4>Current Poster:</h4>
+    <img src="{{ url_for('event_image', filename=event.image_name) }}" 
+         alt="{{ event.title }}" style="max-width:100%; border-radius:10px;">
+  </div>
+  {% endif %}
+
+  <form method="post" enctype="multipart/form-data">
+    <input type="text" name="title" value="{{ event.title }}" placeholder="Event title" required>
+    
+    <input type="date" name="date" value="{{ event.date.strftime('%Y-%m-%d') if event.date else '' }}">
+    
+    <input type="text" name="venue" value="{{ event.venue or '' }}" placeholder="Venue">
+    
+    <textarea name="description" rows="5" placeholder="Event description" required>{{ event.description }}</textarea>
+    
+    <label>New Poster (optional):</label>
+    <input type="file" name="image" accept="image/*">
+    
+    {% if event.status == 'pending' %}
+    <div class="btn-group">
+      <button type="submit" class="btn-save">💾 Update & Resubmit</button>
+      <a href="{{ url_for('club_events') }}" class="btn-cancel">← Back to Events</a>
+    </div>
+    {% else %}
+    <div style="text-align:center; padding:30px; color:#6b7280;">
+      <div style="font-size:2.5rem; margin-bottom:16px;">✅</div>
+      <h3>Event is {{ event.status }}</h3>
+      <p>View your events on the <a href="{{ url_for('club_events') }}">Events page</a>.</p>
+    </div>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}

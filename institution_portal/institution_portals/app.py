@@ -245,6 +245,11 @@ def public_home():
     events = ClubEvent.query.filter_by(status="approved").order_by(ClubEvent.date).all()
     return render_template("public_home.html", events=events)
 
+
+@app.route("/maps")
+def maps_page():
+    return render_template("maps_hall.html")
+
     
 
 @app.route("/go-home")
@@ -344,17 +349,23 @@ class Department(db.Model):
 
 class ClubEvent(db.Model):
     __tablename__ = "club_events"
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    date = db.Column(db.Date, nullable=True)
-    venue = db.Column(db.String(200), nullable=True)
-    image_name = db.Column(db.String(255))          # new: stored file name
-    created_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    status = db.Column(db.String(20), nullable=False, default="pending")
+    date = db.Column(db.Date)
+    venue = db.Column(db.String(200))
+    image_name = db.Column(db.String(255))
+    status = db.Column(db.String(20), default="pending")
+    cancel_reason = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    creator = db.relationship("User")
+    created_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    creator = db.relationship("User", backref="club_events")
+
+
+    # club_id, etc…
+
 
 
 
@@ -2148,6 +2159,10 @@ def club_home():
 # -----------------------------------------------------------------
 
 
+
+
+
+
 # -------------------------------------------------------------------
 # Error handler
 # -------------------------------------------------------------------
@@ -2206,54 +2221,94 @@ def create_user():
 #-----------------------------------------------------------------------------
 #club events
 #-----------------------------------------------------------------------------
+from werkzeug.utils import secure_filename
+import os
+
+# ... your other routes ...
+
 @app.route("/club/events", methods=["GET", "POST"])
 @login_required
-@role_required("club")
 def club_events():
+    if current_user.role != "club":
+        flash("Club coordinators only.", "error")
+        return redirect(url_for("home"))
+    
     if request.method == "POST":
-        title = (request.form.get("title") or "").strip()
-        desc = (request.form.get("description") or "").strip()
-        date_str = (request.form.get("date") or "").strip()
-        venue = (request.form.get("venue") or "").strip()
-        img_file = request.files.get("image")
-
-        if not title or not desc:
-            flash("Title and description are required.", "danger")
-            return redirect(url_for("club_events"))
-
-        ev_date = None
-        if date_str:
-            try:
-                ev_date = datetime.strptime(date_str, "%Y-%m-%d").date()
-            except ValueError:
-                flash("Invalid date format (use YYYY-MM-DD).", "warning")
-
+        title = request.form["title"]
+        date = request.form.get("date")
+        venue = request.form.get("venue", "")
+        description = request.form["description"]
+        
         image_name = None
-        if img_file and img_file.filename:
-            ext = img_file.filename.rsplit(".", 1)[-1].lower()
-            if ext in EVENT_IMAGE_EXTS:
-                safe = secure_filename(img_file.filename)
-                image_name = f"{current_user.id}_{int(datetime.utcnow().timestamp())}_{safe}"
-                img_file.save(os.path.join(EVENT_UPLOAD_FOLDER, image_name))
-            else:
-                flash("Image must be PNG/JPG/GIF.", "danger")
-
-        ev = ClubEvent(
+        if "image" in request.files:
+            file = request.files["image"]
+            if file and file.filename:
+                filename = secure_filename(file.filename)
+                os.makedirs("static/uploads/events", exist_ok=True)
+                file.save(os.path.join("static/uploads/events", filename))
+                image_name = filename
+        
+        event = ClubEvent(
             title=title,
-            description=desc,
-            date=ev_date,
+            date=date,
             venue=venue,
+            description=description,
             image_name=image_name,
-            created_by=current_user.id,
             status="pending",
+            created_by=current_user.id
         )
-        db.session.add(ev)
+        db.session.add(event)
         db.session.commit()
         flash("Event request sent to admin.", "success")
-        return redirect(url_for("club_events"))
-
-    events = ClubEvent.query.filter_by(created_by=current_user.id).order_by(ClubEvent.created_at.desc()).all()
+    
+    events = ClubEvent.query.filter_by(created_by=current_user.id)\
+                           .order_by(ClubEvent.created_at.desc()).all()
     return render_template("club/club_events.html", events=events)
+
+@app.route("/club/events/<int:event_id>/edit", methods=["GET", "POST"])
+@login_required
+def club_edit_event(event_id):
+    event = ClubEvent.query.get_or_404(event_id)
+    if event.created_by != current_user.id:
+        flash("Cannot edit events you didn't create.", "error")
+        return redirect(url_for("club_events"))
+    
+    if request.method == "POST":
+        event.title = request.form["title"]
+        if request.form.get("date"):
+            event.date = request.form["date"]
+        event.venue = request.form.get("venue", "")
+        event.description = request.form["description"]
+        
+        if "image" in request.files:
+            file = request.files["image"]
+            if file and file.filename:
+                filename = secure_filename(file.filename)
+                os.makedirs("static/uploads/events", exist_ok=True)
+                file.save(os.path.join("static/uploads/events", filename))
+                event.image_name = filename
+        
+        db.session.commit()
+        flash("Event updated successfully!", "success")
+        return redirect(url_for("club_events"))
+    
+    return render_template("club/club_event_edit.html", event=event)
+
+@app.route("/club/events/<int:event_id>/cancel", methods=["POST"])
+@login_required
+def club_cancel_event(event_id):
+    event = ClubEvent.query.get_or_404(event_id)
+    if event.created_by != current_user.id:
+        flash("Cannot cancel events you didn't create.", "error")
+        return redirect(url_for("club_events"))
+    
+    event.status = "cancelled"
+    event.cancel_reason = request.form.get("cancel_reason", "No reason provided")
+    db.session.commit()
+    
+    flash("Event cancelled successfully.", "success")
+    return redirect(url_for("club_events"))
+
 
 
 @app.route("/event-images/<path:filename>")
