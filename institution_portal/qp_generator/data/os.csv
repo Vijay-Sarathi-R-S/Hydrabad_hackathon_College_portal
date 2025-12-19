@@ -1,0 +1,76 @@
+id,subject,unit,topic,question_text,question_type,difficulty,marks
+1,Operating Systems,Unit 1,Introduction,What is an operating system? Explain its main functions.,Short Answer,Easy,4
+2,Operating Systems,Unit 1,Introduction,List and explain different types of operating systems.,Short Answer,Easy,4
+3,Operating Systems,Unit 1,OS Services,What are the services provided by an operating system?,Short Answer,Easy,4
+4,Operating Systems,Unit 1,System Calls,Define system call and explain its types.,Short Answer,Medium,4
+5,Operating Systems,Unit 1,OS Structure,Differentiate between monolithic and microkernel operating systems.,Short Answer,Medium,4
+6,Operating Systems,Unit 1,Kernel,What is a kernel? Explain its role in operating system.,Short Answer,Medium,4
+7,Operating Systems,Unit 1,Boot Process,Explain the boot process of an operating system.,Short Answer,Hard,4
+8,Operating Systems,Unit 1,System Programs,What are system programs? Give examples.,Short Answer,Easy,4
+9,Operating Systems,Unit 1,Virtual Machines,Define virtual machine and explain its advantages.,Short Answer,Hard,4
+10,Operating Systems,Unit 1,Shell,What is a shell? Differentiate between GUI and CLI.,Short Answer,Medium,4
+11,Operating Systems,Unit 2,Process,What is a process? Differentiate between process and program.,Short Answer,Easy,4
+12,Operating Systems,Unit 2,Process States,Explain different process states with state transition diagram.,Short Answer,Easy,4
+13,Operating Systems,Unit 2,PCB,What is Process Control Block? Explain its components.,Short Answer,Medium,4
+14,Operating Systems,Unit 2,Context Switch,Define context switching and explain its overhead.,Short Answer,Medium,4
+15,Operating Systems,Unit 2,Threads,Differentiate between process and thread.,Short Answer,Easy,4
+16,Operating Systems,Unit 2,Thread Types,Explain user-level threads and kernel-level threads.,Short Answer,Medium,4
+17,Operating Systems,Unit 2,Multithreading,What are the benefits of multithreading?,Short Answer,Medium,4
+18,Operating Systems,Unit 2,IPC,What is Inter-Process Communication? Explain its methods.,Short Answer,Hard,4
+19,Operating Systems,Unit 2,Pipes,Differentiate between named pipes and unnamed pipes.,Short Answer,Hard,4
+20,Operating Systems,Unit 2,Signals,What are signals in operating systems? Give examples.,Short Answer,Hard,4
+21,Operating Systems,Unit 3,CPU Scheduling,What is CPU scheduling? Why is it needed?,Short Answer,Easy,4
+22,Operating Systems,Unit 3,FCFS,Explain First Come First Served scheduling algorithm.,Short Answer,Easy,4
+23,Operating Systems,Unit 3,SJF,What is Shortest Job First scheduling? Explain its types.,Short Answer,Medium,4
+24,Operating Systems,Unit 3,Round Robin,Explain Round Robin scheduling with time quantum.,Short Answer,Medium,4
+25,Operating Systems,Unit 3,Priority Scheduling,What is priority scheduling? Explain aging technique.,Short Answer,Medium,4
+26,Operating Systems,Unit 3,Scheduling Criteria,Explain different CPU scheduling criteria.,Short Answer,Medium,4
+27,Operating Systems,Unit 3,Convoy Effect,What is convoy effect in FCFS scheduling?,Short Answer,Hard,4
+28,Operating Systems,Unit 3,Preemptive,Differentiate between preemptive and non-preemptive scheduling.,Short Answer,Medium,4
+29,Operating Systems,Unit 3,Multilevel Queue,Explain multilevel queue scheduling.,Short Answer,Hard,4
+30,Operating Systems,Unit 3,MLFQ,What is Multilevel Feedback Queue scheduling?,Short Answer,Hard,4
+31,Operating Systems,Unit 4,Deadlock,Define deadlock and explain necessary conditions for deadlock.,Short Answer,Easy,4
+32,Operating Systems,Unit 4,Deadlock Prevention,Explain deadlock prevention methods.,Short Answer,Medium,4
+33,Operating Systems,Unit 4,Deadlock Avoidance,What is Banker's algorithm? Explain its use.,Short Answer,Hard,4
+34,Operating Systems,Unit 4,Deadlock Detection,Explain deadlock detection and recovery methods.,Short Answer,Hard,4
+35,Operating Systems,Unit 4,Resource Allocation,What is Resource Allocation Graph? Explain with example.,Short Answer,Medium,4
+36,Operating Systems,Unit 4,Safe State,Define safe state and unsafe state in deadlock.,Short Answer,Medium,4
+37,Operating Systems,Unit 4,Starvation,Differentiate between deadlock and starvation.,Short Answer,Medium,4
+38,Operating Systems,Unit 4,Livelock,What is livelock? How is it different from deadlock?,Short Answer,Hard,4
+39,Operating Systems,Unit 4,Semaphores,What are semaphores? Explain binary and counting semaphores.,Short Answer,Medium,4
+40,Operating Systems,Unit 4,Monitors,Define monitors and explain their use in synchronization.,Short Answer,Hard,4
+41,Operating Systems,Unit 1,OS Architecture,Explain layered approach microkernel and monolithic kernel architectures with advantages disadvantages and examples.,Long Answer,Easy,6
+42,Operating Systems,Unit 1,System Calls,Describe system calls types process control file management device management with examples and implementation.,Long Answer,Easy,6
+43,Operating Systems,Unit 1,OS Components,Explain operating system components process management memory management file system I/O system with their interactions.,Long Answer,Medium,6
+44,Operating Systems,Unit 1,Virtual Machines,Describe virtualization types hypervisors type-1 and type-2 with benefits and applications.,Long Answer,Medium,6
+45,Operating Systems,Unit 1,Dual Mode,Explain dual mode operation privileged instructions system calls and protection mechanisms.,Long Answer,Medium,6
+46,Operating Systems,Unit 2,Process Management,Explain process creation termination process hierarchy fork exec system calls with examples.,Long Answer,Medium,6
+47,Operating Systems,Unit 2,IPC Mechanisms,Describe message passing shared memory pipes sockets and their implementation with examples.,Long Answer,Medium,6
+48,Operating Systems,Unit 2,Multithreading,Explain multithreading models many-to-one one-to-one many-to-many with advantages and examples.,Long Answer,Hard,6
+49,Operating Systems,Unit 2,Thread Libraries,Describe POSIX threads Java threads and Windows threads with code examples.,Long Answer,Hard,6
+50,Operating Systems,Unit 2,Process Synchronization,Explain critical section problem Peterson's solution and hardware synchronization mechanisms.,Long Answer,Hard,6
+51,Operating Systems,Unit 3,Scheduling Algorithms,Compare FCFS SJF Priority Round Robin with examples Gantt charts and performance metrics.,Long Answer,Medium,6
+52,Operating Systems,Unit 3,Real-Time Scheduling,Explain rate monotonic and earliest deadline first scheduling for real-time systems.,Long Answer,Hard,6
+53,Operating Systems,Unit 3,Algorithm Evaluation,Describe deterministic modeling queuing analysis and simulation for scheduling evaluation.,Long Answer,Hard,6
+54,Operating Systems,Unit 3,Multiprocessor Scheduling,Explain symmetric multiprocessing processor affinity and load balancing techniques.,Long Answer,Hard,6
+55,Operating Systems,Unit 3,Thread Scheduling,Describe contention scope process-contention and system-contention scope in thread scheduling.,Long Answer,Medium,6
+56,Operating Systems,Unit 4,Deadlock Handling,Explain deadlock prevention avoidance detection and recovery methods with examples and algorithms.,Long Answer,Medium,6
+57,Operating Systems,Unit 4,Banker's Algorithm,Describe Banker's algorithm safety algorithm resource request algorithm with complete example.,Long Answer,Hard,6
+58,Operating Systems,Unit 4,Semaphores Implementation,Explain semaphore operations wait signal implementation producer-consumer problem with code.,Long Answer,Medium,6
+59,Operating Systems,Unit 4,Classical Problems,Describe dining philosophers readers-writers and sleeping barber problems with solutions.,Long Answer,Hard,6
+60,Operating Systems,Unit 4,Mutex and Locks,Explain mutex locks spinlocks reader-writer locks and their implementations.,Long Answer,Hard,6
+61,Operating Systems,Unit 5,Memory Management,Explain contiguous memory allocation fixed partitioning variable partitioning and fragmentation.,Long Answer,Medium,6
+62,Operating Systems,Unit 5,Paging,Describe paging page table structure TLB and address translation with examples.,Long Answer,Medium,6
+63,Operating Systems,Unit 5,Segmentation,Explain segmentation segmentation with paging and comparison with pure paging.,Long Answer,Hard,6
+64,Operating Systems,Unit 5,Virtual Memory,Describe virtual memory demand paging page replacement algorithms FIFO LRU optimal.,Long Answer,Medium,6
+65,Operating Systems,Unit 5,Page Replacement,Explain LRU approximation algorithms second chance and enhanced second chance algorithms.,Long Answer,Hard,6
+66,Operating Systems,Unit 5,Thrashing,Explain thrashing working set model and page fault frequency approach.,Long Answer,Hard,6
+67,Operating Systems,Unit 5,File Systems,Describe file system structure directory implementation allocation methods contiguous linked indexed.,Long Answer,Medium,6
+68,Operating Systems,Unit 5,Disk Scheduling,Explain FCFS SSTF SCAN C-SCAN LOOK disk scheduling algorithms with examples.,Long Answer,Medium,6
+69,Operating Systems,Unit 5,Case Study,Design a complete process scheduler implementing multiple scheduling algorithms FCFS SJF Round Robin Priority with performance comparison Gantt charts average waiting time turnaround time and CPU utilization analysis.,Case Study,Medium,10
+70,Operating Systems,Unit 5,Case Study,Implement a memory management system with paging virtual memory page replacement algorithms including page table management TLB simulation and performance evaluation with different workloads.,Case Study,Medium,10
+71,Operating Systems,Unit 5,Case Study,Develop a deadlock detection and recovery system using resource allocation graphs Banker's algorithm implementation safe state checking with complete algorithm design test cases and analysis.,Case Study,Hard,10
+72,Operating Systems,Unit 5,Case Study,Design a file system with directory structure file allocation methods free space management disk scheduling and file operations including complete implementation performance analysis and optimization techniques.,Case Study,Hard,10
+73,Operating Systems,Unit 5,Case Study,Implement producer-consumer problem using semaphores threads synchronization mechanisms with multiple producers and consumers including code implementation race condition handling and performance testing.,Case Study,Medium,10
+74,Operating Systems,Unit 5,Case Study,Create a shell program with command execution process creation I/O redirection piping background processes signal handling with complete implementation user interface and testing documentation.,Case Study,Hard,10
+75,Operating Systems,Unit 5,Case Study,Design a multi-threaded web server with thread pool management request handling concurrent connections load balancing and performance optimization including architecture design implementation and benchmarking results.,Case Study,Hard,10

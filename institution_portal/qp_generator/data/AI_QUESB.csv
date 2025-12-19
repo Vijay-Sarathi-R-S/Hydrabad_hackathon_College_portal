@@ -1,0 +1,76 @@
+id,subject,unit,topic,question_text,question_type,difficulty,marks
+1,Artificial Intelligence,Unit 1,Introduction,What is Artificial Intelligence? Explain its goals and applications.,Short Answer,Easy,4
+2,Artificial Intelligence,Unit 1,Introduction,Define intelligent agent and explain its components.,Short Answer,Easy,4
+3,Artificial Intelligence,Unit 1,History,Explain the evolution and history of AI briefly.,Short Answer,Easy,4
+4,Artificial Intelligence,Unit 1,AI Types,Differentiate between weak AI and strong AI with examples.,Short Answer,Easy,4
+5,Artificial Intelligence,Unit 1,AI Applications,What are the real-world applications of AI in healthcare and finance?,Short Answer,Medium,4
+6,Artificial Intelligence,Unit 1,Agent Types,Explain different types of intelligent agents.,Short Answer,Medium,4
+7,Artificial Intelligence,Unit 1,Problem Solving,What is problem-solving in AI? Explain state space representation.,Short Answer,Medium,4
+8,Artificial Intelligence,Unit 1,PEAS,What is PEAS description? Explain with an example.,Short Answer,Medium,4
+9,Artificial Intelligence,Unit 1,Rationality,Define rational agent and explain rationality in AI.,Short Answer,Hard,4
+10,Artificial Intelligence,Unit 1,Environment Types,What are the different types of task environments in AI?,Short Answer,Hard,4
+11,Artificial Intelligence,Unit 2,Search Algorithms,What is search algorithm? Differentiate between informed and uninformed search.,Short Answer,Easy,4
+12,Artificial Intelligence,Unit 2,BFS,Explain Breadth-First Search algorithm with example.,Short Answer,Easy,4
+13,Artificial Intelligence,Unit 2,DFS,What is Depth-First Search? Explain its working.,Short Answer,Easy,4
+14,Artificial Intelligence,Unit 2,Heuristic Search,What is heuristic function? Explain its role in search.,Short Answer,Medium,4
+15,Artificial Intelligence,Unit 2,A* Algorithm,Explain the evaluation function used in A* algorithm.,Short Answer,Medium,4
+16,Artificial Intelligence,Unit 2,Hill Climbing,What is hill climbing? Explain its limitations.,Short Answer,Medium,4
+17,Artificial Intelligence,Unit 2,Best First Search,Differentiate between greedy best-first search and A* search.,Short Answer,Hard,4
+18,Artificial Intelligence,Unit 2,Adversarial Search,What is adversarial search? Explain with examples.,Short Answer,Hard,4
+19,Artificial Intelligence,Unit 2,Game Theory,Explain minimax algorithm in game playing.,Short Answer,Hard,4
+20,Artificial Intelligence,Unit 2,Alpha-Beta,What is alpha-beta pruning? How does it improve minimax?,Short Answer,Hard,4
+21,Artificial Intelligence,Unit 3,Knowledge Representation,What is knowledge representation? Explain its importance in AI.,Short Answer,Easy,4
+22,Artificial Intelligence,Unit 3,Logic,Differentiate between propositional logic and predicate logic.,Short Answer,Easy,4
+23,Artificial Intelligence,Unit 3,Semantic Networks,What are semantic networks? Explain with an example.,Short Answer,Medium,4
+24,Artificial Intelligence,Unit 3,Frames,What is frame-based representation? Explain its structure.,Short Answer,Medium,4
+25,Artificial Intelligence,Unit 3,Ontologies,Define ontology in AI and explain its applications.,Short Answer,Medium,4
+26,Artificial Intelligence,Unit 3,Inference,What is inference in AI? Explain forward and backward chaining.,Short Answer,Hard,4
+27,Artificial Intelligence,Unit 3,Resolution,Explain resolution principle in propositional logic.,Short Answer,Hard,4
+28,Artificial Intelligence,Unit 3,Unification,What is unification in predicate logic? Explain with example.,Short Answer,Hard,4
+29,Artificial Intelligence,Unit 3,Production Rules,Explain production rule systems and their applications.,Short Answer,Medium,4
+30,Artificial Intelligence,Unit 3,Expert Systems,What are expert systems? Explain their architecture.,Short Answer,Medium,4
+31,Artificial Intelligence,Unit 4,Machine Learning,What is machine learning? Differentiate between supervised and unsupervised learning.,Short Answer,Easy,4
+32,Artificial Intelligence,Unit 4,ML Types,Explain reinforcement learning with examples.,Short Answer,Easy,4
+33,Artificial Intelligence,Unit 4,Neural Networks,What is an artificial neural network? Explain its basic structure.,Short Answer,Medium,4
+34,Artificial Intelligence,Unit 4,Perceptron,Explain single layer perceptron and its limitations.,Short Answer,Medium,4
+35,Artificial Intelligence,Unit 4,Backpropagation,What is backpropagation algorithm? Explain briefly.,Short Answer,Hard,4
+36,Artificial Intelligence,Unit 4,Deep Learning,Differentiate between machine learning and deep learning.,Short Answer,Medium,4
+37,Artificial Intelligence,Unit 4,CNN,What is Convolutional Neural Network? Explain its applications.,Short Answer,Hard,4
+38,Artificial Intelligence,Unit 4,RNN,Explain Recurrent Neural Networks and their use cases.,Short Answer,Hard,4
+39,Artificial Intelligence,Unit 4,Decision Trees,What is a decision tree? Explain ID3 algorithm.,Short Answer,Medium,4
+40,Artificial Intelligence,Unit 4,Clustering,Explain K-means clustering algorithm with example.,Short Answer,Hard,4
+41,Artificial Intelligence,Unit 1,Agents and Environments,Explain intelligent agents with PEAS description architecture types and examples of simple reflex goal-based and utility-based agents.,Long Answer,Easy,6
+42,Artificial Intelligence,Unit 1,Problem Solving,Describe problem-solving agents state space search formulation and goal formulation with examples.,Long Answer,Easy,6
+43,Artificial Intelligence,Unit 1,AI Foundations,Explain the philosophical mathematical and psychological foundations of artificial intelligence.,Long Answer,Medium,6
+44,Artificial Intelligence,Unit 1,Turing Test,Describe Turing Test Chinese Room argument and strong vs weak AI hypothesis in detail.,Long Answer,Medium,6
+45,Artificial Intelligence,Unit 1,Task Environments,Explain different types of task environments with properties and examples of each type.,Long Answer,Easy,6
+46,Artificial Intelligence,Unit 2,Uninformed Search,Explain BFS DFS depth-limited search and iterative deepening search with examples and complexity analysis.,Long Answer,Medium,6
+47,Artificial Intelligence,Unit 2,Informed Search,Describe greedy best-first search A* algorithm and their properties with examples and comparisons.,Long Answer,Medium,6
+48,Artificial Intelligence,Unit 2,Heuristics,Explain admissible and consistent heuristics with examples and their role in optimal search.,Long Answer,Hard,6
+49,Artificial Intelligence,Unit 2,Local Search,Describe hill climbing simulated annealing and genetic algorithms with applications.,Long Answer,Hard,6
+50,Artificial Intelligence,Unit 2,Game Playing,Explain minimax algorithm alpha-beta pruning and evaluation functions in game trees.,Long Answer,Hard,6
+51,Artificial Intelligence,Unit 3,First Order Logic,Explain syntax and semantics of first-order logic with quantifiers and examples.,Long Answer,Medium,6
+52,Artificial Intelligence,Unit 3,Inference Systems,Describe forward chaining backward chaining and resolution in propositional and predicate logic.,Long Answer,Medium,6
+53,Artificial Intelligence,Unit 3,Knowledge Engineering,Explain knowledge engineering process ontology design and knowledge acquisition techniques.,Long Answer,Hard,6
+54,Artificial Intelligence,Unit 3,Reasoning,Describe monotonic and non-monotonic reasoning uncertainty handling and default logic.,Long Answer,Hard,6
+55,Artificial Intelligence,Unit 3,Expert Systems,Explain expert system architecture inference engine knowledge base and examples like MYCIN and DENDRAL.,Long Answer,Medium,6
+56,Artificial Intelligence,Unit 4,Supervised Learning,Explain linear regression logistic regression and decision trees with training and prediction process.,Long Answer,Medium,6
+57,Artificial Intelligence,Unit 4,Neural Networks,Describe multilayer perceptron activation functions backpropagation algorithm and gradient descent.,Long Answer,Medium,6
+58,Artificial Intelligence,Unit 4,Deep Learning,Explain CNN architecture pooling layers dropout batch normalization and applications in image recognition.,Long Answer,Hard,6
+59,Artificial Intelligence,Unit 4,Unsupervised Learning,Describe K-means clustering hierarchical clustering and dimensionality reduction techniques like PCA.,Long Answer,Medium,6
+60,Artificial Intelligence,Unit 4,SVM,Explain Support Vector Machines kernel trick and margin maximization with examples.,Long Answer,Hard,6
+61,Artificial Intelligence,Unit 5,NLP,Explain natural language processing tokenization parsing sentiment analysis and applications.,Long Answer,Medium,6
+62,Artificial Intelligence,Unit 5,Computer Vision,Describe image processing object detection face recognition and CNN applications in computer vision.,Long Answer,Hard,6
+63,Artificial Intelligence,Unit 5,Robotics,Explain robot architectures sensors actuators path planning and robotic applications.,Long Answer,Hard,6
+64,Artificial Intelligence,Unit 5,Probabilistic Reasoning,Describe Bayesian networks hidden Markov models and probabilistic inference methods.,Long Answer,Hard,6
+65,Artificial Intelligence,Unit 5,Reinforcement Learning,Explain Q-learning policy gradient methods reward systems and applications in game AI.,Long Answer,Hard,6
+66,Artificial Intelligence,Unit 5,Ethics,Describe AI ethics bias in AI explainable AI and societal impact of artificial intelligence.,Long Answer,Medium,6
+67,Artificial Intelligence,Unit 5,Future of AI,Explain AGI current limitations AI safety concerns and future research directions.,Long Answer,Medium,6
+68,Artificial Intelligence,Unit 5,AI Tools,Describe popular AI frameworks TensorFlow PyTorch scikit-learn and their applications.,Long Answer,Medium,6
+69,Artificial Intelligence,Unit 5,Case Study,Design an intelligent chatbot system using NLP techniques including intent recognition entity extraction dialogue management response generation with complete architecture algorithm selection training data preparation and performance evaluation metrics.,Case Study,Medium,10
+70,Artificial Intelligence,Unit 5,Case Study,Develop a complete image classification system using deep learning including dataset preparation CNN architecture design data augmentation training process hyperparameter tuning and deployment with accuracy analysis and optimization techniques.,Case Study,Medium,10
+71,Artificial Intelligence,Unit 5,Case Study,Implement a recommendation system for e-commerce using collaborative filtering and content-based filtering including user profiling similarity measures matrix factorization and hybrid approaches with complete algorithm design and evaluation.,Case Study,Hard,10
+72,Artificial Intelligence,Unit 5,Case Study,Design an autonomous navigation system for a robot using path planning algorithms sensor fusion obstacle avoidance and decision-making with complete system architecture algorithm implementation and simulation results.,Case Study,Hard,10
+73,Artificial Intelligence,Unit 5,Case Study,Build a game-playing AI agent using minimax algorithm alpha-beta pruning and heuristic evaluation for chess or tic-tac-toe including complete implementation game tree analysis and performance optimization.,Case Study,Medium,10
+74,Artificial Intelligence,Unit 5,Case Study,Develop a fraud detection system using machine learning including data preprocessing feature engineering model selection ensemble methods and real-time prediction with complete pipeline design and accuracy metrics.,Case Study,Hard,10
+75,Artificial Intelligence,Unit 5,Case Study,Create a medical diagnosis expert system using knowledge representation reasoning mechanisms inference engine and rule-based system with complete knowledge base design consultation interface and validation results.,Case Study,Hard,10

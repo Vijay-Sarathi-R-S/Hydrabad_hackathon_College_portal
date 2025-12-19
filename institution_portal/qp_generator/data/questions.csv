@@ -1,0 +1,81 @@
+id,subject,unit,topic,question_text,question_type,difficulty,marks
+1,Computer Networks,Unit 1,Introduction,Define computer network and explain its advantages.,Short Answer,Easy,4
+2,Computer Networks,Unit 1,Introduction,What are the different types of computer networks? Explain briefly.,Short Answer,Easy,4
+3,Computer Networks,Unit 1,Introduction,Differentiate between LAN MAN and WAN.,Short Answer,Easy,4
+4,Computer Networks,Unit 1,Network Types,What is the difference between client-server and peer-to-peer networks?,Short Answer,Easy,4
+5,Computer Networks,Unit 1,Network Types,Explain the characteristics and applications of PAN.,Short Answer,Medium,4
+6,Computer Networks,Unit 1,Network Topologies,What is network topology? List different types of topologies.,Short Answer,Easy,4
+7,Computer Networks,Unit 1,Network Topologies,Compare bus topology and ring topology with advantages and disadvantages.,Short Answer,Medium,4
+8,Computer Networks,Unit 1,Network Topologies,What is star topology? Explain its advantages and disadvantages.,Short Answer,Medium,4
+9,Computer Networks,Unit 1,Transmission Modes,Differentiate between simplex half-duplex and full-duplex transmission modes.,Short Answer,Medium,4
+10,Computer Networks,Unit 1,Network Devices,What are the functions of hub switch and router?,Short Answer,Hard,4
+11,Computer Networks,Unit 2,OSI Model,What is the OSI reference model? List all seven layers.,Short Answer,Easy,4
+12,Computer Networks,Unit 2,OSI Model,Explain the functions of physical layer and data link layer.,Short Answer,Easy,4
+13,Computer Networks,Unit 2,OSI Model,What are the responsibilities of network layer and transport layer?,Short Answer,Medium,4
+14,Computer Networks,Unit 2,TCP/IP Model,Differentiate between OSI model and TCP/IP model.,Short Answer,Medium,4
+15,Computer Networks,Unit 2,TCP/IP Model,Explain the four layers of TCP/IP protocol suite.,Short Answer,Medium,4
+16,Computer Networks,Unit 2,Data Link Layer,What is framing? Explain different framing methods.,Short Answer,Medium,4
+17,Computer Networks,Unit 2,Data Link Layer,Explain error detection and error correction techniques.,Short Answer,Hard,4
+18,Computer Networks,Unit 2,Flow Control,What is flow control? Differentiate between stop-and-wait and sliding window protocols.,Short Answer,Hard,4
+19,Computer Networks,Unit 2,MAC,What is MAC address? How is it different from IP address?,Short Answer,Medium,4
+20,Computer Networks,Unit 2,Ethernet,Explain the frame format of Ethernet.,Short Answer,Hard,4
+21,Computer Networks,Unit 3,IP Addressing,What is IP address? Differentiate between IPv4 and IPv6.,Short Answer,Easy,4
+22,Computer Networks,Unit 3,IP Addressing,Explain the different classes of IPv4 addresses.,Short Answer,Easy,4
+23,Computer Networks,Unit 3,IP Addressing,What is subnetting? Why is it required?,Short Answer,Medium,4
+24,Computer Networks,Unit 3,IP Addressing,Differentiate between public IP and private IP addresses.,Short Answer,Medium,4
+25,Computer Networks,Unit 3,Routing,What is routing? Explain static routing and dynamic routing.,Short Answer,Medium,4
+26,Computer Networks,Unit 3,Routing,Differentiate between distance vector and link state routing algorithms.,Short Answer,Hard,4
+27,Computer Networks,Unit 3,Routing Protocols,What is RIP? Explain its characteristics and limitations.,Short Answer,Hard,4
+28,Computer Networks,Unit 3,Routing Protocols,Explain OSPF routing protocol with its features.,Short Answer,Hard,4
+29,Computer Networks,Unit 3,Network Layer,What are the functions of network layer protocols?,Short Answer,Medium,4
+30,Computer Networks,Unit 3,ICMP,What is ICMP? Explain its role in network layer.,Short Answer,Hard,4
+31,Computer Networks,Unit 4,Transport Layer,What are the functions of transport layer?,Short Answer,Easy,4
+32,Computer Networks,Unit 4,TCP vs UDP,Differentiate between TCP and UDP protocols.,Short Answer,Easy,4
+33,Computer Networks,Unit 4,TCP,Explain the three-way handshake process in TCP.,Short Answer,Medium,4
+34,Computer Networks,Unit 4,TCP,What is congestion control? Explain TCP congestion control mechanisms.,Short Answer,Hard,4
+35,Computer Networks,Unit 4,UDP,What are the characteristics and applications of UDP protocol?,Short Answer,Medium,4
+36,Computer Networks,Unit 4,Port Numbers,What are port numbers? Explain well-known ports.,Short Answer,Medium,4
+37,Computer Networks,Unit 4,Socket Programming,What is a socket? Explain socket programming basics.,Short Answer,Hard,4
+38,Computer Networks,Unit 4,Multiplexing,Explain multiplexing and demultiplexing in transport layer.,Short Answer,Hard,4
+39,Computer Networks,Unit 4,Reliability,How does TCP ensure reliable data transfer?,Short Answer,Hard,4
+40,Computer Networks,Unit 4,Connection,Differentiate between connection-oriented and connectionless services.,Short Answer,Medium,4
+41,Computer Networks,Unit 1,Network Models,Explain the OSI reference model with all seven layers and their functions in detail.,Long Answer,Easy,6
+42,Computer Networks,Unit 1,Topologies,Compare different network topologies with diagrams advantages disadvantages and applications.,Long Answer,Easy,6
+43,Computer Networks,Unit 1,Transmission Media,Explain guided and unguided transmission media with examples and characteristics.,Long Answer,Medium,6
+44,Computer Networks,Unit 1,Network Devices,Describe the working of hub switch router bridge and gateway with diagrams.,Long Answer,Medium,6
+45,Computer Networks,Unit 1,Network Architecture,Explain client-server and peer-to-peer network architectures with advantages and disadvantages.,Long Answer,Easy,6
+46,Computer Networks,Unit 2,Data Link Layer,Explain error detection techniques including parity check CRC and checksum with examples.,Long Answer,Medium,6
+47,Computer Networks,Unit 2,Flow Control,Describe stop-and-wait ARQ go-back-N ARQ and selective repeat ARQ protocols in detail.,Long Answer,Hard,6
+48,Computer Networks,Unit 2,MAC Protocols,Explain CSMA/CD and CSMA/CA protocols with their working and applications.,Long Answer,Hard,6
+49,Computer Networks,Unit 2,Ethernet,Describe Ethernet frame format MAC addressing and collision detection mechanism.,Long Answer,Medium,6
+50,Computer Networks,Unit 2,Switching,Explain circuit switching packet switching and message switching with advantages and disadvantages.,Long Answer,Medium,6
+51,Computer Networks,Unit 3,IP Addressing,Explain IPv4 address classes subnetting and supernetting with examples and calculations.,Long Answer,Medium,6
+52,Computer Networks,Unit 3,IPv6,Describe IPv6 addressing format features advantages over IPv4 and transition mechanisms.,Long Answer,Hard,6
+53,Computer Networks,Unit 3,Routing Algorithms,Explain distance vector routing and link state routing algorithms with examples.,Long Answer,Hard,6
+54,Computer Networks,Unit 3,Routing Protocols,Describe RIP OSPF and BGP routing protocols with their characteristics and differences.,Long Answer,Hard,6
+55,Computer Networks,Unit 3,NAT,Explain Network Address Translation types working and applications in detail.,Long Answer,Medium,6
+56,Computer Networks,Unit 3,ICMP,Describe ICMP protocol its message types and applications like ping and traceroute.,Long Answer,Medium,6
+57,Computer Networks,Unit 4,TCP Protocol,Explain TCP segment format connection establishment data transfer and connection termination.,Long Answer,Medium,6
+58,Computer Networks,Unit 4,Congestion Control,Describe TCP congestion control mechanisms including slow start congestion avoidance and fast recovery.,Long Answer,Hard,6
+59,Computer Networks,Unit 4,Flow Control,Explain sliding window protocol and its implementation in TCP with diagrams.,Long Answer,Hard,6
+60,Computer Networks,Unit 4,Socket Programming,Describe socket programming concepts with TCP and UDP socket creation and communication.,Long Answer,Hard,6
+61,Computer Networks,Unit 5,Application Layer,Explain HTTP protocol request-response format methods and status codes in detail.,Long Answer,Easy,6
+62,Computer Networks,Unit 5,DNS,Describe Domain Name System architecture working DNS hierarchy and query resolution process.,Long Answer,Medium,6
+63,Computer Networks,Unit 5,Email Protocols,Explain SMTP POP3 and IMAP protocols with their working and differences.,Long Answer,Medium,6
+64,Computer Networks,Unit 5,FTP,Describe File Transfer Protocol architecture commands and data transfer modes.,Long Answer,Medium,6
+65,Computer Networks,Unit 5,Network Security,Explain cryptography techniques including symmetric and asymmetric encryption with examples.,Long Answer,Hard,6
+66,Computer Networks,Unit 5,Security Protocols,Describe SSL/TLS IPSec and their role in network security.,Long Answer,Hard,6
+67,Computer Networks,Unit 5,Firewall,Explain firewall types packet filtering and application-level gateway.,Long Answer,Medium,6
+68,Computer Networks,Unit 5,Wireless Networks,Describe WiFi standards 802.11 architecture and wireless security protocols.,Long Answer,Hard,6
+69,Computer Networks,Unit 5,Case Study,Design a complete network infrastructure for a small office with 50 users including network topology IP addressing scheme routing configuration and security measures with detailed diagrams and justifications.,Case Study,Medium,10
+70,Computer Networks,Unit 5,Case Study,Design a college campus network with multiple buildings including LAN design inter-building connectivity VLAN configuration IP addressing DNS and DHCP setup with complete network diagram and device specifications.,Case Study,Medium,10
+71,Computer Networks,Unit 5,Case Study,Implement a client-server application using socket programming for file transfer including TCP connection establishment error handling and flow control with complete code design and protocol specification.,Case Study,Hard,10
+72,Computer Networks,Unit 5,Case Study,Design a secure e-commerce website network architecture including web servers database servers load balancing firewall configuration SSL implementation and backup systems with security analysis.,Case Study,Hard,10
+73,Computer Networks,Unit 5,Case Study,Analyze network performance issues in a corporate network and propose solutions including troubleshooting methodology protocol analysis bandwidth optimization and quality of service implementation.,Case Study,Hard,10
+74,Computer Networks,Unit 5,Case Study,Design a wireless network for a university campus including access point placement frequency planning roaming support security implementation and bandwidth management with coverage analysis.,Case Study,Medium,10
+75,Computer Networks,Unit 5,Case Study,Implement a VPN solution for remote office connectivity including topology design routing protocols security configuration and performance optimization with complete implementation plan.,Case Study,Hard,10
+76,Computer Networks,Unit 1,Protocol,What is a protocol? Explain the key elements of a protocol.,Short Answer,Easy,4
+77,Computer Networks,Unit 2,Error Control,What is ARQ? Explain its types.,Short Answer,Medium,4
+78,Computer Networks,Unit 3,ARP,What is ARP? Explain the ARP process.,Short Answer,Medium,4
+79,Computer Networks,Unit 4,Socket,Differentiate between stream sockets and datagram sockets.,Short Answer,Medium,4
+80,Computer Networks,Unit 5,HTTP,Differentiate between HTTP and HTTPS.,Short Answer,Easy,4

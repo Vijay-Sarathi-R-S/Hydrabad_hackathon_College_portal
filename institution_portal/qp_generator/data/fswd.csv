@@ -1,0 +1,76 @@
+id,subject,unit,topic,question_text,question_type,difficulty,marks
+1,Full Stack Web Development,Unit 1,HTML Basics,What is HTML? Explain the basic structure of an HTML document.,Short Answer,Easy,4
+2,Full Stack Web Development,Unit 1,HTML Tags,Explain semantic HTML tags and their importance.,Short Answer,Easy,4
+3,Full Stack Web Development,Unit 1,HTML Forms,What are HTML form elements? Explain input types.,Short Answer,Easy,4
+4,Full Stack Web Development,Unit 1,HTML5,Explain new features introduced in HTML5.,Short Answer,Medium,4
+5,Full Stack Web Development,Unit 1,HTML Attributes,What are HTML attributes? Explain global attributes.,Short Answer,Easy,4
+6,Full Stack Web Development,Unit 1,Lists and Tables,Differentiate between ordered and unordered lists in HTML.,Short Answer,Medium,4
+7,Full Stack Web Development,Unit 1,Multimedia,Explain audio and video tags in HTML5.,Short Answer,Medium,4
+8,Full Stack Web Development,Unit 1,Canvas,What is HTML Canvas? Explain its applications.,Short Answer,Hard,4
+9,Full Stack Web Development,Unit 1,SVG,Differentiate between Canvas and SVG in HTML5.,Short Answer,Hard,4
+10,Full Stack Web Development,Unit 1,Accessibility,Explain web accessibility and ARIA attributes.,Short Answer,Hard,4
+11,Full Stack Web Development,Unit 2,CSS Basics,What is CSS? Explain different ways to apply CSS.,Short Answer,Easy,4
+12,Full Stack Web Development,Unit 2,CSS Selectors,Explain CSS selectors types and specificity.,Short Answer,Easy,4
+13,Full Stack Web Development,Unit 2,Box Model,What is CSS box model? Explain its components.,Short Answer,Medium,4
+14,Full Stack Web Development,Unit 2,Flexbox,Explain CSS Flexbox layout with properties.,Short Answer,Medium,4
+15,Full Stack Web Development,Unit 2,Grid,What is CSS Grid? How is it different from Flexbox?,Short Answer,Medium,4
+16,Full Stack Web Development,Unit 2,Responsive Design,Explain responsive web design and media queries.,Short Answer,Medium,4
+17,Full Stack Web Development,Unit 2,CSS Animations,What are CSS transitions and animations?,Short Answer,Hard,4
+18,Full Stack Web Development,Unit 2,Positioning,Explain CSS positioning static relative absolute fixed sticky.,Short Answer,Hard,4
+19,Full Stack Web Development,Unit 2,Preprocessors,What are CSS preprocessors? Explain SASS or LESS.,Short Answer,Hard,4
+20,Full Stack Web Development,Unit 2,Bootstrap,Explain Bootstrap framework and its grid system.,Short Answer,Medium,4
+21,Full Stack Web Development,Unit 3,JavaScript Basics,What is JavaScript? Explain variables and data types.,Short Answer,Easy,4
+22,Full Stack Web Development,Unit 3,Functions,Explain functions in JavaScript and their types.,Short Answer,Easy,4
+23,Full Stack Web Development,Unit 3,Arrays,What are JavaScript arrays? Explain array methods.,Short Answer,Easy,4
+24,Full Stack Web Development,Unit 3,Objects,Explain JavaScript objects and object methods.,Short Answer,Medium,4
+25,Full Stack Web Development,Unit 3,DOM Manipulation,What is DOM? Explain DOM manipulation methods.,Short Answer,Medium,4
+26,Full Stack Web Development,Unit 3,Events,Explain event handling in JavaScript.,Short Answer,Medium,4
+27,Full Stack Web Development,Unit 3,ES6 Features,What are arrow functions closures and hoisting in JavaScript?,Short Answer,Hard,4
+28,Full Stack Web Development,Unit 3,Promises,Explain promises and async-await in JavaScript.,Short Answer,Hard,4
+29,Full Stack Web Development,Unit 3,AJAX,What is AJAX? Explain XMLHttpRequest and Fetch API.,Short Answer,Hard,4
+30,Full Stack Web Development,Unit 3,JSON,Explain JSON and its usage in web development.,Short Answer,Medium,4
+31,Full Stack Web Development,Unit 4,React Basics,What is React? Explain its advantages.,Short Answer,Easy,4
+32,Full Stack Web Development,Unit 4,Components,Explain React components functional and class components.,Short Answer,Easy,4
+33,Full Stack Web Development,Unit 4,JSX,What is JSX? Explain its syntax and features.,Short Answer,Medium,4
+34,Full Stack Web Development,Unit 4,Props and State,Differentiate between props and state in React.,Short Answer,Medium,4
+35,Full Stack Web Development,Unit 4,Hooks,Explain React hooks useState and useEffect.,Short Answer,Medium,4
+36,Full Stack Web Development,Unit 4,Lifecycle,What are React component lifecycle methods?,Short Answer,Hard,4
+37,Full Stack Web Development,Unit 4,React Router,Explain React Router and navigation.,Short Answer,Hard,4
+38,Full Stack Web Development,Unit 4,Redux,What is Redux? Explain state management.,Short Answer,Hard,4
+39,Full Stack Web Development,Unit 4,Virtual DOM,Explain Virtual DOM and reconciliation in React.,Short Answer,Hard,4
+40,Full Stack Web Development,Unit 4,Context API,What is Context API? How does it help in state management?,Short Answer,Medium,4
+41,Full Stack Web Development,Unit 1,HTML and CSS,Explain HTML document structure semantic tags CSS styling responsive design with complete webpage example including header navigation content and footer.,Long Answer,Easy,6
+42,Full Stack Web Development,Unit 1,Form Design,Describe HTML form creation validation input types form submission with CSS styling and accessibility features.,Long Answer,Easy,6
+43,Full Stack Web Development,Unit 1,Web Standards,Explain web standards W3C HTML5 features semantic markup and best practices for modern web development.,Long Answer,Medium,6
+44,Full Stack Web Development,Unit 2,CSS Layout,Describe Flexbox and Grid layout systems with examples comparison use cases and responsive design implementation.,Long Answer,Medium,6
+45,Full Stack Web Development,Unit 2,Responsive Design,Explain mobile-first design media queries breakpoints fluid grids and responsive images with complete implementation.,Long Answer,Medium,6
+46,Full Stack Web Development,Unit 2,CSS Framework,Describe Bootstrap framework grid system components utilities customization with project implementation examples.,Long Answer,Easy,6
+47,Full Stack Web Development,Unit 2,Advanced CSS,Explain CSS animations transitions transforms pseudo-classes and modern CSS features with examples.,Long Answer,Hard,6
+48,Full Stack Web Development,Unit 3,JavaScript Programming,Explain JavaScript fundamentals variables data types operators control structures functions arrays objects with examples.,Long Answer,Easy,6
+49,Full Stack Web Development,Unit 3,DOM and Events,Describe DOM structure manipulation event handling event delegation form validation with complete examples.,Long Answer,Medium,6
+50,Full Stack Web Development,Unit 3,ES6 Features,Explain ES6 features arrow functions destructuring spread operator template literals modules classes with code examples.,Long Answer,Medium,6
+51,Full Stack Web Development,Unit 3,Asynchronous JS,Describe callbacks promises async-await error handling fetch API with practical implementation examples.,Long Answer,Hard,6
+52,Full Stack Web Development,Unit 3,JavaScript Patterns,Explain design patterns module pattern constructor pattern prototype pattern singleton with use cases.,Long Answer,Hard,6
+53,Full Stack Web Development,Unit 4,React Development,Explain React fundamentals components JSX props state lifecycle methods with complete component examples.,Long Answer,Medium,6
+54,Full Stack Web Development,Unit 4,React Hooks,Describe React hooks useState useEffect useContext useReducer custom hooks with practical examples.,Long Answer,Medium,6
+55,Full Stack Web Development,Unit 4,State Management,Explain Redux architecture actions reducers store middleware with React integration and example application.,Long Answer,Hard,6
+56,Full Stack Web Development,Unit 4,React Router,Describe React Router navigation routing nested routes protected routes with SPA implementation.,Long Answer,Hard,6
+57,Full Stack Web Development,Unit 5,Node.js Backend,Explain Node.js architecture event loop modules Express.js routing middleware with server implementation.,Long Answer,Medium,6
+58,Full Stack Web Development,Unit 5,REST API,Describe REST API design HTTP methods status codes CRUD operations authentication with Express implementation.,Long Answer,Medium,6
+59,Full Stack Web Development,Unit 5,Database Integration,Explain MongoDB schema design Mongoose ODM CRUD operations queries aggregation with Node.js integration.,Long Answer,Hard,6
+60,Full Stack Web Development,Unit 5,Authentication,Describe JWT authentication bcrypt password hashing sessions cookies authorization with implementation.,Long Answer,Hard,6
+61,Full Stack Web Development,Unit 5,MERN Stack,Explain MERN stack architecture MongoDB Express React Node integration deployment with complete workflow.,Long Answer,Medium,6
+62,Full Stack Web Development,Unit 5,API Testing,Describe API testing tools Postman testing strategies error handling validation with examples.,Long Answer,Medium,6
+63,Full Stack Web Development,Unit 5,Security,Explain web security CORS CSRF XSS SQL injection input validation secure coding practices.,Long Answer,Hard,6
+64,Full Stack Web Development,Unit 5,Deployment,Describe deployment process hosting platforms Heroku AWS Netlify CI/CD Git version control.,Long Answer,Medium,6
+65,Full Stack Web Development,Unit 5,Performance,Explain performance optimization lazy loading code splitting caching image optimization with best practices.,Long Answer,Hard,6
+66,Full Stack Web Development,Unit 5,WebSockets,Describe real-time communication WebSockets Socket.io chat applications with implementation examples.,Long Answer,Hard,6
+67,Full Stack Web Development,Unit 5,GraphQL,Explain GraphQL API design queries mutations schema with comparison to REST.,Long Answer,Hard,6
+68,Full Stack Web Development,Unit 5,Testing,Describe unit testing integration testing Jest React Testing Library with test case examples.,Long Answer,Medium,6
+69,Full Stack Web Development,Unit 5,Case Study,Develop a complete e-commerce website with product listing shopping cart user authentication payment integration using React Node.js MongoDB with responsive design REST API and deployment.,Case Study,Medium,10
+70,Full Stack Web Development,Unit 5,Case Study,Build a social media application with user profiles post creation like comment follow features real-time notifications using MERN stack WebSockets with complete frontend backend and database design.,Case Study,Hard,10
+71,Full Stack Web Development,Unit 5,Case Study,Create a task management application with user authentication task CRUD operations priority status filtering dashboard using React Redux Node.js MongoDB with responsive UI and REST API.,Case Study,Medium,10
+72,Full Stack Web Development,Unit 5,Case Study,Implement a blog platform with content management user roles rich text editor image upload comments authentication using MERN stack with SEO optimization and admin panel.,Case Study,Hard,10
+73,Full Stack Web Development,Unit 5,Case Study,Develop a real-time chat application with user authentication private and group chats message history file sharing using React Node.js Socket.io MongoDB with responsive design.,Case Study,Hard,10
+74,Full Stack Web Development,Unit 5,Case Study,Build a restaurant booking system with menu display table reservation order management payment integration admin dashboard using full stack technologies with email notifications.,Case Study,Hard,10
+75,Full Stack Web Development,Unit 5,Case Study,Create a portfolio website with dynamic content management contact form project showcase blog section admin panel using React Node.js MongoDB with responsive design and deployment.,Case Study,Medium,10

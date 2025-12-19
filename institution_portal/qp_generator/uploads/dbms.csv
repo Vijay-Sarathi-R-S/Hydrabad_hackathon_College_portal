@@ -1,0 +1,76 @@
+id,subject,unit,topic,question_text,question_type,difficulty,marks
+1,DBMS,Unit 1,Introduction,Define DBMS and list its main advantages over file systems.,Short Answer,Easy,4
+2,DBMS,Unit 1,Introduction,What is a database? Explain its characteristics and components.,Short Answer,Easy,4
+3,DBMS,Unit 1,Introduction,Explain the disadvantages and limitations of DBMS.,Short Answer,Easy,4
+4,DBMS,Unit 1,Data Models,What are the different types of data models? Explain briefly.,Short Answer,Easy,4
+5,DBMS,Unit 1,Data Models,Compare hierarchical network and relational data models.,Short Answer,Medium,4
+6,DBMS,Unit 1,DBMS Architecture,Explain the three-schema architecture of DBMS.,Short Answer,Medium,4
+7,DBMS,Unit 1,DBMS Architecture,What is data independence? Differentiate between physical and logical data independence.,Short Answer,Medium,4
+8,DBMS,Unit 1,Database Users,Who are the different types of DBMS users? Explain their roles.,Short Answer,Easy,4
+9,DBMS,Unit 1,DBA,What are the functions and responsibilities of a Database Administrator?,Short Answer,Medium,4
+10,DBMS,Unit 1,Data Dictionary,What is a data dictionary? Explain its components and importance.,Short Answer,Hard,4
+11,DBMS,Unit 2,ER Model,What is an entity and attribute in ER model? Give examples.,Short Answer,Easy,4
+12,DBMS,Unit 2,ER Model,Explain different types of attributes in ER model with examples.,Short Answer,Easy,4
+13,DBMS,Unit 2,ER Model,What is a weak entity? Explain with suitable examples.,Short Answer,Medium,4
+14,DBMS,Unit 2,Relationships,Explain one-to-one one-to-many and many-to-many relationships with examples.,Short Answer,Easy,4
+15,DBMS,Unit 2,Relationships,What is cardinality and participation constraints in ER model?,Short Answer,Medium,4
+16,DBMS,Unit 2,Keys,Explain primary key and foreign key with examples.,Short Answer,Easy,4
+17,DBMS,Unit 2,Keys,Differentiate between super key candidate key and primary key.,Short Answer,Medium,4
+18,DBMS,Unit 2,Keys,What is a composite key and alternate key? Explain with examples.,Short Answer,Medium,4
+19,DBMS,Unit 2,Generalization,Differentiate between generalization specialization and aggregation.,Short Answer,Hard,4
+20,DBMS,Unit 2,Relational Model,What is a relation? Explain the properties of relations.,Short Answer,Medium,4
+21,DBMS,Unit 3,SQL Basics,Differentiate between DDL DML DCL and TCL commands with examples.,Short Answer,Easy,4
+22,DBMS,Unit 3,SQL Basics,What are the common data types used in SQL? Explain each.,Short Answer,Easy,4
+23,DBMS,Unit 3,SQL Basics,Explain CREATE ALTER and DROP commands with syntax.,Short Answer,Medium,4
+24,DBMS,Unit 3,SQL Queries,What is the difference between WHERE and HAVING clause?,Short Answer,Medium,4
+25,DBMS,Unit 3,SQL Queries,Explain the difference between UNION UNION ALL INTERSECT and EXCEPT.,Short Answer,Hard,4
+26,DBMS,Unit 3,Constraints,What are different types of integrity constraints in DBMS?,Short Answer,Medium,4
+27,DBMS,Unit 3,Constraints,Explain NOT NULL UNIQUE CHECK and DEFAULT constraints with examples.,Short Answer,Medium,4
+28,DBMS,Unit 3,Normalization,Explain functional dependencies with examples.,Short Answer,Medium,4
+29,DBMS,Unit 3,Normalization,What is normalization? Why is it needed?,Short Answer,Easy,4
+30,DBMS,Unit 3,Normalization,Explain 1NF with suitable examples.,Short Answer,Medium,4
+31,DBMS,Unit 4,Transactions,What are the different states of a transaction? Explain with diagram.,Short Answer,Medium,4
+32,DBMS,Unit 4,Transactions,What is ACID property? Explain each component.,Short Answer,Easy,4
+33,DBMS,Unit 4,Transactions,Differentiate between commit and rollback operations.,Short Answer,Easy,4
+34,DBMS,Unit 4,Concurrency Control,What are different types of locks in concurrency control?,Short Answer,Medium,4
+35,DBMS,Unit 4,Concurrency Control,Explain the two-phase locking protocol.,Short Answer,Hard,4
+36,DBMS,Unit 4,Deadlock,What is deadlock in DBMS? How can it be prevented?,Short Answer,Hard,4
+37,DBMS,Unit 4,Indexing,Explain the concept of indexing in databases and its types.,Short Answer,Medium,4
+38,DBMS,Unit 4,Indexing,What is the difference between clustered and non-clustered index?,Short Answer,Hard,4
+39,DBMS,Unit 4,File Organization,Explain sequential indexed and hashed file organization.,Short Answer,Hard,4
+40,DBMS,Unit 4,Recovery,What are the different types of database failures?,Short Answer,Medium,4
+41,DBMS,Unit 1,Architecture,Explain 1-tier 2-tier and 3-tier DBMS architecture with diagrams and advantages.,Long Answer,Easy,6
+42,DBMS,Unit 1,DBMS Environment,Describe the database system environment and its components in detail.,Long Answer,Easy,6
+43,DBMS,Unit 1,DBA Functions,Explain the functions and responsibilities of a Database Administrator in detail.,Long Answer,Easy,6
+44,DBMS,Unit 1,Data Models,Compare and contrast hierarchical network and relational data models with examples.,Long Answer,Medium,6
+45,DBMS,Unit 1,Schema Architecture,Explain the three-schema architecture with mappings and data independence concepts.,Long Answer,Medium,6
+46,DBMS,Unit 2,ER Diagrams,Draw and explain ER model symbols and construct an ER diagram for a university database.,Long Answer,Easy,6
+47,DBMS,Unit 2,ER Diagrams,Design an ER diagram for a hospital management system with all entities and relationships.,Long Answer,Medium,6
+48,DBMS,Unit 2,ER to Relational,Explain the process of converting ER diagram to relational schema with examples.,Long Answer,Medium,6
+49,DBMS,Unit 2,Relational Model,Describe the relational data model with its constraints and integrity rules in detail.,Long Answer,Medium,6
+50,DBMS,Unit 2,Relational Algebra,Explain basic relational algebra operations with examples and notation.,Long Answer,Hard,6
+51,DBMS,Unit 3,SQL Joins,Explain different types of SQL joins with examples syntax and output.,Long Answer,Medium,6
+52,DBMS,Unit 3,SQL Joins,Describe INNER JOIN LEFT JOIN RIGHT JOIN and FULL OUTER JOIN with examples.,Long Answer,Medium,6
+53,DBMS,Unit 3,SQL Advanced,Explain GROUP BY HAVING ORDER BY clauses with aggregate functions and examples.,Long Answer,Medium,6
+54,DBMS,Unit 3,SQL Subqueries,Describe nested subqueries correlated subqueries and their applications with examples.,Long Answer,Hard,6
+55,DBMS,Unit 3,Views,What are views in SQL? Explain their creation advantages and limitations with examples.,Long Answer,Hard,6
+56,DBMS,Unit 3,Normalization,Explain 1NF 2NF and 3NF with suitable examples showing complete normalization process.,Long Answer,Medium,6
+57,DBMS,Unit 3,Normalization,Explain functional dependencies and the normalization process up to BCNF with examples.,Long Answer,Hard,6
+58,DBMS,Unit 3,Normalization,Describe 4NF and 5NF with multivalued and join dependencies.,Long Answer,Hard,6
+59,DBMS,Unit 4,ACID Properties,Describe ACID properties in detail with real-world transaction examples.,Long Answer,Easy,6
+60,DBMS,Unit 4,Concurrency Control,Explain different concurrency control techniques and problems like lost update dirty read.,Long Answer,Medium,6
+61,DBMS,Unit 4,Locking Protocols,Describe lock-based protocols including 2PL strict 2PL and rigorous 2PL with examples.,Long Answer,Hard,6
+62,DBMS,Unit 4,Deadlock,Explain deadlock in DBMS its detection prevention and recovery methods in detail.,Long Answer,Medium,6
+63,DBMS,Unit 4,Serializability,Describe serializability conflict serializability and view serializability with examples.,Long Answer,Hard,6
+64,DBMS,Unit 4,Indexing,Describe B-tree and B+ tree indexing mechanisms with diagrams and search algorithms.,Long Answer,Hard,6
+65,DBMS,Unit 4,Query Processing,Explain query optimization techniques cost estimation and query processing steps.,Long Answer,Hard,6
+66,DBMS,Unit 4,Recovery System,Describe log-based recovery shadow paging and checkpoint mechanisms in detail.,Long Answer,Hard,6
+67,DBMS,Unit 4,Database Security,Explain database security mechanisms authorization access control and encryption techniques.,Long Answer,Hard,6
+68,DBMS,Unit 4,Triggers,What are triggers? Explain their types syntax and applications with examples.,Long Answer,Hard,6
+69,DBMS,Unit 5,Case Study,Design a complete student management system including ER diagram normalization up to 3NF and SQL queries for CREATE INSERT UPDATE DELETE and SELECT operations.,Case Study,Medium,10
+70,DBMS,Unit 5,Case Study,Design a library management system with book member issue return and fine modules including complete ER model normalization and 10 different SQL queries covering all CRUD operations.,Case Study,Medium,10
+71,DBMS,Unit 5,Case Study,Design a hospital management database system with patient doctor appointment and billing modules including complete ER diagram normalized tables and SQL queries for various operations.,Case Study,Medium,10
+72,DBMS,Unit 5,Case Study,Design an online banking system database including account transaction customer and loan modules with ER diagram normalized schema and queries for deposits withdrawals and balance inquiry.,Case Study,Hard,10
+73,DBMS,Unit 5,Case Study,Design an e-commerce database system with customer product order payment and shipping modules including ER diagram complete normalization and SQL queries for product search cart management and order tracking.,Case Study,Hard,10
+74,DBMS,Unit 5,Case Study,Design a college management database with student faculty course department and attendance modules including ER diagram normalization and queries for attendance reports grade calculation and student enrollment.,Case Study,Medium,10
+75,DBMS,Unit 5,Case Study,Design an airline reservation system database with flight passenger booking and payment modules including complete ER diagram normalized tables and SQL queries for seat availability booking confirmation and cancellation.,Case Study,Hard,10

@@ -1,0 +1,76 @@
+id,subject,unit,topic,question_text,question_type,difficulty,marks
+1,Ethical Hacking,Unit 1,Introduction,What is ethical hacking? Differentiate between ethical hacker and malicious hacker.,Short Answer,Easy,4
+2,Ethical Hacking,Unit 1,Introduction,Explain the different types of hackers white hat grey hat and black hat.,Short Answer,Easy,4
+3,Ethical Hacking,Unit 1,Ethics,What are the ethical guidelines for penetration testing?,Short Answer,Easy,4
+4,Ethical Hacking,Unit 1,Hacking Phases,List and explain the five phases of ethical hacking.,Short Answer,Medium,4
+5,Ethical Hacking,Unit 1,Footprinting,What is footprinting? Explain its importance in reconnaissance.,Short Answer,Medium,4
+6,Ethical Hacking,Unit 1,Scanning,Differentiate between active and passive reconnaissance.,Short Answer,Medium,4
+7,Ethical Hacking,Unit 1,Legal Aspects,Explain the legal implications of unauthorized hacking.,Short Answer,Hard,4
+8,Ethical Hacking,Unit 1,CEH,What is Certified Ethical Hacker certification? Explain its importance.,Short Answer,Easy,4
+9,Ethical Hacking,Unit 1,Vulnerability,Define vulnerability threat and risk in cybersecurity.,Short Answer,Medium,4
+10,Ethical Hacking,Unit 1,Security Testing,Differentiate between vulnerability assessment and penetration testing.,Short Answer,Hard,4
+11,Ethical Hacking,Unit 2,Network Scanning,What is network scanning? Explain different types of scans.,Short Answer,Easy,4
+12,Ethical Hacking,Unit 2,Nmap,Explain the usage and features of Nmap tool.,Short Answer,Easy,4
+13,Ethical Hacking,Unit 2,Port Scanning,What is port scanning? Explain TCP SYN scan.,Short Answer,Medium,4
+14,Ethical Hacking,Unit 2,Enumeration,Define enumeration and explain its techniques.,Short Answer,Medium,4
+15,Ethical Hacking,Unit 2,Banner Grabbing,What is banner grabbing? How is it useful in hacking?,Short Answer,Medium,4
+16,Ethical Hacking,Unit 2,Firewall,Explain firewall evasion techniques.,Short Answer,Hard,4
+17,Ethical Hacking,Unit 2,IDS,What is Intrusion Detection System? Differentiate between IDS and IPS.,Short Answer,Medium,4
+18,Ethical Hacking,Unit 2,Packet Sniffing,Explain packet sniffing and tools used for it.,Short Answer,Hard,4
+19,Ethical Hacking,Unit 2,Wireshark,What is Wireshark? Explain its basic features.,Short Answer,Medium,4
+20,Ethical Hacking,Unit 2,ARP,Explain ARP poisoning attack and its prevention.,Short Answer,Hard,4
+21,Ethical Hacking,Unit 3,System Hacking,What is system hacking? Explain password cracking techniques.,Short Answer,Easy,4
+22,Ethical Hacking,Unit 3,Password Attacks,Differentiate between brute force and dictionary attacks.,Short Answer,Easy,4
+23,Ethical Hacking,Unit 3,Privilege Escalation,What is privilege escalation? Explain its types.,Short Answer,Medium,4
+24,Ethical Hacking,Unit 3,Keyloggers,Explain keyloggers and their working mechanism.,Short Answer,Medium,4
+25,Ethical Hacking,Unit 3,Rootkits,What are rootkits? How do they hide malicious activities?,Short Answer,Hard,4
+26,Ethical Hacking,Unit 3,Steganography,Define steganography and explain its techniques.,Short Answer,Medium,4
+27,Ethical Hacking,Unit 3,Backdoors,What are backdoors? How are they created and detected?,Short Answer,Hard,4
+28,Ethical Hacking,Unit 3,Spyware,Differentiate between spyware malware and adware.,Short Answer,Medium,4
+29,Ethical Hacking,Unit 3,Trojans,Explain Trojan horses and their types.,Short Answer,Medium,4
+30,Ethical Hacking,Unit 3,Buffer Overflow,What is buffer overflow attack? Explain with example.,Short Answer,Hard,4
+31,Ethical Hacking,Unit 4,Web Application Hacking,What is SQL injection? Explain its types and impact.,Short Answer,Easy,4
+32,Ethical Hacking,Unit 4,XSS,Define Cross-Site Scripting and explain its types.,Short Answer,Easy,4
+33,Ethical Hacking,Unit 4,CSRF,What is Cross-Site Request Forgery? How does it work?,Short Answer,Medium,4
+34,Ethical Hacking,Unit 4,OWASP,Explain OWASP Top 10 vulnerabilities.,Short Answer,Medium,4
+35,Ethical Hacking,Unit 4,Session Hijacking,What is session hijacking? Explain session management attacks.,Short Answer,Hard,4
+36,Ethical Hacking,Unit 4,Command Injection,Explain command injection vulnerability with examples.,Short Answer,Hard,4
+37,Ethical Hacking,Unit 4,Directory Traversal,What is directory traversal attack? How to prevent it?,Short Answer,Medium,4
+38,Ethical Hacking,Unit 4,File Upload,Explain file upload vulnerabilities and exploitation.,Short Answer,Hard,4
+39,Ethical Hacking,Unit 4,Burp Suite,What is Burp Suite? Explain its main features.,Short Answer,Medium,4
+40,Ethical Hacking,Unit 4,DVWA,What is DVWA? How is it used for web security testing?,Short Answer,Easy,4
+41,Ethical Hacking,Unit 1,Ethical Hacking Methodology,Explain the complete ethical hacking methodology including reconnaissance scanning enumeration exploitation and post-exploitation with tools and techniques.,Long Answer,Easy,6
+42,Ethical Hacking,Unit 1,Footprinting Techniques,Describe passive and active footprinting techniques including WHOIS DNS enumeration Google dorking and social engineering.,Long Answer,Easy,6
+43,Ethical Hacking,Unit 1,Information Gathering,Explain information gathering using search engines metadata extraction website mirroring and competitive intelligence.,Long Answer,Medium,6
+44,Ethical Hacking,Unit 1,Security Policies,Describe security policies risk assessment security frameworks and compliance standards like ISO and PCI-DSS.,Long Answer,Medium,6
+45,Ethical Hacking,Unit 1,Threat Modeling,Explain threat modeling methodologies STRIDE DREAD and attack surface analysis.,Long Answer,Hard,6
+46,Ethical Hacking,Unit 2,Network Scanning Tools,Explain Nmap Hping Netcat and their usage in network discovery port scanning and vulnerability detection.,Long Answer,Medium,6
+47,Ethical Hacking,Unit 2,Enumeration Techniques,Describe NetBIOS SNMP LDAP and DNS enumeration with tools and countermeasures.,Long Answer,Medium,6
+48,Ethical Hacking,Unit 2,Sniffing Attacks,Explain packet sniffing MAC flooding DHCP starvation DNS poisoning with tools like Wireshark and Ettercap.,Long Answer,Hard,6
+49,Ethical Hacking,Unit 2,Man-in-the-Middle,Describe MITM attacks ARP spoofing SSL stripping session hijacking with detection and prevention techniques.,Long Answer,Hard,6
+50,Ethical Hacking,Unit 2,IDS and IPS,Explain Intrusion Detection Systems signature-based and anomaly-based detection with Snort configuration.,Long Answer,Medium,6
+51,Ethical Hacking,Unit 3,Password Cracking,Explain password cracking techniques tools like John the Ripper Hashcat rainbow tables and password security.,Long Answer,Medium,6
+52,Ethical Hacking,Unit 3,Malware Analysis,Describe malware types virus worm trojan ransomware with analysis techniques and sandbox environments.,Long Answer,Medium,6
+53,Ethical Hacking,Unit 3,Social Engineering,Explain social engineering attacks phishing pretexting baiting tailgating with real-world examples and prevention.,Long Answer,Easy,6
+54,Ethical Hacking,Unit 3,Exploitation Techniques,Describe exploitation frameworks Metasploit payload generation exploit development and post-exploitation.,Long Answer,Hard,6
+55,Ethical Hacking,Unit 3,Privilege Escalation Methods,Explain horizontal and vertical privilege escalation techniques for Windows and Linux systems.,Long Answer,Hard,6
+56,Ethical Hacking,Unit 4,Web Application Security,Explain web application architecture common vulnerabilities security headers and secure coding practices.,Long Answer,Medium,6
+57,Ethical Hacking,Unit 4,SQL Injection Attack,Describe SQL injection types error-based blind time-based with manual and automated exploitation techniques.,Long Answer,Medium,6
+58,Ethical Hacking,Unit 4,XSS Exploitation,Explain reflected stored and DOM-based XSS attacks with payload crafting and mitigation strategies.,Long Answer,Hard,6
+59,Ethical Hacking,Unit 4,Authentication Bypass,Describe authentication vulnerabilities broken authentication session management and two-factor bypass techniques.,Long Answer,Hard,6
+60,Ethical Hacking,Unit 4,Web Security Testing,Explain web security testing methodology using OWASP testing guide automated scanners and manual testing.,Long Answer,Medium,6
+61,Ethical Hacking,Unit 5,Wireless Security,Explain wireless encryption WEP WPA WPA2 WPA3 with cracking techniques and tools like Aircrack-ng.,Long Answer,Medium,6
+62,Ethical Hacking,Unit 5,Mobile Security,Describe Android and iOS security architecture mobile app vulnerabilities and reverse engineering.,Long Answer,Hard,6
+63,Ethical Hacking,Unit 5,Cloud Security,Explain cloud security risks AWS Azure security misconfigurations and cloud penetration testing.,Long Answer,Hard,6
+64,Ethical Hacking,Unit 5,Cryptography,Describe encryption algorithms symmetric asymmetric hashing digital signatures and cryptanalysis.,Long Answer,Medium,6
+65,Ethical Hacking,Unit 5,Network Defense,Explain firewall configuration VPN security network segmentation and defense-in-depth strategy.,Long Answer,Medium,6
+66,Ethical Hacking,Unit 5,Incident Response,Describe incident response phases forensics investigation evidence collection and reporting.,Long Answer,Hard,6
+67,Ethical Hacking,Unit 5,Penetration Testing,Explain penetration testing methodology tools reporting and best practices for ethical hackers.,Long Answer,Medium,6
+68,Ethical Hacking,Unit 5,Security Frameworks,Describe NIST cybersecurity framework MITRE ATT&CK and security automation.,Long Answer,Hard,6
+69,Ethical Hacking,Unit 5,Case Study,Conduct a complete penetration test on a web application including reconnaissance vulnerability scanning SQL injection XSS testing authentication bypass privilege escalation with detailed methodology findings risk assessment and remediation recommendations.,Case Study,Medium,10
+70,Ethical Hacking,Unit 5,Case Study,Perform network security assessment for a corporate network including network mapping port scanning vulnerability assessment firewall testing wireless security audit with complete report tool usage and security recommendations.,Case Study,Medium,10
+71,Ethical Hacking,Unit 5,Case Study,Analyze and exploit a vulnerable machine using Metasploit including reconnaissance exploitation privilege escalation persistence and lateral movement with complete attack chain documentation and defense strategies.,Case Study,Hard,10
+72,Ethical Hacking,Unit 5,Case Study,Design a secure web application implementing authentication authorization input validation session management encryption and logging with security testing vulnerability assessment and compliance verification.,Case Study,Hard,10
+73,Ethical Hacking,Unit 5,Case Study,Implement a wireless network penetration test including WPA2 cracking evil twin attack rogue AP detection client attacks with complete testing methodology tools configuration and security hardening recommendations.,Case Study,Hard,10
+74,Ethical Hacking,Unit 5,Case Study,Conduct malware analysis on a suspicious file including static analysis dynamic analysis behavior monitoring network traffic analysis with sandbox setup analysis tools and indicators of compromise documentation.,Case Study,Hard,10
+75,Ethical Hacking,Unit 5,Case Study,Develop a social engineering campaign including phishing email creation fake website development credential harvesting awareness testing with ethical considerations legal compliance and security awareness training recommendations.,Case Study,Medium,10

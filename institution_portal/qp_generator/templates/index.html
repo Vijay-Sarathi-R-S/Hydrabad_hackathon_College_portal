@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">📝 Question Paper Generator</h1>
+    
+    <!-- Upload Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">📁 Upload Question Bank</h5>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+                <div class="row align-items-end">
+                    <div class="col-md-8">
+                        <label for="file" class="form-label">Select CSV file</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".csv" required>
+                        <small class="text-muted">Format: id, subject, unit, topic, question_text, question_type, difficulty, marks</small>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-upload"></i> Upload
+                        </button>
+                    </div>
+                </div>
+            </form>
+            
+            {% if stats %}
+            <div class="mt-3">
+                <strong>📊 Current Question Bank:</strong>
+                <ul class="list-unstyled ms-3">
+                    {% for subj, count in stats.items() %}
+                    <li>{{ subj }}: {{ count }} questions
+                        {% if marks_distribution[subj] %}
+                        <small class="text-muted">
+                            ({% for marks, cnt in marks_distribution[subj].items() %}{{ cnt }}×{{ marks }}m{% if not loop.last %}, {% endif %}{% endfor %})
+                        </small>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Generate Section -->
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">⚙️ Configure Question Paper</h5>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('generate_paper') }}" method="post">
+                <div class="row">
+                    <!-- Basic Details -->
+                    <div class="col-md-6 mb-3">
+                        <label for="subject" class="form-label">Subject *</label>
+                        <select class="form-select" id="subject" name="subject" required>
+                            {% for subj in subjects %}
+                            <option value="{{ subj }}">{{ subj }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="paper_title" class="form-label">Paper Title</label>
+                        <input type="text" class="form-control" id="paper_title" name="paper_title" 
+                               placeholder="Mid-Term Examination" value="Question Paper">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="duration" class="form-label">Duration (minutes)</label>
+                        <input type="number" class="form-control" id="duration" name="duration" 
+                               value="90" min="30" max="300">
+                    </div>
+                </div>
+
+                <!-- Question Distribution -->
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h6 class="text-primary">📋 Question Distribution</h6>
+                        <p class="text-muted small">Specify how many questions of each mark value</p>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <label for="marks_4_count" class="form-label">4 Marks Questions</label>
+                        <input type="number" class="form-control" id="marks_4_count" name="marks_4_count" 
+                               value="5" min="0" max="50">
+                        <small class="text-muted">e.g., 5 questions × 4 marks = 20 marks</small>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <label for="marks_6_count" class="form-label">6 Marks Questions</label>
+                        <input type="number" class="form-control" id="marks_6_count" name="marks_6_count" 
+                               value="5" min="0" max="50">
+                        <small class="text-muted">e.g., 5 questions × 6 marks = 30 marks</small>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <label for="marks_10_count" class="form-label">10 Marks Questions</label>
+                        <input type="number" class="form-control" id="marks_10_count" name="marks_10_count" 
+                               value="1" min="0" max="20">
+                        <small class="text-muted">e.g., 1 question × 10 marks = 10 marks</small>
+                    </div>
+                </div>
+
+                <!-- Instructions -->
+                <div class="mb-3">
+                    <label for="instructions" class="form-label">Instructions (Optional)</label>
+                    <textarea class="form-control" id="instructions" name="instructions" rows="3" 
+                              placeholder="Answer all questions. Write clearly."></textarea>
+                </div>
+
+                <!-- Submit -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success btn-lg">
+                        🎯 Generate Question Paper
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        {% for message in messages %}
+        <div class="toast show" role="alert">
+            <div class="toast-header">
+                <strong class="me-auto">Notification</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">{{ message }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% endwith %}
+{% endblock %}

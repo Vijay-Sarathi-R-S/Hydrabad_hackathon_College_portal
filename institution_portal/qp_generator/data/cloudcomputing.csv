@@ -1,0 +1,76 @@
+id,subject,unit,topic,question_text,question_type,difficulty,marks
+1,Cloud Computing,Unit 1,Introduction,What is cloud computing? Explain its key characteristics.,Short Answer,Easy,4
+2,Cloud Computing,Unit 1,Introduction,Define cloud computing and explain its benefits.,Short Answer,Easy,4
+3,Cloud Computing,Unit 1,Service Models,Explain IaaS PaaS and SaaS with examples.,Short Answer,Easy,4
+4,Cloud Computing,Unit 1,Service Models,Differentiate between IaaS PaaS and SaaS.,Short Answer,Medium,4
+5,Cloud Computing,Unit 1,Deployment Models,What are the different cloud deployment models?,Short Answer,Easy,4
+6,Cloud Computing,Unit 1,Deployment Models,Compare public private and hybrid cloud.,Short Answer,Medium,4
+7,Cloud Computing,Unit 1,Evolution,Explain the evolution of cloud computing.,Short Answer,Medium,4
+8,Cloud Computing,Unit 1,Characteristics,What are the five essential characteristics of cloud computing?,Short Answer,Easy,4
+9,Cloud Computing,Unit 1,Advantages,Explain the advantages and disadvantages of cloud computing.,Short Answer,Medium,4
+10,Cloud Computing,Unit 1,Cloud vs Traditional,Differentiate between cloud computing and traditional computing.,Short Answer,Hard,4
+11,Cloud Computing,Unit 2,Virtualization,What is virtualization? Explain its role in cloud computing.,Short Answer,Easy,4
+12,Cloud Computing,Unit 2,Virtualization,Define hypervisor and explain its types.,Short Answer,Easy,4
+13,Cloud Computing,Unit 2,Hypervisor,Differentiate between Type 1 and Type 2 hypervisors.,Short Answer,Medium,4
+14,Cloud Computing,Unit 2,Virtual Machines,What is a virtual machine? Explain VM lifecycle.,Short Answer,Medium,4
+15,Cloud Computing,Unit 2,Containers,Differentiate between virtual machines and containers.,Short Answer,Medium,4
+16,Cloud Computing,Unit 2,Docker,What is Docker? Explain its architecture.,Short Answer,Medium,4
+17,Cloud Computing,Unit 2,Server Virtualization,Explain server virtualization and its benefits.,Short Answer,Hard,4
+18,Cloud Computing,Unit 2,Storage Virtualization,What is storage virtualization? Explain its types.,Short Answer,Hard,4
+19,Cloud Computing,Unit 2,Network Virtualization,Define network virtualization and its advantages.,Short Answer,Hard,4
+20,Cloud Computing,Unit 2,Live Migration,What is live migration in virtualization?,Short Answer,Hard,4
+21,Cloud Computing,Unit 3,Cloud Architecture,Explain the basic cloud computing architecture.,Short Answer,Easy,4
+22,Cloud Computing,Unit 3,Cloud Layers,What are the different layers in cloud architecture?,Short Answer,Easy,4
+23,Cloud Computing,Unit 3,Data Centers,Explain cloud data center architecture.,Short Answer,Medium,4
+24,Cloud Computing,Unit 3,Scalability,What is scalability? Differentiate between vertical and horizontal scaling.,Short Answer,Medium,4
+25,Cloud Computing,Unit 3,Elasticity,Define elasticity in cloud computing.,Short Answer,Medium,4
+26,Cloud Computing,Unit 3,Load Balancing,What is load balancing? Explain its importance.,Short Answer,Medium,4
+27,Cloud Computing,Unit 3,Multi-tenancy,Explain multi-tenancy in cloud computing.,Short Answer,Hard,4
+28,Cloud Computing,Unit 3,Cloud Storage,What are the types of cloud storage?,Short Answer,Easy,4
+29,Cloud Computing,Unit 3,Object Storage,Differentiate between block storage object storage and file storage.,Short Answer,Hard,4
+30,Cloud Computing,Unit 3,CDN,What is Content Delivery Network? Explain its working.,Short Answer,Hard,4
+31,Cloud Computing,Unit 4,Cloud Security,What are the major security concerns in cloud computing?,Short Answer,Easy,4
+32,Cloud Computing,Unit 4,Cloud Security,Explain data security in cloud computing.,Short Answer,Easy,4
+33,Cloud Computing,Unit 4,Identity Management,What is Identity and Access Management in cloud?,Short Answer,Medium,4
+34,Cloud Computing,Unit 4,Encryption,Explain data encryption in cloud at rest and in transit.,Short Answer,Medium,4
+35,Cloud Computing,Unit 4,Authentication,What is multi-factor authentication? Why is it important?,Short Answer,Medium,4
+36,Cloud Computing,Unit 4,Compliance,Explain compliance and regulatory issues in cloud.,Short Answer,Hard,4
+37,Cloud Computing,Unit 4,Security Threats,What are common security threats in cloud computing?,Short Answer,Medium,4
+38,Cloud Computing,Unit 4,DDoS,What is DDoS attack? How to prevent it in cloud?,Short Answer,Hard,4
+39,Cloud Computing,Unit 4,Data Privacy,Explain data privacy concerns in cloud computing.,Short Answer,Hard,4
+40,Cloud Computing,Unit 4,Security Best Practices,What are cloud security best practices?,Short Answer,Medium,4
+41,Cloud Computing,Unit 1,Cloud Fundamentals,Explain cloud computing characteristics service models deployment models with real-world examples and comparison with traditional IT infrastructure.,Long Answer,Easy,6
+42,Cloud Computing,Unit 1,Service Models Deep Dive,Describe IaaS PaaS SaaS with architecture use cases examples like AWS EC2 Google App Engine Salesforce.,Long Answer,Easy,6
+43,Cloud Computing,Unit 1,Cloud Economics,Explain cloud computing business models pricing strategies cost optimization and ROI calculation.,Long Answer,Medium,6
+44,Cloud Computing,Unit 1,Cloud Standards,Describe cloud computing standards NIST definition ISO standards and interoperability challenges.,Long Answer,Medium,6
+45,Cloud Computing,Unit 1,Cloud Adoption,Explain cloud adoption strategies migration planning challenges and organizational readiness.,Long Answer,Hard,6
+46,Cloud Computing,Unit 2,Virtualization Technologies,Explain full virtualization para-virtualization hardware-assisted virtualization with hypervisor examples.,Long Answer,Medium,6
+47,Cloud Computing,Unit 2,Container Technology,Describe Docker architecture containerization benefits Kubernetes orchestration and microservices deployment.,Long Answer,Medium,6
+48,Cloud Computing,Unit 2,Resource Management,Explain virtual machine provisioning resource allocation scheduling and optimization techniques.,Long Answer,Hard,6
+49,Cloud Computing,Unit 2,Desktop Virtualization,Describe VDI architecture application virtualization and remote desktop protocols.,Long Answer,Hard,6
+50,Cloud Computing,Unit 2,Storage Technologies,Explain distributed storage systems RAID replication deduplication and data consistency.,Long Answer,Medium,6
+51,Cloud Computing,Unit 3,AWS Architecture,Explain Amazon Web Services architecture EC2 S3 RDS VPC with use cases and best practices.,Long Answer,Medium,6
+52,Cloud Computing,Unit 3,Azure Services,Describe Microsoft Azure services virtual machines blob storage SQL database and Azure functions.,Long Answer,Medium,6
+53,Cloud Computing,Unit 3,Google Cloud Platform,Explain Google Cloud services Compute Engine Cloud Storage BigQuery and App Engine.,Long Answer,Hard,6
+54,Cloud Computing,Unit 3,Cloud Storage Systems,Describe cloud storage architecture data distribution consistency models CAP theorem and eventual consistency.,Long Answer,Hard,6
+55,Cloud Computing,Unit 3,MapReduce and Hadoop,Explain MapReduce programming model Hadoop architecture HDFS and distributed processing.,Long Answer,Hard,6
+56,Cloud Computing,Unit 4,Cloud Security Architecture,Explain cloud security framework shared responsibility model security controls and defense in depth.,Long Answer,Medium,6
+57,Cloud Computing,Unit 4,Identity and Access Management,Describe IAM policies roles RBAC federation single sign-on and access control mechanisms.,Long Answer,Medium,6
+58,Cloud Computing,Unit 4,Data Protection,Explain encryption key management data loss prevention backup and disaster recovery in cloud.,Long Answer,Hard,6
+59,Cloud Computing,Unit 4,Network Security,Describe virtual private cloud security groups firewall rules VPN and network segmentation.,Long Answer,Hard,6
+60,Cloud Computing,Unit 4,Compliance Standards,Explain GDPR HIPAA PCI-DSS SOC2 compliance requirements and audit processes.,Long Answer,Medium,6
+61,Cloud Computing,Unit 5,Cloud Migration,Explain cloud migration strategies 6Rs lift-and-shift re-platform re-architect with planning and execution.,Long Answer,Medium,6
+62,Cloud Computing,Unit 5,DevOps in Cloud,Describe DevOps practices CI/CD pipeline infrastructure as code automation tools like Jenkins Terraform.,Long Answer,Medium,6
+63,Cloud Computing,Unit 5,Serverless Computing,Explain serverless architecture AWS Lambda Azure Functions event-driven computing and use cases.,Long Answer,Hard,6
+64,Cloud Computing,Unit 5,Cloud Monitoring,Describe cloud monitoring tools CloudWatch CloudTrail logging alerting and performance optimization.,Long Answer,Medium,6
+65,Cloud Computing,Unit 5,Big Data Analytics,Explain big data processing in cloud data lakes data warehouses ETL and analytics services.,Long Answer,Hard,6
+66,Cloud Computing,Unit 5,IoT and Cloud,Describe IoT cloud integration edge computing data ingestion and real-time processing.,Long Answer,Hard,6
+67,Cloud Computing,Unit 5,Multi-Cloud Strategy,Explain multi-cloud architecture cloud management platforms vendor lock-in mitigation.,Long Answer,Hard,6
+68,Cloud Computing,Unit 5,Green Cloud Computing,Describe energy efficiency carbon footprint sustainable cloud computing and green data centers.,Long Answer,Medium,6
+69,Cloud Computing,Unit 5,Case Study,Design a complete cloud infrastructure for an e-commerce application including compute storage database load balancing auto-scaling CDN security with AWS services architecture diagrams cost estimation and high availability design.,Case Study,Medium,10
+70,Cloud Computing,Unit 5,Case Study,Implement a cloud migration strategy for a legacy enterprise application including assessment planning lift-and-shift re-platforming testing deployment with migration tools risk mitigation and rollback procedures.,Case Study,Medium,10
+71,Cloud Computing,Unit 5,Case Study,Build a serverless web application using AWS Lambda API Gateway DynamoDB S3 CloudFront including architecture design event-driven processing authentication security and cost optimization.,Case Study,Hard,10
+72,Cloud Computing,Unit 5,Case Study,Design a disaster recovery solution for critical business applications including backup strategies RTO RPO multi-region deployment failover testing with complete DR plan and automation scripts.,Case Study,Hard,10
+73,Cloud Computing,Unit 5,Case Study,Implement a big data analytics platform using cloud services including data ingestion ETL processing data warehouse visualization with tools like Hadoop Spark Redshift and real-time analytics.,Case Study,Hard,10
+74,Cloud Computing,Unit 5,Case Study,Develop a secure multi-tenant SaaS application on cloud including tenant isolation data segregation IAM monitoring compliance with architecture design database schema and security implementation.,Case Study,Hard,10
+75,Cloud Computing,Unit 5,Case Study,Create a DevOps pipeline for cloud application deployment including version control CI/CD infrastructure as code automated testing deployment strategies with Jenkins Docker Kubernetes Terraform configuration.,Case Study,Medium,10

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">✅ Question Paper Generated</h1>
+    
+    <!-- Summary Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Total Marks</h5>
+                    <h2 class="text-primary">{{ total_marks }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Total Questions</h5>
+                    <h2 class="text-success">{{ num_questions }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Duration</h5>
+                    <h2 class="text-info">{{ duration }} min</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Subject</h5>
+                    <h2 class="text-warning">{{ subject }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Distribution Table -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">📊 Question Distribution</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Marks</th>
+                        <th>Target Count</th>
+                        <th>Actual Count</th>
+                        <th>Total Marks</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for marks, data in distribution.items() %}
+                    <tr>
+                        <td><strong>{{ marks }} marks</strong></td>
+                        <td>{{ data.target }}</td>
+                        <td>{{ data.actual }}</td>
+                        <td>{{ marks * data.actual }}</td>
+                        <td>
+                            {% if data.actual == data.target %}
+                            <span class="badge bg-success">✓ Match</span>
+                            {% else %}
+                            <span class="badge bg-warning">⚠ Partial</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Question Paper Preview -->
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">📄 Generated Question Paper</h5>
+            <span class="badge bg-light text-dark">{{ paper_title }}</span>
+        </div>
+        <div class="card-body">
+            <textarea id="questionPaper" class="form-control" rows="25" readonly style="font-family: 'Courier New', monospace; font-size: 14px;">{{ plain_text }}</textarea>
+            <div class="mt-3">
+                <button class="btn btn-primary" onclick="copyToClipboard()">
+                    📋 Copy to Clipboard
+                </button>
+                <button class="btn btn-secondary" onclick="downloadText()">
+                    💾 Download as Text
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Question Details -->
+        <!-- Question Details (Simple List) -->
+    {% if questions %}
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">📝 All Questions</h5>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for q in questions %}
+                <li class="list-group-item">
+                    <span class="badge bg-info">Q{{ loop.index }}</span>
+                    <span class="badge bg-primary">{{ q.marks }}m</span>
+                    <span class="badge bg-secondary">{{ q.difficulty }}</span>
+                    {{ q.question_text }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
+
+    <div class="text-center">
+        <a href="{{ url_for('index') }}" class="btn btn-lg btn-success">
+            🔄 Generate Another Paper
+        </a>
+    </div>
+</div>
+
+<script>
+function copyToClipboard() {
+    const textarea = document.getElementById('questionPaper');
+    textarea.select();
+    textarea.setSelectionRange(0, 99999); // For mobile
+    
+    try {
+        document.execCommand('copy');
+        showNotification('✅ Question paper copied to clipboard!', 'success');
+    } catch (err) {
+        showNotification('❌ Failed to copy. Please select and copy manually.', 'error');
+    }
+}
+
+function downloadText() {
+    const text = document.getElementById('questionPaper').value;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = '{{ subject }}_QuestionPaper.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    showNotification('✅ Question paper downloaded!', 'success');
+}
+
+function showNotification(message, type) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alertDiv);
+    
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 3000);
+}
+</script>
+
+<style>
+.badge {
+    margin-right: 5px;
+}
+.list-group-item {
+    border-left: 3px solid #007bff;
+}
+</style>
+{% endblock %}

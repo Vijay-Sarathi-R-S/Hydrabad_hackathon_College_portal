@@ -1,0 +1,76 @@
+id,subject,unit,topic,question_text,question_type,difficulty,marks
+1,Internet of Things,Unit 1,Introduction,What is Internet of Things? Explain its key characteristics.,Short Answer,Easy,4
+2,Internet of Things,Unit 1,Introduction,Define IoT and explain its applications in daily life.,Short Answer,Easy,4
+3,Internet of Things,Unit 1,IoT Architecture,Explain the basic architecture of IoT.,Short Answer,Easy,4
+4,Internet of Things,Unit 1,IoT Components,What are the main components of an IoT system?,Short Answer,Easy,4
+5,Internet of Things,Unit 1,Enabling Technologies,List and explain enabling technologies for IoT.,Short Answer,Medium,4
+6,Internet of Things,Unit 1,IoT vs M2M,Differentiate between IoT and M2M communication.,Short Answer,Medium,4
+7,Internet of Things,Unit 1,IoT Challenges,What are the major challenges in IoT implementation?,Short Answer,Medium,4
+8,Internet of Things,Unit 1,Smart Objects,Define smart objects and explain their characteristics.,Short Answer,Easy,4
+9,Internet of Things,Unit 1,IoT Evolution,Explain the evolution of Internet of Things.,Short Answer,Hard,4
+10,Internet of Things,Unit 1,IoT Applications,Explain IoT applications in healthcare and agriculture.,Short Answer,Medium,4
+11,Internet of Things,Unit 2,Sensors,What are sensors? Explain different types of sensors used in IoT.,Short Answer,Easy,4
+12,Internet of Things,Unit 2,Actuators,Define actuators and explain their role in IoT.,Short Answer,Easy,4
+13,Internet of Things,Unit 2,Arduino,What is Arduino? Explain its architecture and applications.,Short Answer,Medium,4
+14,Internet of Things,Unit 2,Raspberry Pi,Explain Raspberry Pi and its use in IoT projects.,Short Answer,Medium,4
+15,Internet of Things,Unit 2,ESP8266,What is ESP8266? Explain its features.,Short Answer,Medium,4
+16,Internet of Things,Unit 2,Microcontrollers,Differentiate between Arduino and Raspberry Pi.,Short Answer,Medium,4
+17,Internet of Things,Unit 2,GPIO,What is GPIO? Explain its usage in IoT devices.,Short Answer,Hard,4
+18,Internet of Things,Unit 2,Sensor Interface,Explain analog and digital sensor interfacing.,Short Answer,Hard,4
+19,Internet of Things,Unit 2,ADC,What is Analog to Digital Converter? Explain its importance.,Short Answer,Hard,4
+20,Internet of Things,Unit 2,Power Management,Explain power management techniques in IoT devices.,Short Answer,Hard,4
+21,Internet of Things,Unit 3,IoT Protocols,What are IoT communication protocols? List them.,Short Answer,Easy,4
+22,Internet of Things,Unit 3,MQTT,Explain MQTT protocol and its working.,Short Answer,Easy,4
+23,Internet of Things,Unit 3,CoAP,What is CoAP protocol? How is it different from HTTP?,Short Answer,Medium,4
+24,Internet of Things,Unit 3,HTTP,Explain the use of HTTP protocol in IoT.,Short Answer,Easy,4
+25,Internet of Things,Unit 3,WebSocket,What is WebSocket? Explain its advantages in IoT.,Short Answer,Medium,4
+26,Internet of Things,Unit 3,Zigbee,Explain Zigbee protocol and its applications.,Short Answer,Medium,4
+27,Internet of Things,Unit 3,Bluetooth,What is Bluetooth Low Energy? Explain its use in IoT.,Short Answer,Medium,4
+28,Internet of Things,Unit 3,WiFi,Explain WiFi connectivity in IoT devices.,Short Answer,Easy,4
+29,Internet of Things,Unit 3,LoRaWAN,What is LoRaWAN? Explain its characteristics.,Short Answer,Hard,4
+30,Internet of Things,Unit 3,NB-IoT,Define Narrowband IoT and its applications.,Short Answer,Hard,4
+31,Internet of Things,Unit 4,IoT Security,What are the security challenges in IoT?,Short Answer,Easy,4
+32,Internet of Things,Unit 4,Authentication,Explain authentication mechanisms in IoT.,Short Answer,Easy,4
+33,Internet of Things,Unit 4,Encryption,What is encryption? Explain its importance in IoT.,Short Answer,Medium,4
+34,Internet of Things,Unit 4,IoT Attacks,List and explain common IoT security attacks.,Short Answer,Medium,4
+35,Internet of Things,Unit 4,Privacy,Explain privacy concerns in IoT systems.,Short Answer,Medium,4
+36,Internet of Things,Unit 4,Secure Boot,What is secure boot in IoT devices?,Short Answer,Hard,4
+37,Internet of Things,Unit 4,PKI,Explain Public Key Infrastructure for IoT security.,Short Answer,Hard,4
+38,Internet of Things,Unit 4,Firmware Security,What are firmware security best practices?,Short Answer,Hard,4
+39,Internet of Things,Unit 4,Device Identity,Explain device identity and authentication in IoT.,Short Answer,Medium,4
+40,Internet of Things,Unit 4,Security Standards,What are IoT security standards and frameworks?,Short Answer,Hard,4
+41,Internet of Things,Unit 1,IoT Architecture Layers,Explain the layered architecture of IoT including perception network middleware and application layers with functions and examples.,Long Answer,Easy,6
+42,Internet of Things,Unit 1,IoT Ecosystem,Describe the complete IoT ecosystem including devices connectivity data processing analytics and applications with real-world examples.,Long Answer,Easy,6
+43,Internet of Things,Unit 1,Smart City Applications,Explain IoT applications in smart cities including traffic management waste management street lighting and public safety.,Long Answer,Medium,6
+44,Internet of Things,Unit 1,Industrial IoT,Describe Industrial IoT architecture predictive maintenance asset tracking and Industry 4.0 concepts.,Long Answer,Medium,6
+45,Internet of Things,Unit 1,IoT Standards,Explain IoT standardization bodies protocols and interoperability challenges.,Long Answer,Hard,6
+46,Internet of Things,Unit 2,Sensor Technologies,Explain different sensor types temperature humidity motion pressure light with working principles and interfacing.,Long Answer,Medium,6
+47,Internet of Things,Unit 2,Arduino Programming,Describe Arduino IDE programming structure digital and analog I/O serial communication with code examples.,Long Answer,Medium,6
+48,Internet of Things,Unit 2,Raspberry Pi Projects,Explain Raspberry Pi setup GPIO programming Python scripting camera module and IoT project implementation.,Long Answer,Hard,6
+49,Internet of Things,Unit 2,Embedded Systems,Describe embedded systems for IoT real-time operating systems microcontroller selection and system design.,Long Answer,Hard,6
+50,Internet of Things,Unit 2,Wireless Sensor Networks,Explain WSN architecture node deployment routing protocols energy efficiency and data aggregation.,Long Answer,Medium,6
+51,Internet of Things,Unit 3,MQTT Protocol,Explain MQTT architecture publish-subscribe model QoS levels broker configuration with implementation examples.,Long Answer,Medium,6
+52,Internet of Things,Unit 3,Communication Protocols,Compare HTTP MQTT CoAP WebSocket protocols for IoT with advantages disadvantages and use cases.,Long Answer,Medium,6
+53,Internet of Things,Unit 3,Wireless Technologies,Describe WiFi Bluetooth Zigbee LoRa comparison range power consumption data rate and applications.,Long Answer,Hard,6
+54,Internet of Things,Unit 3,LPWAN Technologies,Explain Low Power Wide Area Networks LoRaWAN NB-IoT Sigfox architecture coverage and use cases.,Long Answer,Hard,6
+55,Internet of Things,Unit 3,Network Topologies,Describe star mesh tree network topologies for IoT with advantages and protocol examples.,Long Answer,Medium,6
+56,Internet of Things,Unit 4,IoT Security Framework,Explain end-to-end IoT security including device security network security data security and application security.,Long Answer,Medium,6
+57,Internet of Things,Unit 4,Cryptography in IoT,Describe symmetric and asymmetric encryption hashing digital signatures and lightweight cryptography for IoT.,Long Answer,Medium,6
+58,Internet of Things,Unit 4,Threat Analysis,Explain IoT threat landscape attack vectors Mirai botnet DDoS attacks and mitigation strategies.,Long Answer,Hard,6
+59,Internet of Things,Unit 4,Secure Communication,Describe TLS/SSL implementation secure protocols certificate management and key distribution in IoT.,Long Answer,Hard,6
+60,Internet of Things,Unit 4,Privacy Protection,Explain data privacy techniques anonymization differential privacy and GDPR compliance in IoT.,Long Answer,Medium,6
+61,Internet of Things,Unit 5,Cloud IoT Platforms,Explain AWS IoT Azure IoT Google Cloud IoT platforms with device management data storage and analytics.,Long Answer,Medium,6
+62,Internet of Things,Unit 5,Edge Computing,Describe edge computing architecture fog computing data processing at edge and latency reduction.,Long Answer,Medium,6
+63,Internet of Things,Unit 5,IoT Data Analytics,Explain data collection processing real-time analytics machine learning and predictive analytics for IoT.,Long Answer,Hard,6
+64,Internet of Things,Unit 5,IoT and AI,Describe integration of artificial intelligence with IoT intelligent systems and autonomous decision making.,Long Answer,Hard,6
+65,Internet of Things,Unit 5,Blockchain IoT,Explain blockchain technology for IoT security decentralization smart contracts and supply chain applications.,Long Answer,Hard,6
+66,Internet of Things,Unit 5,IoT Platforms,Compare ThingSpeak Blynk Cayenne IoT platforms with features connectivity and project implementation.,Long Answer,Medium,6
+67,Internet of Things,Unit 5,5G and IoT,Explain impact of 5G on IoT massive IoT applications ultra-reliable low-latency communication.,Long Answer,Hard,6
+68,Internet of Things,Unit 5,Digital Twin,Describe digital twin technology simulation modeling and IoT integration for predictive maintenance.,Long Answer,Medium,6
+69,Internet of Things,Unit 5,Case Study,Design a complete smart home automation system using IoT including sensor integration Arduino/Raspberry Pi programming MQTT communication mobile app control with circuit diagrams code and system architecture.,Case Study,Medium,10
+70,Internet of Things,Unit 5,Case Study,Implement a real-time environmental monitoring system using multiple sensors cloud connectivity data visualization alert mechanisms with hardware setup code implementation dashboard design and data analysis.,Case Study,Medium,10
+71,Internet of Things,Unit 5,Case Study,Develop a smart agriculture system with soil moisture monitoring automated irrigation weather prediction using IoT sensors wireless communication and cloud analytics with complete implementation and field testing.,Case Study,Hard,10
+72,Internet of Things,Unit 5,Case Study,Create an industrial predictive maintenance system using vibration sensors temperature monitoring edge computing machine learning with data collection analysis fault prediction and alert system.,Case Study,Hard,10
+73,Internet of Things,Unit 5,Case Study,Build a smart parking system using ultrasonic sensors real-time availability display mobile app integration payment gateway with hardware implementation server backend and user interface design.,Case Study,Medium,10
+74,Internet of Things,Unit 5,Case Study,Design a healthcare patient monitoring system with wearable sensors vital sign tracking cloud storage doctor dashboard emergency alerts with complete architecture security implementation and compliance.,Case Study,Hard,10
+75,Internet of Things,Unit 5,Case Study,Implement a smart energy management system with current sensors power monitoring load scheduling cost optimization using IoT devices analytics and control algorithms with prototype development and testing.,Case Study,Hard,10
